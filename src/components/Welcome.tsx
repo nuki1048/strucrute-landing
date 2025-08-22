@@ -14,6 +14,7 @@ export const Welcome = () => {
       paddingY='20px'
       w='100%'
       h='1300px'
+      paddingX='92px'
     >
       <Image
         src={Sphere}
@@ -47,7 +48,12 @@ export const Welcome = () => {
         alignItems='flex-end'
       >
         <Box w='100%' borderRadius='10px' paddingTop='22%' paddingLeft='4%'>
-          <Text fontSize='100px' textTransform='uppercase' color='white'>
+          <Text
+            fontSize='100px'
+            textTransform='uppercase'
+            color='white'
+            fontWeight={300}
+          >
             Вітаємо
           </Text>
         </Box>
@@ -64,9 +70,10 @@ export const Welcome = () => {
             textTransform='uppercase'
             color='white'
             lineHeight='1'
+            fontWeight={300}
           >
             Ми -
-            <Text as='span' fontStyle='italic'>
+            <Text as='span' fontStyle='italic' fontWeight={400}>
               STRUCTURE AGENCY
             </Text>
           </Text>
@@ -83,6 +90,7 @@ export const Welcome = () => {
             textTransform='uppercase'
             color='white'
             lineHeight='1.2'
+            fontWeight={300}
           >
             цифрових продуктів
           </Text>
@@ -91,6 +99,7 @@ export const Welcome = () => {
             textTransform='uppercase'
             color='white'
             lineHeight='1.3'
+            fontWeight={300}
           >
             Ми прагнемо створювати досвід
           </Text>
@@ -99,6 +108,7 @@ export const Welcome = () => {
             textTransform='uppercase'
             color='white'
             lineHeight='1'
+            fontWeight={300}
           >
             Та структури, які формують
           </Text>
@@ -107,6 +117,7 @@ export const Welcome = () => {
             textTransform='uppercase'
             color='white'
             lineHeight='1'
+            fontWeight={300}
           >
             майбутнє вашого бізнесу
           </Text>

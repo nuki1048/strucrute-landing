@@ -10,6 +10,7 @@ export const Header = () => {
       display='flex'
       justifyContent='space-between'
       alignItems='center'
+      paddingX='92px'
     >
       <Logo />
       <HStack gap={35} justifyContent='space-between'>

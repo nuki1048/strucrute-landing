@@ -10,6 +10,13 @@ const config = defineConfig({
         text: { value: "#FFFFFF" },
         black1: { value: "#121212" },
         gray1: { value: "#666666" },
+        gray2: { value: "#D9D9D9" },
+        gray3: { value: "#2C2C2C" },
+        gray4: { value: "#2C2C2C" },
+        white2: { value: "#D8C7AB" },
+        blue1: { value: "#1C2955" },
+        purple1: { value: "#6860FF" },
+        brown1: { value: "#B57434" },
       },
       fonts: {
         body: {

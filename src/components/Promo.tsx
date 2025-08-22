@@ -14,6 +14,7 @@ export const Promo = () => {
       paddingY='20px'
       w='100%'
       h='700px'
+      paddingX='92px'
     >
       <Image
         src={Sphere}
