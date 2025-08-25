@@ -25,7 +25,7 @@ export const Promo = () => {
         right='-10%'
         bottom='-10%'
         w='120vw'
-        h='2000px'
+        h='2200px'
         zIndex={1}
         overflow='visible'
       >

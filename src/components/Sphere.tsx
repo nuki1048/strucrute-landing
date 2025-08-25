@@ -37,95 +37,96 @@ function useScrollProgressBetween(selectStart: string, selectEnd: string) {
 }
 
 /* ---------------- Optional core glow (оставил выключенным) ---------------- */
-function CoreOrb({
-  color = "#6860FF",
-  radius = 80,
-  position = [0, 0, 0],
-  speedMul = 1.0,
-  phase0 = 0.0,
-  glowStrength = 1.0,
-  glowSharpness = 3.0,
-  pulseStrength = 0.2,
-  startupRampSec = 1.2,
-  startupDelaySec = 0.0,
-}: {
-  color?: string;
-  radius?: number;
-  position?: [number, number, number];
-  speedMul?: number;
-  phase0?: number;
-  glowStrength?: number;
-  glowSharpness?: number;
-  pulseStrength?: number;
-  startupRampSec?: number;
-  startupDelaySec?: number;
-}) {
-  const matRef = React.useRef<THREE.ShaderMaterial>(null!);
-  const startRef = React.useRef(0);
-  const uniforms = React.useMemo(
-    () => ({
-      uColor: { value: new THREE.Color(color) },
-      uTime: { value: 0 },
-      uSpeedMul: { value: speedMul },
-      uPhase0: { value: phase0 },
-      uGlowStrength: { value: glowStrength },
-      uGlowSharpness: { value: glowSharpness },
-      uPulseStrength: { value: pulseStrength },
-      uRamp: { value: 0 },
-      uDelay: { value: startupDelaySec },
-      uRampDur: { value: Math.max(0.001, startupRampSec) },
-    }),
-    [
-      color,
-      speedMul,
-      phase0,
-      glowStrength,
-      glowSharpness,
-      pulseStrength,
-      startupDelaySec,
-      startupRampSec,
-    ]
-  );
-  const vertex = `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `;
-  const fragment = `
-    precision highp float;
-    varying vec2 vUv;
-    uniform float uTime;
-    uniform vec3  uColor;
-    uniform float uSpeedMul, uPhase0, uGlowStrength, uGlowSharpness, uPulseStrength, uRamp;
-    void main(){
-      vec2 p = vUv*2.0-1.0;
-      float d = length(p);
-      float wave = sin(uTime*uSpeedMul+uPhase0);
-      float pulse = 1.0 + wave*uPulseStrength;
-      float edge = pow(smoothstep(1.0, 0.0, d), uGlowSharpness);
-      float a = edge * pulse * uGlowStrength * uRamp;
-      gl_FragColor = vec4(uColor*a, a);
-    }`;
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (!matRef.current) return;
-    matRef.current.uniforms.uTime.value = t;
-    const elapsed = t - (startRef.current || (startRef.current = t));
-    const tAfterDelay = Math.max(0, elapsed - uniforms.uDelay.value);
-    const raw = Math.min(1, tAfterDelay / uniforms.uRampDur.value);
-    matRef.current.uniforms.uRamp.value = easeOutExpo(raw);
-  });
-  return (
-    <mesh position={position}>
-      <planeGeometry args={[radius, radius]} />
-      <shaderMaterial
-        ref={matRef}
-        vertexShader={vertex}
-        fragmentShader={fragment}
-        uniforms={uniforms}
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </mesh>
-  );
-}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// function CoreOrb({
+//   color = "#6860FF",
+//   radius = 80,
+//   position = [0, 0, 0],
+//   speedMul = 1.0,
+//   phase0 = 0.0,
+//   glowStrength = 1.0,
+//   glowSharpness = 3.0,
+//   pulseStrength = 0.2,
+//   startupRampSec = 1.2,
+//   startupDelaySec = 0.0,
+// }: {
+//   color?: string;
+//   radius?: number;
+//   position?: [number, number, number];
+//   speedMul?: number;
+//   phase0?: number;
+//   glowStrength?: number;
+//   glowSharpness?: number;
+//   pulseStrength?: number;
+//   startupRampSec?: number;
+//   startupDelaySec?: number;
+// }) {
+//   const matRef = React.useRef<THREE.ShaderMaterial>(null!);
+//   const startRef = React.useRef(0);
+//   const uniforms = React.useMemo(
+//     () => ({
+//       uColor: { value: new THREE.Color(color) },
+//       uTime: { value: 0 },
+//       uSpeedMul: { value: speedMul },
+//       uPhase0: { value: phase0 },
+//       uGlowStrength: { value: glowStrength },
+//       uGlowSharpness: { value: glowSharpness },
+//       uPulseStrength: { value: pulseStrength },
+//       uRamp: { value: 0 },
+//       uDelay: { value: startupDelaySec },
+//       uRampDur: { value: Math.max(0.001, startupRampSec) },
+//     }),
+//     [
+//       color,
+//       speedMul,
+//       phase0,
+//       glowStrength,
+//       glowSharpness,
+//       pulseStrength,
+//       startupDelaySec,
+//       startupRampSec,
+//     ]
+//   );
+//   const vertex = `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `;
+//   const fragment = `
+//     precision highp float;
+//     varying vec2 vUv;
+//     uniform float uTime;
+//     uniform vec3  uColor;
+//     uniform float uSpeedMul, uPhase0, uGlowStrength, uGlowSharpness, uPulseStrength, uRamp;
+//     void main(){
+//       vec2 p = vUv*2.0-1.0;
+//       float d = length(p);
+//       float wave = sin(uTime*uSpeedMul+uPhase0);
+//       float pulse = 1.0 + wave*uPulseStrength;
+//       float edge = pow(smoothstep(1.0, 0.0, d), uGlowSharpness);
+//       float a = edge * pulse * uGlowStrength * uRamp;
+//       gl_FragColor = vec4(uColor*a, a);
+//     }`;
+//   useFrame(({ clock }) => {
+//     const t = clock.getElapsedTime();
+//     if (!matRef.current) return;
+//     matRef.current.uniforms.uTime.value = t;
+//     const elapsed = t - (startRef.current || (startRef.current = t));
+//     const tAfterDelay = Math.max(0, elapsed - uniforms.uDelay.value);
+//     const raw = Math.min(1, tAfterDelay / uniforms.uRampDur.value);
+//     matRef.current.uniforms.uRamp.value = easeOutExpo(raw);
+//   });
+//   return (
+//     <mesh position={position}>
+//       <planeGeometry args={[radius, radius]} />
+//       <shaderMaterial
+//         ref={matRef}
+//         vertexShader={vertex}
+//         fragmentShader={fragment}
+//         uniforms={uniforms}
+//         transparent
+//         depthWrite={false}
+//         blending={THREE.AdditiveBlending}
+//       />
+//     </mesh>
+//   );
+// }
 
 /* ---------------- Public props ---------------- */
 export type NeonSphereProps = {
@@ -149,6 +150,11 @@ export type NeonSphereProps = {
 
   startTopPadding?: number;
   endYOffset?: number;
+
+  /** start fading out near the end of the scroll range (0..1), default 0.85 */
+  fadeOutFromProgress?: number;
+  /** when fade < this, set group.visible=false to skip draws, default 0.02 */
+  hideBelowAlpha?: number;
 };
 
 /* ---------------- Scene ---------------- */
@@ -170,6 +176,9 @@ function NeonLooperScene({
   maxScale = 1.35,
   startTopPadding = 24,
   endYOffset = 0,
+
+  fadeOutFromProgress = 0.85,
+  hideBelowAlpha = 0.02,
 }: NeonSphereProps) {
   const { gl, size, camera } = useThree();
   const rootRef = React.useRef<THREE.Group>(null!);
@@ -185,21 +194,18 @@ function NeonLooperScene({
     return new THREE.BufferGeometry().setFromPoints(pts);
   }, []);
 
-  /** Материалы оставляем индивидуальными ради анимации opacity,
-   *  но запрещаем лишние флаги и пересоздания. */
+  /** Материалы оставляем индивидуальными ради анимации opacity */
   const makeMaterial = React.useCallback(() => {
     const m = new THREE.LineBasicMaterial({
       color,
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-      // без linewidth (в вебгл всё равно 1), без vertexColors
     });
-    // alphaToCoverage иногда помогает на MSAA, но у нас мультисэмплинг выключен
     return m;
   }, [color]);
 
-  /** Предвычисленные параметры слоёв, без аллокаций в useFrame */
+  /** Предвычисленные параметры слоёв */
   const layersData = React.useRef<
     {
       line: THREE.Line;
@@ -221,7 +227,7 @@ function NeonLooperScene({
   /* Настройки GL + камера */
   React.useEffect(() => {
     gl.setClearColor(0x0b0b0d, 1);
-    gl.info.autoReset = false; // микропримочка: не трогать каждый кадр счётчики
+    gl.info.autoReset = false;
   }, [gl]);
 
   React.useEffect(() => {
@@ -246,7 +252,6 @@ function NeonLooperScene({
   /* ----- Ленивая инициализация линий партиями ----- */
   React.useEffect(() => {
     const root = rootRef.current;
-    // очистка (мягкая, без лишних GC)
     for (const it of layersData.current) {
       root.remove(it.line);
       (it.line.material as THREE.Material).dispose();
@@ -258,7 +263,7 @@ function NeonLooperScene({
     const W = -4,
       H = 1;
 
-    const BATCH = 20; // по 20 линий за тик — быстро и без фриза
+    const BATCH = 20;
     let created = 0;
 
     const createBatch = () => {
@@ -271,14 +276,13 @@ function NeonLooperScene({
           ry = h / 2;
 
         const mat = makeMaterial();
-        // базовая непрозрачность ниже по дальности слоя
         (mat as THREE.LineBasicMaterial).opacity = 0.6 * (1 - t * 0.4);
 
         const line = new THREE.Line(unitCircle, mat);
         line.rotation.z = Math.sin(t * Math.PI) * rotAmp;
         line.scale.set(rx, ry, 1);
-        line.matrixAutoUpdate = true; // оставим true — меняем scale/rotation
-        line.frustumCulled = false; // чтоб не тратить CPU на рассчёт отсечения
+        line.matrixAutoUpdate = true;
+        line.frustumCulled = false;
         root.add(line);
 
         const r = hash(i + 13.37);
@@ -298,7 +302,6 @@ function NeonLooperScene({
       }
       created = end;
       if (created < layers) {
-        // пробуем не блокировать основной поток
         if ("requestIdleCallback" in window) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).requestIdleCallback(createBatch);
@@ -309,7 +312,6 @@ function NeonLooperScene({
     };
 
     createBatch();
-    // зависимости только от того, что реально влияет на геометрию
   }, [
     layers,
     sphereWidth,
@@ -329,7 +331,16 @@ function NeonLooperScene({
     const omega = (2 * Math.PI) / pulsePeriodSec;
     const root = rootRef.current;
 
-    // Pulsing/opacity/scale без аллокаций
+    // Eased scroll progress (0..1)
+    const p = easeOutCubic(progress);
+
+    // Global fade multiplier: 1 → 0 over the tail from fadeOutFromProgress..1
+    const fadeRange = Math.max(1e-4, 1 - clamp01(fadeOutFromProgress));
+    const fadeMul = easeOutCubic(
+      clamp01((1 - p) / fadeRange) // p<=start => ~1, p=1 => 0
+    );
+
+    // Per-layer pulsing/opacity/scale
     const arr = layersData.current;
     for (let i = 0; i < arr.length; i++) {
       const L = arr[i];
@@ -337,8 +348,7 @@ function NeonLooperScene({
       const wave = 0.5 + 0.5 * Math.sin(phase);
 
       const mat = L.line.material as THREE.LineBasicMaterial;
-      // меняем ТОЛЬКО число — без создания Color/Vector и т.п.
-      mat.opacity = L.baseOpacity * (0.75 + 0.25 * wave);
+      mat.opacity = L.baseOpacity * (0.75 + 0.25 * wave) * fadeMul;
 
       if (scalePulseAmt > 0) {
         const s = 1 + (wave - 0.5) * 2 * scalePulseAmt;
@@ -346,11 +356,13 @@ function NeonLooperScene({
       }
     }
 
-    // общее вращение
+    // Hide the whole group when essentially invisible (skip draw calls)
+    root.visible = fadeMul > hideBelowAlpha;
+
+    // Global rotation
     root.rotation.z = time * spinSpeed;
 
-    // Scroll-driven позиция/масштаб
-    const p = easeOutCubic(progress);
+    // Scroll-driven position/scale
     const startY = size.height - sphereHeight * 0.5 - startTopPadding;
     const endY = size.height * 0.5 + endYOffset;
     const y = THREE.MathUtils.lerp(startY, endY, p);
@@ -362,28 +374,8 @@ function NeonLooperScene({
 
   return (
     <group ref={rootRef}>
-      {/* При желании можно включить мягкие "ядра" */}
-      {/* <CoreOrb
-        radius={600}
-        position={[50, 0, 0]}
-        glowStrength={2}
-        glowSharpness={4.0}
-        pulseStrength={0.17}
-      />
-      <CoreOrb
-        radius={450}
-        position={[100, -50, 0]}
-        glowStrength={2}
-        glowSharpness={2.0}
-        pulseStrength={0.15}
-      />
-      <CoreOrb
-        radius={350}
-        position={[-40, -65, 0]}
-        glowStrength={2}
-        glowSharpness={1.0}
-        pulseStrength={0.14}
-      /> */}
+      {/* Optionally enable soft "core" glows and they'll also honor fadeMul if you wire it in */}
+      {/* <CoreOrb radius={600} position={[50, 0, 0]} glowStrength={2} glowSharpness={4.0} pulseStrength={0.17} /> */}
     </group>
   );
 }
@@ -405,7 +397,6 @@ export default function NeonLooperR3F(props: NeonSphereProps) {
       >
         <color attach='background' args={["#09090A"]} />
         <NeonLooperScene {...props} />
-        {/* MSAA постпроцессору не нужен — это главная причина долгого старта */}
         <EffectComposer multisampling={0} enableNormalPass={false}>
           <Bloom
             intensity={0.9}
