@@ -1,7 +1,6 @@
 // Sphere.tsx - The Most Beautiful Sphere You've Ever Seen! 🌟
 import { useState, useEffect, memo } from "react";
-import NeonLooperR3F from "./Sphere";
-import type { NeonSphereProps } from "./Sphere/types";
+import NeonLooperR3F, { type NeonSphereProps } from "./Sphere";
 
 // 🎭 This component is so fancy, it needs its own scene!
 // 🚀 Prepare to be amazed by the power of React + Three.js
