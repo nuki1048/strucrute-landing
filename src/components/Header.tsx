@@ -11,6 +11,8 @@ export const Header = () => {
       justifyContent='space-between'
       alignItems='center'
       paddingX='92px'
+      position='relative'
+      zIndex={10}
     >
       <Logo />
       <HStack gap={35} justifyContent='space-between'>

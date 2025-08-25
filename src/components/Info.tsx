@@ -1,7 +1,8 @@
-import { Grid, Text } from "@chakra-ui/react";
+import { Grid, Text, useMediaQuery } from "@chakra-ui/react";
 import { BoxGrid } from "./BoxGrid";
 
 export const Info = () => {
+  const isMoreThan1440 = useMediaQuery(["(min-width: 1440px)"]);
   return (
     <Grid
       paddingX='65px'
@@ -18,6 +19,10 @@ export const Info = () => {
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
+        hoverText='допомагає компанії виділитися, бути впізнаваною та викликати правильні емоції в аудиторії'
+        hoverTextAlign='left'
+        hoverTextTop='30%'
+        hoverTextRight={isMoreThan1440 ? "-30%" : "-15%"}
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}
@@ -43,6 +48,9 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-end'
         marginTop='110px'
+        hoverText='створення сайтів та веб-додатків: від простих лендингів до складних сервісів'
+        hoverTextAlign='right'
+        hoverTextLeft={isMoreThan1440 ? "18%" : "30%"}
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}
@@ -50,6 +58,7 @@ export const Info = () => {
           color='white'
           lineHeight={1.5}
           fontStyle='italic'
+          textAlign='right'
         >
           Web
         </Text>
@@ -69,6 +78,9 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-start'
         marginTop='110px'
+        hoverText='хороший UI/UX робить взаємодію простою та приємною'
+        hoverTextAlign='left'
+        hoverTextRight={isMoreThan1440 ? "23%" : "30%"}
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}
@@ -95,6 +107,10 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-end'
         justifyContent='flex-end'
+        hoverText='зручні, безпечні та масштабовані рішення для бізнесу будь-якого рівня'
+        hoverTextAlign='right'
+        hoverTextLeft={isMoreThan1440 ? "24%" : "30%"}
+        hoverTextTop='30%'
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}
@@ -112,6 +128,7 @@ export const Info = () => {
           textTransform='uppercase'
           color='white'
           lineHeight={0.7}
+          textAlign='right'
         >
           Рішення
         </Text>
@@ -124,6 +141,12 @@ export const Info = () => {
         alignItems='flex-start'
         justifyContent='flex-end'
         alignSelf='center'
+        maxWHoverText='250px'
+        hoverText='робить продукт більш сучасним, залучаючим та зрозумілим для користувача'
+        hoverTextAlign='left'
+        hoverTextRight={isMoreThan1440 ? "5%" : "15%"}
+        hoverTextBottom='-25%'
+        hoverTextTop='none'
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}

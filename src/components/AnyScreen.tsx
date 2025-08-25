@@ -1,5 +1,5 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import anyScreen from "../assets/mockup-big.png";
+import anyScreen from "../assets/mockup-big.svg";
 
 export const AnyScreen = () => {
   return (

@@ -1,5 +1,4 @@
-import { Box, Container, Image, Text } from "@chakra-ui/react";
-import Sphere from "../assets/big_sphere.png";
+import { Box, Container, Text } from "@chakra-ui/react";
 
 export const Welcome = () => {
   return (
@@ -16,7 +15,7 @@ export const Welcome = () => {
       h='1300px'
       paddingX='92px'
     >
-      <Image
+      {/* <Image
         src={Sphere}
         alt='Sphere'
         w='1200px'
@@ -29,7 +28,7 @@ export const Welcome = () => {
           transform: "translateX(-50%)",
           zIndex: 1,
         }}
-      />
+      /> */}
       <Container
         position='relative'
         w='100%'
@@ -113,6 +112,7 @@ export const Welcome = () => {
             Та структури, які формують
           </Text>
           <Text
+            id='section-2'
             fontSize='50px'
             textTransform='uppercase'
             color='white'

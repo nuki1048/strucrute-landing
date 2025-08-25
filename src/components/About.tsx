@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Text } from "@chakra-ui/react";
 import { ListItem } from "./ListItem";
+import { motion } from "framer-motion";
 
 const listItems = [
   "UI/UX-дизайн та розробку",
@@ -67,24 +68,84 @@ export const About = () => {
           gridAutoFlow='column'
         >
           {listItems.map((item, idx) => {
-            return <ListItem title={item} number={`0${idx + 1}`} />;
+            return <ListItem key={idx} title={item} number={`0${idx + 1}`} />;
           })}
         </Grid>
       </Container>
+
+      {/* Animated Keywords Section */}
       <Box
         marginTop='90px'
-        display='flex'
-        gap='10px'
         width='100%'
-        justifyContent='space-between'
+        height='40px'
+        position='relative'
+        bg='transparent'
       >
-        {keywords.map((item) => {
-          return (
-            <Text fontSize='26px' color='gray1' lineHeight={1} fontWeight={300}>
+        <motion.div
+          style={{
+            display: "flex",
+            gap: "60px",
+            whiteSpace: "nowrap",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: "100%",
+            alignItems: "center",
+          }}
+          animate={{
+            x: [-1200, 0], // This creates right-to-left movement
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          {/* First set of keywords */}
+          {keywords.map((item, idx) => (
+            <Text
+              key={`first-${idx}`}
+              fontSize='26px'
+              color='gray1'
+              lineHeight={1}
+              fontWeight={400}
+              flexShrink={0}
+              opacity={0.8}
+            >
               {item}
             </Text>
-          );
-        })}
+          ))}
+
+          {/* Second set for seamless loop */}
+          {keywords.map((item, idx) => (
+            <Text
+              key={`second-${idx}`}
+              fontSize='26px'
+              color='gray1'
+              lineHeight={1}
+              fontWeight={400}
+              flexShrink={0}
+              opacity={0.8}
+            >
+              {item}
+            </Text>
+          ))}
+
+          {/* Third set to ensure seamless loop */}
+          {keywords.map((item, idx) => (
+            <Text
+              key={`third-${idx}`}
+              fontSize='26px'
+              color='white'
+              lineHeight={1}
+              fontWeight={400}
+              flexShrink={0}
+              opacity={0.8}
+            >
+              {item}
+            </Text>
+          ))}
+        </motion.div>
       </Box>
     </Box>
   );

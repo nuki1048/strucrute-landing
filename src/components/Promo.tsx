@@ -1,9 +1,10 @@
-import { Box, Container, Image, Span, Text } from "@chakra-ui/react";
-import Sphere from "../assets/sphere.png";
+import { Box, Container, Text, Span } from "@chakra-ui/react";
+import SphereScene from "./SphereScene";
 
 export const Promo = () => {
   return (
     <Box
+      id='hero'
       position='relative'
       display='flex'
       justifyContent={{
@@ -16,20 +17,34 @@ export const Promo = () => {
       h='700px'
       paddingX='92px'
     >
-      <Image
-        src={Sphere}
-        alt='Sphere'
-        w='660px'
-        h='740px'
-        p='0'
-        style={{
-          position: "absolute",
-          top: "-4%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 1,
-        }}
-      />
+      {/* Dynamic Sphere Component - Full Width Background */}
+      <Box
+        position='absolute'
+        top='-20%'
+        left='-10%'
+        right='-10%'
+        bottom='-10%'
+        w='120vw'
+        h='2000px'
+        zIndex={1}
+        overflow='visible'
+      >
+        <SphereScene
+          scrollStartSelector='#hero'
+          scrollEndSelector='#section-2'
+          minScale={0.95}
+          maxScale={1.35}
+          startTopPadding={200}
+          endYOffset={-600}
+          layers={120}
+          sphereWidth={660}
+          sphereHeight={740}
+          layerSpeedJitter={7}
+          layerPhaseJitter={10}
+          spinSpeed={0.1}
+        />
+      </Box>
+
       <Container
         position='relative'
         w='100%'
@@ -42,7 +57,7 @@ export const Promo = () => {
         }}
         paddingX='0'
         marginX='0'
-        zIndex={2}
+        zIndex={5}
         display='flex'
         flexDirection='column'
         alignItems='flex-end'
