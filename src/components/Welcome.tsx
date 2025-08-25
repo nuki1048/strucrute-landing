@@ -15,20 +15,6 @@ export const Welcome = () => {
       h='1300px'
       paddingX='92px'
     >
-      {/* <Image
-        src={Sphere}
-        alt='Sphere'
-        w='1200px'
-        h='1300px'
-        p='0'
-        style={{
-          position: "absolute",
-          top: "0%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 1,
-        }}
-      /> */}
       <Container
         position='relative'
         w='100%'

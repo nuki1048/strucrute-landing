@@ -6,7 +6,7 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 /* ---------------- Utils ---------------- */
 const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-const easeOutExpo = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+// const easeOutExpo = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
 
 /* ---------------- Scroll helpers ---------------- */
 function useScrollProgressBetween(selectStart: string, selectEnd: string) {
