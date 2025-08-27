@@ -3,26 +3,33 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
-/* ---------------- Utils ---------------- */
+/* ---------------- utils ---------------- */
 const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-// const easeOutExpo = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
 
-/* ---------------- Scroll helpers ---------------- */
-function useScrollProgressBetween(selectStart: string, selectEnd: string) {
-  const [progress, setProgress] = React.useState(0);
+/* ---------------- scroll (with overscroll) ---------------- */
+function useScrollBetweenWithOverscroll(
+  selectStart: string,
+  selectEnd: string
+) {
+  const [state, setState] = React.useState({ clamped: 0, raw: 0, overPx: 0 });
+
   React.useEffect(() => {
-    const startEl = document.querySelector(selectStart) as HTMLElement | null;
-    const endEl = document.querySelector(selectEnd) as HTMLElement | null;
-    if (!startEl || !endEl) return;
+    const a = document.querySelector(selectStart) as HTMLElement | null;
+    const b = document.querySelector(selectEnd) as HTMLElement | null;
+    if (!a || !b) return;
 
     const onScroll = () => {
-      const startTop = startEl.getBoundingClientRect().top + window.scrollY;
-      const endTop = endEl.getBoundingClientRect().top + window.scrollY;
+      const startTop = a.getBoundingClientRect().top + window.scrollY;
+      const endTop = b.getBoundingClientRect().top + window.scrollY;
       const span = Math.max(1, endTop - startTop);
       const y = window.scrollY;
-      setProgress(clamp01((y - startTop) / span));
+      const raw = (y - startTop) / span;
+      const clamped = clamp01(raw);
+      const overPx = Math.max(0, y - endTop);
+      setState({ clamped, raw, overPx });
     };
+
     onScroll();
     const opts: AddEventListenerOptions = { passive: true };
     window.addEventListener("scroll", onScroll, opts);
@@ -33,109 +40,17 @@ function useScrollProgressBetween(selectStart: string, selectEnd: string) {
     };
   }, [selectStart, selectEnd]);
 
-  return progress;
+  return state;
 }
 
-/* ---------------- Optional core glow (оставил выключенным) ---------------- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// function CoreOrb({
-//   color = "#6860FF",
-//   radius = 80,
-//   position = [0, 0, 0],
-//   speedMul = 1.0,
-//   phase0 = 0.0,
-//   glowStrength = 1.0,
-//   glowSharpness = 3.0,
-//   pulseStrength = 0.2,
-//   startupRampSec = 1.2,
-//   startupDelaySec = 0.0,
-// }: {
-//   color?: string;
-//   radius?: number;
-//   position?: [number, number, number];
-//   speedMul?: number;
-//   phase0?: number;
-//   glowStrength?: number;
-//   glowSharpness?: number;
-//   pulseStrength?: number;
-//   startupRampSec?: number;
-//   startupDelaySec?: number;
-// }) {
-//   const matRef = React.useRef<THREE.ShaderMaterial>(null!);
-//   const startRef = React.useRef(0);
-//   const uniforms = React.useMemo(
-//     () => ({
-//       uColor: { value: new THREE.Color(color) },
-//       uTime: { value: 0 },
-//       uSpeedMul: { value: speedMul },
-//       uPhase0: { value: phase0 },
-//       uGlowStrength: { value: glowStrength },
-//       uGlowSharpness: { value: glowSharpness },
-//       uPulseStrength: { value: pulseStrength },
-//       uRamp: { value: 0 },
-//       uDelay: { value: startupDelaySec },
-//       uRampDur: { value: Math.max(0.001, startupRampSec) },
-//     }),
-//     [
-//       color,
-//       speedMul,
-//       phase0,
-//       glowStrength,
-//       glowSharpness,
-//       pulseStrength,
-//       startupDelaySec,
-//       startupRampSec,
-//     ]
-//   );
-//   const vertex = `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `;
-//   const fragment = `
-//     precision highp float;
-//     varying vec2 vUv;
-//     uniform float uTime;
-//     uniform vec3  uColor;
-//     uniform float uSpeedMul, uPhase0, uGlowStrength, uGlowSharpness, uPulseStrength, uRamp;
-//     void main(){
-//       vec2 p = vUv*2.0-1.0;
-//       float d = length(p);
-//       float wave = sin(uTime*uSpeedMul+uPhase0);
-//       float pulse = 1.0 + wave*uPulseStrength;
-//       float edge = pow(smoothstep(1.0, 0.0, d), uGlowSharpness);
-//       float a = edge * pulse * uGlowStrength * uRamp;
-//       gl_FragColor = vec4(uColor*a, a);
-//     }`;
-//   useFrame(({ clock }) => {
-//     const t = clock.getElapsedTime();
-//     if (!matRef.current) return;
-//     matRef.current.uniforms.uTime.value = t;
-//     const elapsed = t - (startRef.current || (startRef.current = t));
-//     const tAfterDelay = Math.max(0, elapsed - uniforms.uDelay.value);
-//     const raw = Math.min(1, tAfterDelay / uniforms.uRampDur.value);
-//     matRef.current.uniforms.uRamp.value = easeOutExpo(raw);
-//   });
-//   return (
-//     <mesh position={position}>
-//       <planeGeometry args={[radius, radius]} />
-//       <shaderMaterial
-//         ref={matRef}
-//         vertexShader={vertex}
-//         fragmentShader={fragment}
-//         uniforms={uniforms}
-//         transparent
-//         depthWrite={false}
-//         blending={THREE.AdditiveBlending}
-//       />
-//     </mesh>
-//   );
-// }
-
-/* ---------------- Public props ---------------- */
+/* ---------------- types ---------------- */
 export type NeonSphereProps = {
   className?: string;
   style?: React.CSSProperties;
   color?: string;
   layers?: number;
-  sphereWidth?: number;
-  sphereHeight?: number;
+  sphereWidth?: number; // base design size (px)
+  sphereHeight?: number; // base design size (px)
   pulsePeriodSec?: number;
   layerPhaseCycles?: number;
   layerSpeedJitter?: number;
@@ -148,21 +63,20 @@ export type NeonSphereProps = {
   minScale?: number;
   maxScale?: number;
 
-  startTopPadding?: number;
+  startTopPadding?: number; // <-- we keep this respected always
   endYOffset?: number;
 
-  /** start fading out near the end of the scroll range (0..1), default 0.85 */
   fadeOutFromProgress?: number;
-  /** when fade < this, set group.visible=false to skip draws, default 0.02 */
   hideBelowAlpha?: number;
+  fadeTailPx?: number;
 };
 
-/* ---------------- Scene ---------------- */
+/* ---------------- scene ---------------- */
 function NeonLooperScene({
   color = "#6860FF",
   layers = 80,
-  sphereWidth = 400,
-  sphereHeight = 400,
+  sphereWidth = 660,
+  sphereHeight = 740,
   pulsePeriodSec = 6,
   layerPhaseCycles = 1.0,
   layerSpeedJitter = 0.15,
@@ -177,13 +91,14 @@ function NeonLooperScene({
   startTopPadding = 24,
   endYOffset = 0,
 
-  fadeOutFromProgress = 0.85,
+  fadeOutFromProgress,
   hideBelowAlpha = 0.02,
+  fadeTailPx = 600,
 }: NeonSphereProps) {
   const { gl, size, camera } = useThree();
   const rootRef = React.useRef<THREE.Group>(null!);
 
-  /** Один общий geometry, никаких пересозданий */
+  /* geometry */
   const unitCircle = React.useMemo(() => {
     const SEG = 64;
     const pts: THREE.Vector3[] = [];
@@ -194,37 +109,37 @@ function NeonLooperScene({
     return new THREE.BufferGeometry().setFromPoints(pts);
   }, []);
 
-  /** Материалы оставляем индивидуальными ради анимации opacity */
-  const makeMaterial = React.useCallback(() => {
-    const m = new THREE.LineBasicMaterial({
-      color,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    return m;
-  }, [color]);
+  /* material */
+  const makeMaterial = React.useCallback(
+    () =>
+      new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      }),
+    [color]
+  );
 
-  /** Предвычисленные параметры слоёв */
-  const layersData = React.useRef<
-    {
-      line: THREE.Line;
-      baseOpacity: number;
-      baseScaleX: number;
-      baseScaleY: number;
-      t: number;
-      phaseAcross: number;
-      phase0: number;
-      speedMul: number;
-    }[]
-  >([]);
+  /* layer state */
+  type L = {
+    line: THREE.Line;
+    baseOpacity: number;
+    baseScaleX: number;
+    baseScaleY: number;
+    t: number;
+    phaseAcross: number;
+    phase0: number;
+    speedMul: number;
+  };
+  const layersData = React.useRef<L[]>([]);
 
-  const progress = useScrollProgressBetween(
+  const { clamped: progress, overPx } = useScrollBetweenWithOverscroll(
     scrollStartSelector,
     scrollEndSelector
   );
 
-  /* Настройки GL + камера */
+  /* GL + camera */
   React.useEffect(() => {
     gl.setClearColor(0x0b0b0d, 1);
     gl.info.autoReset = false;
@@ -243,13 +158,12 @@ function NeonLooperScene({
     rootRef.current?.position.set(size.width / 2, size.height / 2, 0);
   }, [camera, size]);
 
-  /* Хеш без аллокаций */
   const hash = React.useCallback((x: number) => {
     const s = Math.sin(x * 127.1) * 43758.5453;
     return s - Math.floor(s);
   }, []);
 
-  /* ----- Ленивая инициализация линий партиями ----- */
+  /* build rings (batched) */
   React.useEffect(() => {
     const root = rootRef.current;
     for (const it of layersData.current) {
@@ -262,7 +176,6 @@ function NeonLooperScene({
     const rotAmp = THREE.MathUtils.degToRad(25);
     const W = -4,
       H = 1;
-
     const BATCH = 20;
     let created = 0;
 
@@ -281,14 +194,10 @@ function NeonLooperScene({
         const line = new THREE.Line(unitCircle, mat);
         line.rotation.z = Math.sin(t * Math.PI) * rotAmp;
         line.scale.set(rx, ry, 1);
-        line.matrixAutoUpdate = true;
         line.frustumCulled = false;
         root.add(line);
 
         const r = hash(i + 13.37);
-        const speedMul = 1 + (r * 2 - 1) * layerSpeedJitter;
-        const phase0 = (r * 2 - 1) * layerPhaseJitter;
-
         layersData.current.push({
           line,
           baseOpacity: (mat as THREE.LineBasicMaterial).opacity,
@@ -296,21 +205,17 @@ function NeonLooperScene({
           baseScaleY: ry,
           t,
           phaseAcross: 2 * Math.PI * layerPhaseCycles * t,
-          phase0,
-          speedMul,
+          phase0: (r * 2 - 1) * layerPhaseJitter,
+          speedMul: 1 + (r * 2 - 1) * layerSpeedJitter,
         });
       }
       created = end;
       if (created < layers) {
-        if ("requestIdleCallback" in window) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (window as any).requestIdleCallback(createBatch);
-        } else {
-          requestAnimationFrame(createBatch);
-        }
+        "requestIdleCallback" in window
+          ? (window as any).requestIdleCallback(createBatch)
+          : requestAnimationFrame(createBatch);
       }
     };
-
     createBatch();
   }, [
     layers,
@@ -324,62 +229,95 @@ function NeonLooperScene({
     unitCircle,
   ]);
 
-  /* ---- Анимация ---- */
+  /* ---------- RESPONSIVE FIT: worst-case envelope ---------- */
+  const viewportPadding = 32; // bump to 40–56 if bloom hits edges
+
+  // Circle radius that bounds ALL rings at ANY rotation + pulsing.
+  const computeEnvelopeRadius = React.useCallback(() => {
+    // widest ring near i=0 because W = -4
+    const rx0 = Math.max(80, sphereWidth) * 0.5;
+    // tallest ring at i=layers-1 because H = 1
+    const hLast = Math.max(80, sphereHeight + 1 * Math.max(0, layers - 1));
+    const ryLast = hLast * 0.5;
+
+    let R = Math.max(rx0, ryLast);
+    if (scalePulseAmt > 0) R *= 1 + scalePulseAmt; // include per-ring pulsing
+    return R; // world units (ortho == pixels)
+  }, [sphereWidth, sphereHeight, layers, scalePulseAmt]);
+
+  // Per-frame cap so sphere always fits viewport (never upscale beyond base)
+  const fitCap = React.useCallback(
+    (vw: number, vh: number) => {
+      const R = computeEnvelopeRadius();
+      const availW = Math.max(1, vw - viewportPadding * 2);
+      const availH = Math.max(1, vh - viewportPadding * 2);
+      const cap = Math.min(availW / (2 * R), availH / (2 * R));
+      return Math.min(1, cap);
+    },
+    [computeEnvelopeRadius]
+  );
+
+  /* animate */
   const startRef = React.useRef<number>(performance.now());
   useFrame(() => {
     const time = (performance.now() - startRef.current) / 1000;
     const omega = (2 * Math.PI) / pulsePeriodSec;
     const root = rootRef.current;
 
-    // Eased scroll progress (0..1)
+    // fades
     const p = easeOutCubic(progress);
+    let fadeMul = 1;
+    if (typeof fadeOutFromProgress === "number") {
+      const fadeRange = Math.max(1e-4, 1 - clamp01(fadeOutFromProgress));
+      const preEndMul = easeOutCubic(clamp01((1 - p) / fadeRange));
+      fadeMul *= preEndMul;
+    }
+    if (overPx > 0) {
+      const postMul =
+        1 - easeOutCubic(clamp01(overPx / Math.max(1, fadeTailPx)));
+      fadeMul *= postMul;
+    }
 
-    // Global fade multiplier: 1 → 0 over the tail from fadeOutFromProgress..1
-    const fadeRange = Math.max(1e-4, 1 - clamp01(fadeOutFromProgress));
-    const fadeMul = easeOutCubic(
-      clamp01((1 - p) / fadeRange) // p<=start => ~1, p=1 => 0
-    );
-
-    // Per-layer pulsing/opacity/scale
-    const arr = layersData.current;
-    for (let i = 0; i < arr.length; i++) {
-      const L = arr[i];
+    // per-layer anim
+    for (let i = 0; i < layersData.current.length; i++) {
+      const L = layersData.current[i];
       const phase = omega * time * L.speedMul + L.phaseAcross + L.phase0;
       const wave = 0.5 + 0.5 * Math.sin(phase);
-
       const mat = L.line.material as THREE.LineBasicMaterial;
       mat.opacity = L.baseOpacity * (0.75 + 0.25 * wave) * fadeMul;
 
       if (scalePulseAmt > 0) {
-        const s = 1 + (wave - 0.5) * 2 * scalePulseAmt;
-        L.line.scale.set(L.baseScaleX * s, L.baseScaleY * s, 1);
+        const sWave = 1 + (wave - 0.5) * 2 * scalePulseAmt;
+        L.line.scale.set(L.baseScaleX * sWave, L.baseScaleY * sWave, 1);
       }
     }
 
-    // Hide the whole group when essentially invisible (skip draw calls)
     root.visible = fadeMul > hideBelowAlpha;
 
-    // Global rotation
+    // spin
     root.rotation.z = time * spinSpeed;
 
-    // Scroll-driven position/scale
-    const startY = size.height - sphereHeight * 0.5 - startTopPadding;
-    const endY = size.height * 0.5 + endYOffset;
-    const y = THREE.MathUtils.lerp(startY, endY, p);
-    const s = THREE.MathUtils.lerp(minScale, maxScale, p);
+    // ---- final transform ----
+    // cap scroll-driven scale by the fit so the sphere always fits,
+    // but ALWAYS compute Y using startTopPadding/endYOffset so it starts higher.
+    const scrollScale = THREE.MathUtils.lerp(minScale, maxScale, p);
+    const cap = fitCap(size.width, size.height);
+    const finalScale = Math.min(scrollScale, cap);
 
-    root.scale.set(s, s, 1);
+    const y = THREE.MathUtils.lerp(
+      size.height - sphereHeight * 0.5 - startTopPadding,
+      size.height * 0.5 + endYOffset,
+      p
+    );
+
+    root.scale.set(finalScale, finalScale, 1);
     root.position.set(size.width / 2, y, 0);
   });
 
-  return (
-    <group ref={rootRef}>
-      {/* Optionally enable soft "core" glows and they'll also honor fadeMul if you wire it in */}
-      {/* <CoreOrb radius={600} position={[50, 0, 0]} glowStrength={2} glowSharpness={4.0} pulseStrength={0.17} /> */}
-    </group>
-  );
+  return <group ref={rootRef} />;
 }
 
+/* ---------------- wrapper ---------------- */
 export default function NeonLooperR3F(props: NeonSphereProps) {
   return (
     <div
@@ -388,10 +326,7 @@ export default function NeonLooperR3F(props: NeonSphereProps) {
     >
       <Canvas
         orthographic
-        gl={{
-          antialias: true,
-          powerPreference: "high-performance",
-        }}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
         dpr={1}
         style={{ display: "block" }}
       >

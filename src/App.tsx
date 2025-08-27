@@ -13,7 +13,12 @@ import { Footer } from "./components/Footer";
 
 function App() {
   return (
-    <Box bg='background' w='100%' paddingY='15px' overflow='hidden'>
+    <Box
+      bg='background'
+      w='100%'
+      paddingY={{ base: "28px", md: "15px" }}
+      overflow='hidden'
+    >
       <Header />
       <Promo />
       <Welcome />

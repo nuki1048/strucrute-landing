@@ -22,7 +22,7 @@ export const Info = () => {
         hoverText='допомагає компанії виділитися, бути впізнаваною та викликати правильні емоції в аудиторії'
         hoverTextAlign='left'
         hoverTextTop='30%'
-        hoverTextRight={isMoreThan1440 ? "-30%" : "-15%"}
+        hoverTextRight={isMoreThan1440 ? "-30%" : "-20ц%"}
       >
         <Text
           fontSize={{ base: "60px", md: "80px", lg: "100px", xl: "120px" }}

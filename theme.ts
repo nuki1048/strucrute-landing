@@ -20,23 +20,20 @@ const config = defineConfig({
       },
       fonts: {
         body: {
-          value: "Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif",
+          value: "Inter, 'Helvetica Neue', Helvetica, sans-serif",
         },
         heading: {
-          value: "Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif",
+          value: "Inter, 'Helvetica Neue', Helvetica, sans-serif",
         },
         mono: {
           value:
             "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace",
         },
-        secondary: {
-          value: "Arial, 'Helvetica Neue', Helvetica, Inter, sans-serif",
-        },
-        alternative: {
-          value: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
-        },
-        ppMori: { value: "'PP Mori', Inter, Arial, sans-serif" },
-        elegant: { value: "'PP Mori', Arial, sans-serif" },
+
+        ppMori: { value: "'PP Mori', Inter, sans-serif" },
+        elegant: { value: "'PP Mori', sans-serif" },
+        notoSerif: { value: "'Noto Serif', serif" },
+        inter: { value: "Inter, 'Helvetica Neue', Helvetica, sans-serif" },
       },
       sizes: {
         "9xl": { value: "1448px" },
