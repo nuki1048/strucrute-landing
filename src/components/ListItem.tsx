@@ -19,10 +19,20 @@ export const ListItem = ({
       justifyContent='flex-start'
       w='100%'
     >
-      <Text fontSize='50px' color='gray1' lineHeight={1} fontWeight={300}>
+      <Text
+        fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
+        color='gray1'
+        lineHeight={1}
+        fontWeight={300}
+      >
         {number}
       </Text>
-      <Text fontSize='30px' color='white' lineHeight={1} fontWeight={500}>
+      <Text
+        fontSize='clamp(1.125rem, 0.8688rem + 0.9317vw, 1.875rem)'
+        color='white'
+        lineHeight={1}
+        fontWeight={500}
+      >
         {title}
       </Text>
     </Box>

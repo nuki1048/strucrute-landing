@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Text } from "@chakra-ui/react";
+import { Box, Container, Grid, Text, useMediaQuery } from "@chakra-ui/react";
 import { ListItem } from "./ListItem";
 import { motion } from "framer-motion";
 
@@ -24,6 +24,7 @@ const keywords = [
 ];
 
 export const About = () => {
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   return (
     <Box
       position='relative'
@@ -32,7 +33,7 @@ export const About = () => {
       alignItems='center'
       paddingY='20px'
       w='100%'
-      h='630px'
+      h={{ base: "100%", md: "630px" }}
       marginTop='104px'
     >
       <Container
@@ -61,11 +62,19 @@ export const About = () => {
           Ми рухаємося швидко та впевнено. Ви можете довірити нам:
         </Text>
         <Grid
+          width='100%'
+          height='100%'
           marginTop='30px'
-          maxW='1200px'
+          maxW={{
+            base: "550px",
+            md: "1200px",
+          }}
           marginX='auto'
-          gridTemplateColumns='repeat(2, 1fr)'
-          gridTemplateRows='repeat(3, 1fr)'
+          gridTemplateColumns={{
+            base: "1fr",
+            md: "repeat(2, 1fr)",
+          }}
+          gridTemplateRows={{ base: "repeat(6, 1fr)", md: "repeat(3, 1fr)" }}
           columnGap='90px'
           rowGap='10px'
           justifyItems='center'
@@ -80,7 +89,7 @@ export const About = () => {
 
       {/* Animated Keywords Section */}
       <Box
-        marginTop='90px'
+        marginTop={{ base: "30px", md: "90px" }}
         width='100%'
         height='40px'
         position='relative'
@@ -89,7 +98,7 @@ export const About = () => {
         <motion.div
           style={{
             display: "flex",
-            gap: "60px",
+            gap: isMobile ? "30px" : "60px",
             whiteSpace: "nowrap",
             position: "absolute",
             top: 0,
@@ -110,7 +119,7 @@ export const About = () => {
           {keywords.map((item, idx) => (
             <Text
               key={`first-${idx}`}
-              fontSize='26px'
+              fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
               color='gray1'
               lineHeight={1}
               fontWeight={400}
@@ -125,7 +134,7 @@ export const About = () => {
           {keywords.map((item, idx) => (
             <Text
               key={`second-${idx}`}
-              fontSize='26px'
+              fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
               color='gray1'
               lineHeight={1}
               fontWeight={400}
@@ -140,7 +149,7 @@ export const About = () => {
           {keywords.map((item, idx) => (
             <Text
               key={`third-${idx}`}
-              fontSize='26px'
+              fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
               color='white'
               lineHeight={1}
               fontWeight={400}

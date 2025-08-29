@@ -23,7 +23,6 @@ export const Promo = () => {
         xl: "92px",
       }}
     >
-      {/* Dynamic Sphere Component - Full Width Background */}
       <Box
         position='absolute'
         top={{ base: "-26%", md: "-20%" }}
@@ -58,7 +57,7 @@ export const Promo = () => {
           scrollEndSelector='#section-2-end'
           minScale={isMobile ? 0.45 : 0.8}
           maxScale={isMobile ? 1.2 : 5}
-          startTopPadding={isMobile ? 200 : 100}
+          startTopPadding={isMobile ? 100 : 100}
           clampToViewport={false}
           endYOffset={isMobile ? -400 : -150}
           layers={120}
@@ -92,7 +91,7 @@ export const Promo = () => {
           alignSelf='flex-start'
           justifySelf='center'
           marginTop={{
-            base: "65px",
+            base: "0",
             md: "45px",
             lg: "150px",
             xl: "120px",
@@ -159,7 +158,7 @@ export const Promo = () => {
             [WEB and mobile DEVELOPMENT]
           </Text>
         </Box>
-        <Box marginTop={{ base: "193px", md: "60px" }} alignSelf='flex-start'>
+        <Box marginTop={{ base: "150px", md: "60px" }} alignSelf='flex-start'>
           <Text
             color='text'
             fontSize='clamp(2rem, 1.6882rem + 1.3304vw, 3.125rem)'
