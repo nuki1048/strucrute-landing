@@ -10,8 +10,11 @@ import { Cards } from "./components/Cards";
 import { Works } from "./components/Works";
 import { AnyScreen } from "./components/AnyScreen";
 import { Footer } from "./components/Footer";
+import { useLenisSmoothScroll } from "./hooks/useLenisSmoothScroll";
 
 function App() {
+  useLenisSmoothScroll();
+
   return (
     <Box
       bg='background'

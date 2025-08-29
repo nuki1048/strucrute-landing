@@ -14,7 +14,7 @@ export const Welcome = () => {
       }}
       paddingY='20px'
       w='100%'
-      h='1300px'
+      h={{ base: "100%", md: "1300px" }}
       paddingX={{
         base: "15px",
         md: "15px",
@@ -39,7 +39,12 @@ export const Welcome = () => {
         flexDirection='column'
         alignItems='flex-end'
       >
-        <Box w='100%' borderRadius='10px' paddingTop='22%' paddingLeft='4%'>
+        <Box
+          w='100%'
+          borderRadius='10px'
+          paddingTop={{ base: "18%", md: "22%" }}
+          paddingLeft={{ base: "0", md: "4%" }}
+        >
           <Text
             fontSize='clamp(3.125rem, 2.2589rem + 3.6955vw, 6.25rem)'
             textTransform='uppercase'
@@ -58,24 +63,29 @@ export const Welcome = () => {
             lg: "950px",
             xl: "950px",
           }}
-          paddingTop='150px'
+          paddingTop={{ base: "95px", md: "150px" }}
           display='flex'
           flexDirection='column'
         >
           <Text
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1'
             fontWeight={300}
           >
             Ми -
-            <Text as='span' fontStyle='italic' fontFamily='notoSerif'>
+            <Text
+              as='span'
+              fontStyle='italic'
+              fontFamily='notoSerif'
+              letterSpacing={{ base: "1.1px", md: "initial" }}
+            >
               STRUCTURE AGENCY
             </Text>
           </Text>
           <Text
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1'
@@ -83,7 +93,7 @@ export const Welcome = () => {
             Cтудія дизайну та розробки
           </Text>
           <Text
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1.2'
@@ -92,7 +102,7 @@ export const Welcome = () => {
             цифрових продуктів
           </Text>
           <Text
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1.3'
@@ -102,7 +112,7 @@ export const Welcome = () => {
             {isMobile ? "Та структури, які формують майбутнє" : ""}
           </Text>
           <Text
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1'
@@ -113,7 +123,7 @@ export const Welcome = () => {
           </Text>
           <Text
             id='section-2-end'
-            fontSize='clamp(1.25rem, 0.7303rem + 2.2173vw, 3.125rem)'
+            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
             textTransform='uppercase'
             color='white'
             lineHeight='1'

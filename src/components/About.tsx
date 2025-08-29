@@ -50,9 +50,14 @@ export const About = () => {
         display='flex'
         flexDirection='column'
         alignItems='flex-end'
-        paddingX='92px'
+        paddingX={{ base: "60px", md: "92px" }}
       >
-        <Text fontSize='42px' color='white' lineHeight={1} fontWeight={300}>
+        <Text
+          fontSize='clamp(1.125rem, 0.5485rem + 2.0963vw, 2.8125rem)'
+          color='white'
+          lineHeight={1}
+          fontWeight={300}
+        >
           Ми рухаємося швидко та впевнено. Ви можете довірити нам:
         </Text>
         <Grid
