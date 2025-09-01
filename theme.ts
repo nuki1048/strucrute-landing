@@ -17,6 +17,9 @@ const config = defineConfig({
         blue1: { value: "#1C2955" },
         purple1: { value: "#6860FF" },
         brown1: { value: "#B57434" },
+        white1: { value: "#D9D9D9" },
+        white: { value: "#FFFFFF" },
+        pink1: { value: "#BD5CFF" },
       },
       fonts: {
         body: {

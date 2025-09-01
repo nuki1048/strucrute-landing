@@ -1,0 +1,65 @@
+import { Badge, Box, Text, useToken, type BoxProps } from "@chakra-ui/react";
+import { ArrowDown } from "../ArrowDown";
+
+export const Card = ({
+  title,
+  description,
+  bg,
+  color,
+  badgeText,
+  ...props
+}: BoxProps & {
+  title: string;
+  description: string;
+  color: string;
+  badgeText: string;
+}) => {
+  const token = useToken("colors", color);
+  return (
+    <Box
+      width='100%'
+      borderRadius='30px'
+      bg={bg}
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      paddingX='50px'
+      paddingY={{ base: "30px", md: "50px" }}
+      gap='20px'
+      {...props}
+    >
+      <Badge
+        marginRight='auto'
+        variant='outline'
+        color={color}
+        borderRadius='20px'
+        fontSize='clamp(0.875rem, 0.7469rem + 0.4658vw, 1.25rem)'
+        border={`1px solid ${token}`}
+        paddingY='5px'
+        paddingX='10px'
+        size='lg'
+      >
+        {badgeText}
+      </Badge>
+      <Text
+        fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
+        fontWeight='400'
+        color={color}
+        textAlign='center'
+        lineHeight={1.2}
+      >
+        {title}
+      </Text>
+      <ArrowDown fill={color} />
+      <Text
+        fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
+        fontWeight='400'
+        color={color}
+        textAlign='right'
+        lineHeight={1.2}
+      >
+        {description}
+      </Text>
+    </Box>
+  );
+};
