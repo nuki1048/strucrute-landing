@@ -29,7 +29,6 @@ export const FormFloating = () => {
         width: isMobile ? "305px" : "385px",
         height: "60px",
         padding: "5px",
-        backgroundColor: "rgba(31 31 31 0.4)",
         backdropFilter: "blur(10px)",
         borderRadius: "20px",
         alignItems: "center",
@@ -37,6 +36,7 @@ export const FormFloating = () => {
         display: isEndOfPage ? "none" : "flex",
         flexDirection: isExpanded ? "column" : "row",
         overflow: "hidden",
+        background: "rgba(0,0,0,0.3)",
       }}
     >
       {!isExpanded ? (
