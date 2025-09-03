@@ -162,9 +162,9 @@ export const Promo = () => {
         </Box>
         <Box marginTop={{ base: "150px", md: "60px" }} alignSelf='flex-start'>
           <BrightTextRichLines
-            text={`Ми створємо <i>{цифрові продукти}</i>, які<br>допомогають брендам зростати`}
+            text={`Ми створюємо <i>{цифрові продукти}</i>, які<br>допомогають брендам зростати`}
             fontSize='clamp(2rem, 1.6882rem + 1.3304vw, 3.125rem)'
-            fontWeight='400'
+            fontWeight='300'
             color='whiteAlpha.900' // wrapper color (lines override via animated style)
             dimColor='rgba(0,0,0,0)' // starts fully transparent
             glow='0 0 22px rgba(255,255,255,.22)'
