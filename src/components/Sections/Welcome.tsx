@@ -1,8 +1,13 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, useMediaQuery } from "@chakra-ui/react";
 import { ScrollRevealText } from "../AnimatedTextReveal/ScrollRevealText";
 import BrightTextRichLinesScroll from "../AnimatedTextReveal/ScrollRevealByLinesText";
 
 export const Welcome = () => {
+  const isMobile = useMediaQuery(["(max-width: 768px)"]);
+  const text = `<i>Structure Agency</i> - cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують ${
+    isMobile ? "" : "<br>"
+  }майбутнє ${isMobile ? "<br>" : ""} вашого бізнесу`;
+
   return (
     <Box
       position='relative'
@@ -71,7 +76,7 @@ export const Welcome = () => {
           flexDirection='column'
         >
           <BrightTextRichLinesScroll
-            text='<i>Structure Agency</i> - Cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують <br> майбутнє вашого бізнесу'
+            text={text}
             fontSize='clamp(1.25rem, 0.7162rem + 1.941vw, 2.8125rem)'
             color='white'
             lineHeight='1'
