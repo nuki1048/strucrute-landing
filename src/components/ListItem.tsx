@@ -23,7 +23,8 @@ export const ListItem = ({
         fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
         color='gray1'
         lineHeight={1}
-        fontWeight={300}
+        fontWeight={400}
+        fontFamily='ppMori'
       >
         {number}
       </Text>
@@ -31,7 +32,7 @@ export const ListItem = ({
         fontSize='clamp(1.125rem, 0.8688rem + 0.9317vw, 1.875rem)'
         color='white'
         lineHeight={1}
-        fontWeight={500}
+        fontWeight={400}
       >
         {title}
       </Text>

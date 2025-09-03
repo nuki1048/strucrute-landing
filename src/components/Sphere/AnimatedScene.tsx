@@ -18,7 +18,7 @@ export default memo(function SphereScene({
     if (layers < layersCount) {
       const id = setInterval(() => {
         setLayers((l) => l + 1); // use functional update (because we're fancy like that)
-      }, 25); // 10ms intervals - we're not playing around here!
+      }, 10); // 10ms intervals - we're not playing around here!
       return () => clearInterval(id); // Cleanup like a responsible adult
     }
   }, [layers, layersCount]);

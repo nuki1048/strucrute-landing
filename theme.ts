@@ -23,20 +23,20 @@ const config = defineConfig({
       },
       fonts: {
         body: {
-          value: "Inter, 'Helvetica Neue', Helvetica, sans-serif",
+          value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif",
         },
         heading: {
-          value: "Inter, 'Helvetica Neue', Helvetica, sans-serif",
+          value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif",
         },
         mono: {
           value:
             "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace",
         },
 
-        ppMori: { value: "'PP Mori', Inter, sans-serif" },
+        ppMori: { value: "'PP Mori', Raleway, sans-serif" },
         elegant: { value: "'PP Mori', sans-serif" },
         notoSerif: { value: "'Noto Serif', serif" },
-        inter: { value: "Inter, 'Helvetica Neue', Helvetica, sans-serif" },
+        raleway: { value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif" },
       },
       sizes: {
         "9xl": { value: "1448px" },

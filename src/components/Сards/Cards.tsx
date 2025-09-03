@@ -18,7 +18,7 @@ export const Cards: React.FC = () => {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 92%", "end 72%"],
+    offset: ["start 99%", "end 72%"],
   });
 
   const delayed = useTransform(scrollYProgress, [0, 0.28, 1], [0, 0, 1]);
@@ -28,7 +28,8 @@ export const Cards: React.FC = () => {
   const revealGap = useBreakpointValue({ base: 80, md: 96, lg: 110 }) ?? 96;
   const stackBase = useBreakpointValue({ base: 110, md: 130, lg: 150 }) ?? 130;
 
-  const p1 = segment(delayed, 0.0, 0.34);
+  const p1 = segment(scrollYProgress, 0.0, 0.6);
+
   const p2 = segment(delayed, 0.38, 0.66);
   const p3 = segment(delayed, 0.7, 0.88);
 
@@ -58,13 +59,18 @@ export const Cards: React.FC = () => {
     >
       <Box
         position='sticky'
-        top={{ base: "10vh", md: "12vh" }}
-        h='100vh'
+        top={{ base: "6vh", md: "6vh" }} // was 10/12vh → raise the stage
+        h={{ base: "110vh", md: "110vh" }}
         display='flex'
         alignItems='center'
         justifyContent='center'
       >
-        <Box position='relative' w='full' h='full' maxW='min(1200px, 94vw)'>
+        <Box
+          position='relative'
+          w='full'
+          minH={{ base: "750px", md: "700px" }}
+          maxW='min(1200px, 94vw)'
+        >
           <MotionBox
             position='absolute'
             inset='0'

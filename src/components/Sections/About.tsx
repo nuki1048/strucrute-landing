@@ -75,8 +75,8 @@ const gridVariants = {
     opacity: 1,
     transition: {
       duration: 0.6,
-      staggerChildren: 0.2,
-      delayChildren: 0.4,
+      staggerChildren: 0, // Disable stagger - let individual items control their timing
+      delayChildren: 0.4, // Keep this for desktop
       width: "100%",
     },
   },
@@ -90,30 +90,49 @@ const gridVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    x: -20,
-    scale: 0.9,
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: easeOut,
-    },
-  },
-  exit: {
-    opacity: 0,
-    x: 20,
-    scale: 0.9,
-    transition: {
-      duration: 0.3,
-      ease: easeOut,
-    },
-  },
+// Custom item variants for line-by-line animation
+const createItemVariants = (index: number, isMobile: boolean) => {
+  if (isMobile) {
+    // Mobile: simple sequential animation (01, 02, 03, 04, 05, 06)
+    return {
+      hidden: {
+        opacity: 0,
+        x: -20,
+        scale: 0.9,
+      },
+      visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+          duration: 0.5,
+          ease: easeOut,
+          delay: 0.4 + index * 0.1, // Base delay + sequential delay
+        },
+      },
+    };
+  } else {
+    // Desktop: line-by-line animation (01&04, 02&05, 03&06)
+    // Items 0,3 are line 0; items 1,4 are line 1; items 2,5 are line 2
+    const lineIndex = index < 3 ? index : index - 3;
+    return {
+      hidden: {
+        opacity: 0,
+        x: -20,
+        scale: 0.9,
+      },
+      visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+          duration: 0.5,
+          ease: easeOut,
+          delay: lineIndex * 0.2, // Delay based on line, not individual item
+        },
+      },
+    };
+  }
 };
 
 const keywordsVariants = {
@@ -147,8 +166,9 @@ export const About = () => {
         paddingY='20px'
         w='100%'
         h={{ base: "100%", md: "630px" }}
-        marginTop='104px'
+        marginTop='150px'
         overflow='hidden'
+        paddingX={{ base: "60px", md: "100px" }}
       >
         <Container
           position='relative'
@@ -160,19 +180,20 @@ export const About = () => {
             lg: "100%",
             xl: "9xl",
           }}
+          p='0'
           marginX='0'
           zIndex={2}
           display='flex'
           flexDirection='column'
           alignItems='flex-end'
-          paddingX={{ base: "60px", md: "92px" }}
         >
-          <motion.div variants={textVariants}>
+          <motion.div variants={textVariants} style={{ width: "100%" }}>
             <Text
               fontSize='clamp(1.125rem, 0.5485rem + 2.0963vw, 2.8125rem)'
               color='white'
               lineHeight={1}
-              fontWeight={300}
+              fontWeight={500}
+              textAlign='center'
             >
               Ми рухаємося швидко та впевнено. Ви можете довірити нам:
             </Text>
@@ -182,6 +203,8 @@ export const About = () => {
             variants={gridVariants}
             style={{
               width: "100%",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             <Grid
@@ -192,7 +215,7 @@ export const About = () => {
                 base: "550px",
                 md: "1200px",
               }}
-              marginX='auto'
+              justifyItems='stretch'
               gridTemplateColumns={{
                 base: "1fr",
                 md: "repeat(2, 1fr)",
@@ -203,7 +226,6 @@ export const About = () => {
               }}
               columnGap='90px'
               rowGap='10px'
-              justifyItems='stretch'
               alignItems='center'
               gridAutoFlow='column'
             >
@@ -211,7 +233,7 @@ export const About = () => {
                 return (
                   <motion.div
                     key={idx}
-                    variants={itemVariants}
+                    variants={createItemVariants(idx, isMobile)}
                     whileHover={{
                       scale: 1.05,
                       transition: { duration: 0.2 },

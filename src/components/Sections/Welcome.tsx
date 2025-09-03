@@ -14,7 +14,7 @@ export const Welcome = () => {
       }}
       paddingY='20px'
       w='100%'
-      h={{ base: "100%", md: "1300px" }}
+      h={{ base: "100%", md: "1100px" }}
       paddingX={{
         base: "15px",
         md: "15px",
@@ -63,26 +63,25 @@ export const Welcome = () => {
           maxW={{
             base: "320px",
             md: "320px",
-            lg: "950px",
-            xl: "950px",
+            lg: "850px",
+            xl: "850px",
           }}
           paddingTop={{ base: "95px", md: "150px" }}
           display='flex'
           flexDirection='column'
         >
           <BrightTextRichLinesScroll
-            text='Ми <i>- STRUCTURE AGENCY</i> <br> Cтудія дизайну та розробки <br> Ми прагнемо створювати досвід <br> Та структури, які формують майбутнє вашого бізнесу'
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
+            text='<i>Structure Agency</i> - Cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують <br> майбутнє вашого бізнесу'
+            fontSize='clamp(1.25rem, 0.7162rem + 1.941vw, 2.8125rem)'
             color='white'
             lineHeight='1'
             dimColor='rgba(255,255,255,0)'
             glow='0 0 18px rgba(255,255,255,.18)'
             italicFontFamily='notoSerif'
             hideUntilStart={true}
+            fontWeight={300}
             strictHideMode='unmount'
             snapMode='enter' // ← snaps to fully bright once visible
-            enterEpsilon={0.001}
             id='section-2-end'
           />
           {/* <Text

@@ -1,5 +1,6 @@
-import { Grid, Text, useMediaQuery } from "@chakra-ui/react";
+import { Grid, useMediaQuery } from "@chakra-ui/react";
 import { BoxGrid } from "../BoxGrid";
+import { RevealText } from "../AnimatedTextReveal/ScrollText";
 
 export const Info = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
@@ -7,10 +8,11 @@ export const Info = () => {
     <Grid
       paddingX={{ base: "20px", md: "65px" }}
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
-      gridTemplateRows={{ base: "repeat(5,110px)", md: "repeat(5,250px)" }}
+      gridTemplateRows={{ base: "repeat(5,100px)", md: "repeat(5,250px)" }}
+      gridAutoRows='auto'
       w='100%'
+      marginTop={{ base: "100px", md: "0" }}
       h={{ base: "100%", md: "980px" }}
-      marginTop='120px'
       gap={{ base: "10px", md: "4" }}
     >
       <BoxGrid
@@ -25,8 +27,23 @@ export const Info = () => {
         hoverTextRight={{ base: "-25%", sm: "-30%", md: "-40%", xl: "-30%" }}
         maxWHoverText={{ base: "200px", md: "250px", lg: "380px" }}
         hoverTextPadding={{ base: "0", md: "3" }}
+        width='max-content'
       >
-        <Text
+        <RevealText
+          text={"<c>Візуальна</c><br>ідентичність"}
+          mode='letter' // or "word"
+          direction='up' // "up" | "down" | "left" | "right"
+          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
+          color='white'
+          textTransform='uppercase'
+          lineHeight={1.1}
+          stagger={0.08}
+          duration={0.7}
+          delay={0.1}
+          amount={0.35}
+          colorText='primary'
+        />
+        {/* <Text
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           textTransform='uppercase'
           color='primary'
@@ -41,7 +58,7 @@ export const Info = () => {
           lineHeight={0.5}
         >
           ідентичність
-        </Text>
+        </Text> */}
       </BoxGrid>
       <BoxGrid
         gridColumn={{ base: "1 / 2", sm: "2 / 3", md: "2 / 3" }}
@@ -50,7 +67,7 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-end'
         justifySelf='flex-end'
-        marginTop='110px'
+        marginTop={{ base: "230px", md: "110px" }}
         hoverText='створення сайтів та веб-додатків: від простих лендингів до складних сервісів'
         hoverTextAlign='right'
         hoverTextTop={{ base: "30px", sm: "40px", md: "45%" }}
@@ -61,10 +78,27 @@ export const Info = () => {
           lg: "20%",
           xl: "-5%",
         }}
+        alignSelf={{ base: "center", md: "initial" }}
         maxWHoverText={{ base: "260px", md: "200px", xl: "380px" }}
         hoverTextPadding={{ base: "0", md: "3" }}
+        width='max-content'
       >
-        <Text
+        <RevealText
+          text={"Web<br>розробка"}
+          mode='letter' // or "word"
+          direction='up' // "up" | "down" | "left" | "right"
+          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
+          color='white'
+          textAlign='right'
+          textTransform='uppercase'
+          lineHeight={1.1}
+          stagger={0.08}
+          duration={0.7}
+          delay={0.1}
+          amount={0.35}
+          trigger='inView'
+        />
+        {/* <Text
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           textTransform='uppercase'
           color='white'
@@ -82,10 +116,10 @@ export const Info = () => {
           lineHeight={0.7}
         >
           розробка
-        </Text>
+        </Text> */}
       </BoxGrid>
       <BoxGrid
-        justifyContent={{ base: "flex-end", md: "initial" }}
+        justifyContent={{ base: "center", md: "initial" }}
         gridColumn='1 / 3'
         gridRow={{ base: "3/4", md: "2 / 3" }}
         display='flex'
@@ -94,13 +128,31 @@ export const Info = () => {
         marginTop={{ base: "0", xl: "110px" }}
         hoverText='хороший UI/UX робить взаємодію простою та приємною'
         hoverTextAlign='left'
+        height='fit-content'
         hoverTextRight={{ base: "-100%", sm: "-80%", md: "-60%", xl: "-55%" }}
         hoverTextPadding={{ base: "0", md: "3" }}
         maxWHoverText={{ base: "180px", md: "300px", xl: "380px" }}
         hoverTextTop={{ base: "initial", md: "20%", xl: "50%" }}
         hoverTextBottom={{ base: "-10%", md: "initial" }}
+        width='max-content'
       >
-        <Text
+        <RevealText
+          text={"<i>Ui/Ux</i> дизайн"}
+          mode='letter' // or "word"
+          direction='up' // "up" | "down" | "left" | "right"
+          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
+          color='white'
+          textTransform='uppercase'
+          lineHeight={1.1}
+          stagger={0.08}
+          duration={0.7}
+          delay={0.1}
+          amount={0.35}
+          trigger='inView'
+          textAlign='left'
+          italicFontFamily='notoSerif'
+        />
+        {/* <Text
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           textTransform='uppercase'
           color='white'
@@ -118,7 +170,7 @@ export const Info = () => {
           </Text>{" "}
           {isMobile && <br />}
           дизайн
-        </Text>
+        </Text> */}
       </BoxGrid>
       <BoxGrid
         gridColumn='1 /3'
@@ -139,8 +191,25 @@ export const Info = () => {
         hoverTextTop={{ base: "initial", xl: "40%" }}
         maxWHoverText={{ base: "200px", md: "250px", xl: "380px" }}
         justifySelf='flex-end'
+        width='max-content'
       >
-        <Text
+        <RevealText
+          text={"<c>E-</c>commerce<br>рішення"}
+          mode='letter' // or "word"
+          direction='up' // "up" | "down" | "left" | "right"
+          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
+          color='white'
+          textTransform='uppercase'
+          lineHeight={1.1}
+          stagger={0.08}
+          duration={0.7}
+          delay={0.1}
+          amount={0.35}
+          trigger='inView'
+          textAlign='right'
+          colorText='primary'
+        />
+        {/* <Text
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           textTransform='uppercase'
           color='white'
@@ -168,7 +237,7 @@ export const Info = () => {
           textAlign='right'
         >
           Рішення
-        </Text>
+        </Text> */}
       </BoxGrid>
       <BoxGrid
         gridColumn='1 / 2'
@@ -181,6 +250,7 @@ export const Info = () => {
         maxWHoverText='250px'
         hoverText='робить продукт більш сучасним, залучаючим та зрозумілим для користувача'
         hoverTextAlign='left'
+        width='max-content'
         hoverTextRight={{
           base: "-15%",
           sm: "0%",
@@ -196,22 +266,23 @@ export const Info = () => {
         }}
         hoverTextTop='none'
       >
-        <Text
+        <RevealText
+          text={"Інтерактивний<br><c>дизайн</c>"}
+          mode='letter' // or "word"
+          direction='up' // "up" | "down" | "left" | "right"
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
           color='white'
-          lineHeight={1.5}
-        >
-          Інтерактивний
-        </Text>
-        <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           textTransform='uppercase'
-          color='white'
-          lineHeight={0.5}
-        >
-          Дизайн
-        </Text>
+          lineHeight={1.1}
+          stagger={0.08}
+          duration={0.7}
+          delay={0.1}
+          amount={0.35}
+          trigger='inView'
+          textAlign='left'
+          width='max-content'
+          colorText='primary'
+        />
       </BoxGrid>
     </Grid>
   );

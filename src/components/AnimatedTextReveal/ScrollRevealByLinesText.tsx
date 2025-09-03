@@ -132,7 +132,7 @@ export default function BrightTextRichLinesScroll({
   hideUntilStart = true,
   strictHideMode = "css",
   snapMode = "none",
-  enterEpsilon = 0.04,
+  enterEpsilon = 0.001,
   ...textProps
 }: Props) {
   const [dimTok, brightTok] = useToken("colors", [dimColor, brightColor]);
