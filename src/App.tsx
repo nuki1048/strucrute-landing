@@ -24,13 +24,45 @@ function App() {
     <Box bg='background' w='100%' paddingY={{ base: "28px", md: "15px" }}>
       <Global
         styles={`
-  html, body { overscroll-behavior-x: none; overflow-x: clip; -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */ }
-  #root { overflow-x: clip;  
- 
+  html, body { 
+    overscroll-behavior-x: none; 
+    overflow-x: clip; 
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */ 
+    /* Mobile smooth scroll improvements */
+    -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+    overscroll-behavior-y: none; /* Prevent bounce on mobile */
   }
-  .bt-no-prepaint { visibility: hidden !important; opacity: 0 !important; }
-
+  
+  /* Lenis smooth scroll styles */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+  
+  #root { 
+    overflow-x: clip;  
+  }
+  
+  .bt-no-prepaint { 
+    visibility: hidden !important; 
+    opacity: 0 !important; 
+  }
 `}
       />
       <Header />

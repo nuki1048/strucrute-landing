@@ -1,10 +1,10 @@
-import { Box, Container } from "@chakra-ui/react";
-// import SphereScene from "../Sphere/AnimatedScene";
+import { Box, Container, useMediaQuery } from "@chakra-ui/react";
+import SphereScene from "../Sphere/AnimatedScene";
 import BrightTextRichLines from "../AnimatedTextReveal/AnimatedTextByLines";
 import BrightTextRich from "../AnimatedTextReveal/AnimatedText";
 
 export const Promo = () => {
-  // const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   return (
     <Box
       id='hero'
@@ -53,7 +53,7 @@ export const Promo = () => {
           maskRepeat: "no-repeat",
         }}
       >
-        {/* <SphereScene
+        <SphereScene
           scrollStartSelector='#hero'
           scrollEndSelector='#section-2-end'
           minScale={isMobile ? 0.45 : 0.8}
@@ -68,7 +68,7 @@ export const Promo = () => {
           layerPhaseJitter={10}
           spinSpeed={0.1}
           fadeOutFromProgress={50}
-        /> */}
+        />
       </Box>
 
       <Container
