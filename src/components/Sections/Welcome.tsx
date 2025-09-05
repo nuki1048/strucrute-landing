@@ -60,6 +60,7 @@ export const Welcome = () => {
             }}
             dimColor='rgba(255,255,255,0)'
             text='Вітаємо'
+            offset={["start 85%", "end 40%"]}
           />
         </Box>
         <Box
@@ -88,71 +89,9 @@ export const Welcome = () => {
             strictHideMode='unmount'
             snapMode='enter' // ← snaps to fully bright once visible
             id='section-2-end'
+            offset={["start 85%", "end 60%"]}
+            // offset={["start 50%", "end 50%"]}
           />
-          {/* <Text
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1'
-            fontWeight={300}
-          >
-            Ми -
-            <Text
-              as='span'
-              fontStyle='italic'
-              fontFamily='notoSerif'
-              letterSpacing={{ base: "1.1px", md: "initial" }}
-            >
-              STRUCTURE AGENCY
-            </Text>
-          </Text>
-          <Text
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1'
-          >
-            Cтудія дизайну та розробки
-          </Text>
-          <Text
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1.2'
-            fontWeight={300}
-          >
-            цифрових продуктів
-          </Text>
-          <Text
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1.3'
-            fontWeight={300}
-          >
-            Ми прагнемо створювати {isMobile ? <br /> : " "} досвід{" "}
-            {isMobile ? "Та структури, які формують майбутнє" : ""}
-          </Text>
-          <Text
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1'
-            fontWeight={300}
-            display={isMobile ? "none" : "block"}
-          >
-            Та структури, які формують
-          </Text>
-          <Text
-            id='section-2-end'
-            fontSize='clamp(1.25rem, 0.6095rem + 2.3292vw, 3.125rem)'
-            textTransform='uppercase'
-            color='white'
-            lineHeight='1'
-            fontWeight={300}
-          >
-            {isMobile ? "" : "майбутнє"} вашого бізнесу
-          </Text> */}
         </Box>
       </Container>
     </Box>

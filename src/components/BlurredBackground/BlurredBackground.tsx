@@ -1,7 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import image from "../../assets/cloud-image.png";
+
 export const BlurredBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +68,40 @@ export const BlurredBackground = () => {
           </Text>
         </motion.div>
       </Box>
+
+      <motion.div
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "15%",
+          transform: "translateY(-50%)",
+          zIndex: 3,
+        }}
+        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeOut",
+          rotate: {
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          },
+        }}
+      >
+        <Image
+          src={image}
+          alt='Billboard Mockup'
+          maxW={{ base: "300px", md: "400px", lg: "500px" }}
+          maxH={{ base: "200px", md: "300px", lg: "400px" }}
+          objectFit='contain'
+          boxShadow='0 20px 40px rgba(0,0,0,0.3)'
+        />
+      </motion.div>
     </Box>
   );
 };

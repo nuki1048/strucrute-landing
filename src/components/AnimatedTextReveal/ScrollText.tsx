@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // RevealText.tsx
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as React from "react";
 import { chakra, useToken, type HTMLChakraProps } from "@chakra-ui/react";
 import {
@@ -9,17 +10,26 @@ import {
   useScroll,
   useTransform,
   type MotionValue,
+  isValidMotionProp,
 } from "framer-motion";
 
 /* ---------- Motion-enabled Chakra wrappers ---------- */
-const MotionSpan = chakra(motion.span);
-const MotionDiv = chakra(motion.div);
+const MotionSpan = chakra(motion.span, {
+  shouldForwardProp: (p) => isValidMotionProp(p) || typeof p === "string",
+});
+const MotionDiv = chakra(motion.div, {
+  shouldForwardProp: (p) => isValidMotionProp(p) || typeof p === "string",
+});
 
 /* ---------- Types ---------- */
 type Token = {
   type: "text" | "br";
-  html: string;
-  // custom <c> support (from previous step)
+  html: string; // escaped text (&nbsp; for spaces when needed)
+  // styling flags (drive styles inline; do NOT rely on <i>/<b> tags)
+  italic?: boolean;
+  bold?: boolean;
+
+  // <c> support
   mark?: boolean;
   markId?: string;
   markIndex?: number;
@@ -43,21 +53,25 @@ export type RevealTextProps = HTMLChakraProps<"div"> & {
   trigger?: "inView" | "scroll";
   offset?: [string, string];
 
-  /** Color specific <c>…</c> segments */
+  /** Color a specific <c>…</c> (by id string or 1-based index). If omitted → color all <c>. */
   id?: string | number;
   colorText?: string;
 
-  /** NEW: font for <i>/<em> segments */
+  /** Optional font family used for italic tokens */
   italicFontFamily?: string;
 };
 
-/* ---------- Tokenizer (preserves <br>, <i>/<b>/<em>/<strong>, and <c>) ---------- */
+/* ---------- Tokenizer (preserves <br> and <c>; converts <i>/<b> to flags) ---------- */
+function escapeHTML(s: string) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
   const withBreaks = html.replace(/<br\s*\/?>/gi, "\n");
   const container = document.createElement("div");
   container.innerHTML = withBreaks;
 
-  const base: Token[] = [];
+  const base: Array<Omit<Token, "type"> & { type: "text" | "br" }> = [];
   let cOrder = 0;
 
   const walk = (
@@ -67,23 +81,18 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
     if (node.nodeType === Node.TEXT_NODE) {
       const raw = node.nodeValue || "";
       const parts = raw.split("\n");
-      const pushText = (text: string) => {
-        let inner = text
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-        if (active.i) inner = `<i>${inner}</i>`;
-        if (active.b) inner = `<b>${inner}</b>`;
-        base.push({
-          type: "text",
-          html: inner,
-          mark: active.c || undefined,
-          markId: active.c ? active.cId : undefined,
-          markIndex: active.c ? active.cIdx : undefined,
-        });
-      };
       parts.forEach((p, i) => {
-        if (p.length) pushText(p);
+        if (p.length) {
+          base.push({
+            type: "text",
+            html: escapeHTML(p),
+            italic: active.i || undefined,
+            bold: active.b || undefined,
+            mark: active.c || undefined,
+            markId: active.c ? active.cId : undefined,
+            markIndex: active.c ? active.cIdx : undefined,
+          });
+        }
         if (i < parts.length - 1) base.push({ type: "br", html: "" });
       });
       return;
@@ -112,29 +121,32 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
     walk(c, { i: false, b: false, c: false });
 
   if (mode === "line") {
+    // Collapse into single token per line, keep only color mark (mixed italics per-line not supported)
     const out: Token[] = [];
-    let bufHtml: string[] = [];
+    let buf: string[] = [];
     let bufMark = false;
     let bufMarkId: string | undefined;
     let bufMarkIdx: number | undefined;
+
     const flush = () => {
-      if (!bufHtml.length) return;
+      if (!buf.length) return;
       out.push({
         type: "text",
-        html: bufHtml.join(" "),
+        html: buf.join(" "),
         mark: bufMark || undefined,
         markId: bufMarkId,
         markIndex: bufMarkIdx,
       });
-      bufHtml = [];
+      buf = [];
       bufMark = false;
       bufMarkId = undefined;
       bufMarkIdx = undefined;
     };
+
     base.forEach((t) => {
       if (t.type === "br") flush();
       else {
-        bufHtml.push(t.html);
+        buf.push(t.html);
         if (t.mark) {
           bufMark = true;
           bufMarkId ??= t.markId;
@@ -150,20 +162,16 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
     const out: Token[] = [];
     base.forEach((t) => {
       if (t.type === "br") {
-        out.push(t);
+        out.push({ type: "br", html: "" });
         return;
       }
-      const hasI = /<i>/.test(t.html);
-      const hasB = /<b>/.test(t.html);
-      const plain = t.html.replace(/<\/?(i|b)>/g, "");
-      plain.split(/\s+/).forEach((w) => {
+      t.html.split(/\s+/).forEach((w) => {
         if (!w) return;
-        let h = w;
-        if (hasI) h = `<i>${h}</i>`;
-        if (hasB) h = `<b>${h}</b>`;
         out.push({
           type: "text",
-          html: h,
+          html: w, // no tags; just the word
+          italic: t.italic,
+          bold: t.bold,
           mark: t.mark,
           markId: t.markId,
           markIndex: t.markIndex,
@@ -177,20 +185,17 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
   const out: Token[] = [];
   base.forEach((t) => {
     if (t.type === "br") {
-      out.push(t);
+      out.push({ type: "br", html: "" });
       return;
     }
-    const hasI = /<i>/.test(t.html);
-    const hasB = /<b>/.test(t.html);
-    const plain = t.html.replace(/<\/?(i|b)>/g, "");
+    const plain = t.html; // already escaped
     for (let i = 0; i < plain.length; i++) {
       const ch = plain[i];
-      let h = ch === " " ? "&nbsp;" : ch;
-      if (hasI) h = `<i>${h}</i>`;
-      if (hasB) h = `<b>${h}</b>`;
       out.push({
         type: "text",
-        html: h,
+        html: ch === " " ? "&nbsp;" : ch,
+        italic: t.italic,
+        bold: t.bold,
         mark: t.mark,
         markId: t.markId,
         markIndex: t.markIndex,
@@ -240,26 +245,31 @@ export const RevealText: React.FC<RevealTextProps> = ({
   offset = ["start 0.9", "end 0.1"],
   colorText,
   id,
-  italicFontFamily, // <-- NEW
+  italicFontFamily,
   className,
   ...chakraProps
 }) => {
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const inView = useInView(rootRef, { amount, once });
-  const newTextColor = useToken("colors", colorText ?? "");
+
   const [tokens, setTokens] = React.useState<Token[]>([]);
   React.useEffect(() => {
     setTokens(tokenizeHtml(text, mode));
   }, [text, mode]);
 
+  const [resolvedColor] = useToken("colors", [colorText ?? ""]);
+  const colorResolved = resolvedColor || colorText || undefined;
+
+  const [italicTok] = useToken("fonts", [italicFontFamily ?? ""]);
+  const italicResolved = italicTok || italicFontFamily;
+
   const axis = direction === "left" || direction === "right" ? "x" : "y";
   const from = direction === "up" || direction === "left" ? 20 : -20;
 
-  // @ts-ignore
   const { scrollYProgress } = useScroll({ target: rootRef, offset });
 
   const shouldColor = (t: Token) => {
-    if (!t.mark || !colorText) return false;
+    if (!t.mark || !colorResolved) return false;
     if (id == null) return true;
     if (typeof id === "number") return t.markIndex === id;
     const idStr = String(id);
@@ -275,14 +285,6 @@ export const RevealText: React.FC<RevealTextProps> = ({
       display='inline-block'
       whiteSpace='pre-wrap'
       suppressHydrationWarning
-      // Apply italic font to <i>/<em> inside this component
-      // @ts-ignore
-      sx={{
-        "& i, & em": {
-          fontStyle: "italic",
-          ...(italicFontFamily ? { fontFamily: italicFontFamily } : {}),
-        },
-      }}
       {...chakraProps}
       initial='hidden'
       animate={trigger === "inView" ? (inView ? "show" : "hidden") : undefined}
@@ -302,8 +304,14 @@ export const RevealText: React.FC<RevealTextProps> = ({
 
         const inner = (
           <span
-            // @ts-ignore
-            style={shouldColor(seg) ? { color: newTextColor } : undefined}
+            style={{
+              ...(shouldColor(seg) ? { color: colorResolved } : null),
+              ...(seg.italic ? { fontStyle: "italic" } : null),
+              ...(seg.italic && italicResolved
+                ? { fontFamily: italicResolved }
+                : null),
+              ...(seg.bold ? { fontWeight: 700 } : null),
+            }}
             dangerouslySetInnerHTML={{ __html: seg.html }}
           />
         );
@@ -319,9 +327,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
                 display='inline-block'
                 aria-hidden='true'
                 variants={{
-                  // @ts-ignore
                   hidden: { opacity: 0, [axis]: from },
-                  // @ts-ignore
                   show: {
                     opacity: 1,
                     [axis]: 0,

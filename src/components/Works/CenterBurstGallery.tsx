@@ -1,6 +1,5 @@
-// CenterBurstGallery.tsx
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, chakra, useMediaQuery } from "@chakra-ui/react";
 import { useScroll, useTransform } from "framer-motion";
 import { useSizeRef } from "../../hooks/useSizeRef";
 import type { WorkItem } from "../../types/types";
@@ -14,6 +13,9 @@ import {
 } from "../../constants";
 import { lerp, seeded } from "../../utils/animationUtils";
 import { BurstCard } from "./BurstCard";
+import { motion } from "framer-motion";
+
+const MotionText = chakra(motion.h2);
 
 export function CenterBurstGallery({
   items,
@@ -22,6 +24,7 @@ export function CenterBurstGallery({
   items: WorkItem[];
   title?: string;
 }) {
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const safe = React.useMemo(
     () => (Array.isArray(items) ? items : []),
     [items]
@@ -37,11 +40,39 @@ export function CenterBurstGallery({
     offset: ["start start", "end end"],
   });
 
+  const TITLE_PORTION = 0.4;
+  const titleStart = 0.0;
+  const titleMid = TITLE_PORTION * 0.55;
+  const titleEnd = TITLE_PORTION;
+
+  const titleScale = useTransform(
+    scrollYProgress,
+    [titleStart, titleMid, titleEnd],
+    isMobile ? [1, 1.5, 2.5] : [0.65, 1.0, 2.5]
+  );
+
+  const titleOpacity = useTransform(
+    scrollYProgress,
+    [titleStart, titleMid, titleEnd],
+    [0, 1, 0]
+  );
+
+  const titleY = useTransform(
+    scrollYProgress,
+    [titleStart, titleEnd],
+    [20, -10]
+  );
+
   const introGate = useTransform(
     scrollYProgress,
-    [0, 0.03, 0.08, 1],
+    [0, titleEnd, titleEnd + 0.02, 1],
     [0, 0, 1, 1]
   );
+
+  const cardsProgress = useTransform(scrollYProgress, (v) => {
+    const t = Math.max(0, v - titleEnd) / Math.max(1e-5, 1 - titleEnd);
+    return Math.min(1, t);
+  });
 
   const sectionHeight = Math.max(
     1400,
@@ -49,7 +80,7 @@ export function CenterBurstGallery({
   );
 
   const usableSpan = Math.max(0.0001, 1 - HOLD_FRAC);
-  const step = N > 1 ? usableSpan / (N - 1) : usableSpan; // distance between card starts
+  const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
   const heroStart = usableSpan + (HOLD_FRAC * (1 - HERO_PORTION)) / 2;
@@ -60,10 +91,10 @@ export function CenterBurstGallery({
     const cy = (vp.h || 1) / 2;
 
     const corners = [
-      { x: -1, y: -1 }, // TL
-      { x: 1, y: -1 }, // TR
-      { x: -1, y: 1 }, // BL
-      { x: 1, y: 1 }, // BR
+      { x: -1, y: -1 },
+      { x: 1, y: -1 },
+      { x: -1, y: 1 },
+      { x: 1, y: 1 },
     ];
 
     return safe.map((it, i) => {
@@ -85,6 +116,7 @@ export function CenterBurstGallery({
       const c = corners[i % corners.length];
       const jx = lerp(-0.25, 0.25, r);
       const jy = lerp(-0.25, 0.25, seeded(i + 11));
+
       const offX = (vp.w || 1200) * (1.25 + 0.35 * seeded(i + 2)) * (c.x + jx);
       const offY = (vp.h || 800) * (1.25 + 0.35 * seeded(i + 3)) * (c.y + jy);
 
@@ -106,7 +138,7 @@ export function CenterBurstGallery({
   ]);
 
   return (
-    <Box as='section' id='projects'>
+    <Box as='section'>
       <Box ref={pinRef} position='relative' h={`${sectionHeight}px`}>
         <Flex
           ref={vpRef}
@@ -119,18 +151,19 @@ export function CenterBurstGallery({
           bg='#09090A'
           color='white'
         >
-          <Text
+          <MotionText
             position='absolute'
-            zIndex={1}
+            zIndex={3}
             pointerEvents='none'
             textAlign='center'
-            fontSize={{ base: "4xl", md: "8xl" }}
-            fontWeight={700}
-            letterSpacing='wide'
-            opacity={0.9}
+            fontWeight={800}
+            letterSpacing='widest'
+            style={{ scale: titleScale, opacity: titleOpacity, y: titleY }}
+            fontSize={{ base: "3xl", md: "7xl" }}
+            id='projects'
           >
             {title}
-          </Text>
+          </MotionText>
 
           {cards.map((c) => (
             <BurstCard
@@ -145,7 +178,7 @@ export function CenterBurstGallery({
               start={c.start}
               end={c.end}
               isHero={c.isHero}
-              scrollYProgress={scrollYProgress}
+              scrollYProgress={cardsProgress}
               introGate={introGate}
             />
           ))}

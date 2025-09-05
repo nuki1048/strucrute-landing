@@ -2,10 +2,17 @@ import { Link } from "@chakra-ui/react";
 import { LanguageSwitcher } from "../LanguageSwitcher";
 
 export const HeaderLinks = () => {
+  const scrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <Link
-        href='#welcome'
+        onClick={() => scrollTo("welcome")}
         fontSize='18px'
         color='text'
         transition='all 0.1s ease'
@@ -17,7 +24,7 @@ export const HeaderLinks = () => {
         Про нас
       </Link>
       <Link
-        href='#projects'
+        onClick={() => scrollTo("projects")}
         fontSize='18px'
         color='text'
         transition='all 0.1s ease'
@@ -29,7 +36,7 @@ export const HeaderLinks = () => {
         Проекти
       </Link>
       <Link
-        href='#footer'
+        onClick={() => scrollTo("footer")}
         fontSize='18px'
         color='text'
         transition='all 0.1s ease'

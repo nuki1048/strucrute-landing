@@ -15,6 +15,7 @@ import {
 } from "./components/Sections";
 import { FormFloating } from "./components/FormFloating/FormFloating";
 import { Cards } from "./components/Сards/Cards";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 function App() {
   useLenisSmoothScroll();
@@ -43,6 +44,7 @@ function App() {
       <AnyScreen />
       <FormFloating />
       <Footer />
+      <ScrollToTop />
     </Box>
   );
 }

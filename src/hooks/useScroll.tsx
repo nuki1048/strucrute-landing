@@ -7,8 +7,6 @@ const useScroll = () => {
       Math.ceil(window.innerHeight + window.scrollY) >=
       document.documentElement.scrollHeight;
 
-    console.log(window.innerHeight, document.documentElement.scrollHeight);
-
     if (bottom) {
       setIsEndOfPage(true);
     } else {

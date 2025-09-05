@@ -25,13 +25,23 @@ export const BoxGrid = ({
   hoverTextAlign?: ResponsiveValue<"left" | "right">;
   maxWHoverText?: ResponsiveValue<string | number>;
   hoverTextPadding?: ResponsiveValue<string | number>;
-  ref?: React.RefObject<HTMLDivElement> | null;
+  ref?: React.RefObject<HTMLDivElement | null>;
 }) => {
   return (
     <Box
       ref={ref}
       position='relative'
       cursor='pointer'
+      _active={{
+        "& > *": {
+          filter: "blur(20px)",
+          transition: "filter 0.3s ease",
+        },
+        "&::after": {
+          opacity: 1,
+          visibility: "visible",
+        },
+      }}
       _hover={{
         "& > *": {
           filter: "blur(20px)",

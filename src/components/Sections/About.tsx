@@ -1,6 +1,12 @@
 import { Box, Container, Grid, Text, useMediaQuery } from "@chakra-ui/react";
 import { ListItem } from "../ListItem";
 import { motion, easeOut } from "framer-motion";
+import { Marquee } from "./Marquee";
+import {
+  containerVariants,
+  gridVariants,
+  textVariants,
+} from "../../animations/about";
 
 const listItems = [
   "UI/UX-дизайн та розробку",
@@ -23,74 +29,6 @@ const keywords = [
   "Support",
 ];
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      staggerChildren: 0.2,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.4,
-      staggerChildren: 0.1,
-      staggerDirection: -1,
-    },
-  },
-};
-
-const textVariants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    filter: "blur(10px)",
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.8,
-      ease: easeOut,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: -30,
-    filter: "blur(10px)",
-    transition: {
-      duration: 0.4,
-      ease: easeOut,
-    },
-  },
-};
-
-const gridVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      staggerChildren: 0, // Disable stagger - let individual items control their timing
-      delayChildren: 0.4, // Keep this for desktop
-      width: "100%",
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.4,
-      staggerChildren: 0.1,
-      staggerDirection: -1,
-    },
-  },
-};
-
-// Custom item variants for line-by-line animation
 const createItemVariants = (index: number, isMobile: boolean) => {
   if (isMobile) {
     // Mobile: simple sequential animation (01, 02, 03, 04, 05, 06)
@@ -155,7 +93,7 @@ export const About = () => {
       initial='hidden'
       whileInView='visible'
       exit='exit'
-      viewport={{ amount: 0.3 }}
+      viewport={{ amount: 0.7 }}
       variants={containerVariants}
     >
       <Box
@@ -250,107 +188,20 @@ export const About = () => {
         {/* Animated Keywords Section */}
         <motion.div variants={keywordsVariants}>
           <Box
-            marginTop={{ base: "30px", md: "90px" }}
-            width='100%'
-            height='40px'
+            mt={{ base: "30px", md: "90px" }}
+            w='100%'
+            h='40px'
             position='relative'
+            overflow='hidden' // important: mask the overflow
             display='flex'
-            justifyContent='center'
             alignItems='center'
             bg='transparent'
           >
-            <motion.div
-              style={{
-                display: "flex",
-                gap: isMobile ? "30px" : "60px",
-                whiteSpace: "nowrap",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                height: "100%",
-                alignItems: "center",
-              }}
-              animate={{
-                x: [-1200, 0], // This creates right-to-left movement
-              }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              {/* First set of keywords */}
-              {keywords.map((item, idx) => (
-                <motion.div
-                  key={`first-${idx}`}
-                  whileHover={{
-                    scale: 1.1,
-                    color: "#ffffff",
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <Text
-                    fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
-                    color='gray1'
-                    lineHeight={1}
-                    fontWeight={400}
-                    flexShrink={0}
-                    opacity={0.8}
-                    cursor='pointer'
-                  >
-                    {item}
-                  </Text>
-                </motion.div>
-              ))}
-
-              {/* Second set for seamless loop */}
-              {keywords.map((item, idx) => (
-                <motion.div
-                  key={`second-${idx}`}
-                  whileHover={{
-                    scale: 1.1,
-                    color: "#ffffff",
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <Text
-                    fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
-                    color='gray1'
-                    lineHeight={1}
-                    fontWeight={400}
-                    flexShrink={0}
-                    opacity={0.8}
-                    cursor='pointer'
-                  >
-                    {item}
-                  </Text>
-                </motion.div>
-              ))}
-
-              {/* Third set to ensure seamless loop */}
-              {keywords.map((item, idx) => (
-                <motion.div
-                  key={`third-${idx}`}
-                  whileHover={{
-                    scale: 1.1,
-                    color: "#ffffff",
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <Text
-                    fontSize='clamp(0.875rem, 0.5761rem + 1.087vw, 1.75rem)'
-                    color='white'
-                    lineHeight={1}
-                    fontWeight={400}
-                    flexShrink={0}
-                    opacity={0.8}
-                    cursor='pointer'
-                  >
-                    {item}
-                  </Text>
-                </motion.div>
-              ))}
-            </motion.div>
+            <Marquee
+              items={keywords}
+              gapPx={isMobile ? 30 : 60}
+              speedPxPerSec={80}
+            />
           </Box>
         </motion.div>
       </Box>

@@ -1,4 +1,3 @@
-// Cards.tsx
 import * as React from "react";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
@@ -18,20 +17,24 @@ export const Cards: React.FC = () => {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 99%", "end 72%"],
+    offset: ["start 85%", "end 70%"],
   });
 
-  const delayed = useTransform(scrollYProgress, [0, 0.28, 1], [0, 0, 1]);
+  const HOLD_TAIL = 0.3;
+  const animProgress = useTransform(
+    scrollYProgress,
+    [0, 1 - HOLD_TAIL, 1],
+    [0, 1, 1]
+  );
 
-  const listGap = useBreakpointValue({ base: 700, md: 800, lg: 900 }) ?? 800;
-
+  const listGap = useBreakpointValue({ base: 680, md: 760, lg: 840 }) ?? 760;
   const revealGap = useBreakpointValue({ base: 80, md: 96, lg: 110 }) ?? 96;
-  const stackBase = useBreakpointValue({ base: 110, md: 130, lg: 150 }) ?? 130;
+  const stackBase = useBreakpointValue({ base: 120, md: 135, lg: 150 }) ?? 135;
 
-  const p1 = segment(scrollYProgress, 0.0, 0.6);
-
-  const p2 = segment(delayed, 0.38, 0.66);
-  const p3 = segment(delayed, 0.7, 0.88);
+  const overlap = 0.06;
+  const p1 = segment(animProgress, 0.0, 0.33 + overlap);
+  const p2 = segment(animProgress, 0.33 - overlap, 0.66 + overlap);
+  const p3 = segment(animProgress, 0.66 - overlap, 1.0);
 
   const SPR = { stiffness: 175, damping: 18 };
 
@@ -40,10 +43,8 @@ export const Cards: React.FC = () => {
   const y2_start = listGap * 2;
 
   const y0_end = stackBase - revealGap * 2;
-  const y1_end = stackBase - revealGap * 1;
-  const y2_end = stackBase - 0;
-
-  const x2 = 0;
+  const y1_end = stackBase - revealGap;
+  const y2_end = stackBase;
 
   const yCard0 = useSpring(useTransform(p1, [0, 1], [y0_start, y0_end]), SPR);
   const yCard1 = useSpring(useTransform(p2, [0, 1], [y1_start, y1_end]), SPR);
@@ -59,18 +60,14 @@ export const Cards: React.FC = () => {
     >
       <Box
         position='sticky'
-        top={{ base: "6vh", md: "6vh" }} // was 10/12vh → raise the stage
-        h={{ base: "110vh", md: "110vh" }}
+        top={{ base: "8vh", md: "8vh" }}
+        h='110vh'
+        overflow='visible'
         display='flex'
         alignItems='center'
         justifyContent='center'
       >
-        <Box
-          position='relative'
-          w='full'
-          minH={{ base: "750px", md: "700px" }}
-          maxW='min(1200px, 94vw)'
-        >
+        <Box position='relative' w='full' h='100%' maxW='min(1200px, 94vw)'>
           <MotionBox
             position='absolute'
             inset='0'
@@ -106,8 +103,7 @@ export const Cards: React.FC = () => {
           <MotionBox
             position='absolute'
             inset='0'
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            style={{ x: x2 as any, y: yCard2 }}
+            style={{ y: yCard2 }}
             zIndex={3}
           >
             <Card
@@ -121,7 +117,7 @@ export const Cards: React.FC = () => {
         </Box>
       </Box>
 
-      <Box h={{ base: "64vh", md: "72vh" }} />
+      <Box h={{ base: "72vh", md: "84vh" }} />
     </Box>
   );
 };

@@ -69,9 +69,7 @@ export function BurstCard({
       h={`${h}px`}
       rounded='xl'
       overflow='hidden'
-      boxShadow='0 24px 80px rgba(0,0,0,.35)'
       zIndex={isHero ? 5 : 2}
-      bg='black'
     >
       {item.node ? (
         <Box w='100%' h='100%'>

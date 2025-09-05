@@ -72,7 +72,7 @@ export function SphereScene({
 
   /* geometry */
   const unitCircle = React.useMemo(() => {
-    const SEG = 128;
+    const SEG = 256;
     const pts: THREE.Vector3[] = [];
     for (let i = 0; i <= SEG; i++) {
       const a = (i / SEG) * Math.PI * 2;

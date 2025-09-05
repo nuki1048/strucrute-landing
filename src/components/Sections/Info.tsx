@@ -4,9 +4,10 @@ import { RevealText } from "../AnimatedTextReveal/ScrollText";
 
 export const Info = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+
   return (
     <Grid
-      paddingX={{ base: "20px", md: "65px" }}
+      paddingX={{ base: "20px", md: "35px", "2xl": "65px" }}
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
       gridTemplateRows={{ base: "repeat(5,100px)", md: "repeat(5,250px)" }}
       gridAutoRows='auto'
@@ -31,8 +32,8 @@ export const Info = () => {
       >
         <RevealText
           text={"<c>Візуальна</c><br>ідентичність"}
-          mode='letter' // or "word"
-          direction='up' // "up" | "down" | "left" | "right"
+          mode='letter'
+          direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
@@ -43,23 +44,8 @@ export const Info = () => {
           amount={0.35}
           colorText='primary'
         />
-        {/* <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='primary'
-          lineHeight={1.5}
-        >
-          Візуальна
-        </Text>
-        <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={0.5}
-        >
-          ідентичність
-        </Text> */}
       </BoxGrid>
+
       <BoxGrid
         gridColumn={{ base: "1 / 2", sm: "2 / 3", md: "2 / 3" }}
         gridRow='1 / 2'
@@ -85,8 +71,8 @@ export const Info = () => {
       >
         <RevealText
           text={"Web<br>розробка"}
-          mode='letter' // or "word"
-          direction='up' // "up" | "down" | "left" | "right"
+          mode='letter'
+          direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textAlign='right'
@@ -98,26 +84,8 @@ export const Info = () => {
           amount={0.35}
           trigger='inView'
         />
-        {/* <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={1.5}
-          fontStyle='italic'
-          textAlign='right'
-          fontFamily='notoSerif'
-        >
-          Web
-        </Text>
-        <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={0.7}
-        >
-          розробка
-        </Text> */}
       </BoxGrid>
+
       <BoxGrid
         justifyContent={{ base: "center", md: "initial" }}
         gridColumn='1 / 3'
@@ -138,8 +106,8 @@ export const Info = () => {
       >
         <RevealText
           text={"<i>Ui/Ux</i> дизайн"}
-          mode='letter' // or "word"
-          direction='up' // "up" | "down" | "left" | "right"
+          mode='letter'
+          direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
@@ -152,26 +120,8 @@ export const Info = () => {
           textAlign='left'
           italicFontFamily='notoSerif'
         />
-        {/* <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={1.5}
-        >
-          <Text
-            as='span'
-            fontStyle='italic'
-            fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-            textTransform='uppercase'
-            color='white'
-            fontFamily='notoSerif'
-          >
-            Ui/Ux
-          </Text>{" "}
-          {isMobile && <br />}
-          дизайн
-        </Text> */}
       </BoxGrid>
+
       <BoxGrid
         gridColumn='1 /3'
         gridRow={{ base: "4/5", md: "2/3", xl: "3 / 4" }}
@@ -194,9 +144,9 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={"<c>E-</c>commerce<br>рішення"}
-          mode='letter' // or "word"
-          direction='up' // "up" | "down" | "left" | "right"
+          text={"<i><c>E-</c></i>commerce<br>рішення"}
+          mode='letter'
+          direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
@@ -205,43 +155,16 @@ export const Info = () => {
           duration={0.7}
           delay={0.1}
           amount={0.35}
+          italicFontFamily='notoSerif'
           trigger='inView'
           textAlign='right'
           colorText='primary'
         />
-        {/* <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={1.5}
-          display='flex'
-          alignItems='baseline'
-        >
-          <Text
-            as='span'
-            fontStyle='italic'
-            color='primary'
-            display='inline'
-            fontFamily='notoSerif'
-            fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          >
-            E-
-          </Text>
-          Commerce
-        </Text>
-        <Text
-          fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
-          textTransform='uppercase'
-          color='white'
-          lineHeight={0.7}
-          textAlign='right'
-        >
-          Рішення
-        </Text> */}
       </BoxGrid>
+
       <BoxGrid
         gridColumn='1 / 2'
-        gridRow={{ base: "5 / 6", md: "3 / 4", xl: "4 / 5" }}
+        gridRow={{ base: "5 / 6", md: "3 / 4", xl: "3 / 5" }}
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
@@ -262,14 +185,14 @@ export const Info = () => {
           sm: "-50%",
           md: "-45%",
           lg: "-40%",
-          xl: "-35%",
+          xl: "-15%",
         }}
         hoverTextTop='none'
       >
         <RevealText
           text={"Інтерактивний<br><c>дизайн</c>"}
-          mode='letter' // or "word"
-          direction='up' // "up" | "down" | "left" | "right"
+          mode='letter'
+          direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
