@@ -7,7 +7,8 @@ export function useLenisSmoothScroll(
   opts?: ConstructorParameters<typeof Lenis>[0]
 ) {
   const lenisRef = useRef<Lenis | null>(null);
-  const isMobile = useMediaQuery(["(max-width: 768px)"]);
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+
   useEffect(() => {
     // Respect users who prefer reduced motion
     const prefersReduced = window.matchMedia(
@@ -16,22 +17,43 @@ export function useLenisSmoothScroll(
     if (prefersReduced) return;
 
     const lenis = new Lenis({
-      duration: isMobile ? 1.2 : 1,
+      duration: isMobile ? 1.2 : 1, // Faster duration
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: isMobile ? 2.5 : 1,
+      wheelMultiplier: isMobile ? 1.2 : 1.0, // Higher wheel speed
+      touchMultiplier: isMobile ? 1.5 : 1, // Higher touch speed
       infinite: false,
       gestureOrientation: "vertical",
       ...(isMobile && {
         smoothTouch: true,
-        touchInertiaMultiplier: 35,
+        touchInertiaMultiplier: 15, // Higher inertia for more momentum
         normalizeWheel: true,
-        lerp: 0.1,
+        lerp: 0.12, // Higher lerp for faster response
+        syncTouch: true,
       }),
       ...opts,
     });
     lenisRef.current = lenis;
+
+    // Add custom speed limiting for mobile
+    if (isMobile) {
+      let lastTime = 0;
+      const maxSpeed = 15; // Higher speed limit
+
+      const originalRaf = lenis.raf;
+      lenis.raf = (time: number) => {
+        const deltaTime = time - lastTime;
+        const deltaSpeed = Math.abs(lenis.velocity);
+
+        // Limit the scroll speed
+        if (deltaSpeed > maxSpeed) {
+          lenis.velocity = lenis.velocity > 0 ? maxSpeed : -maxSpeed;
+        }
+
+        lastTime = time;
+        return originalRaf.call(lenis, time);
+      };
+    }
 
     let rafId = 0;
     const raf = (time: number) => {
@@ -53,24 +75,14 @@ export function useLenisSmoothScroll(
         }
       };
 
-      const handleTouchMove = (e: TouchEvent) => {
-        if (e.touches.length === 1) {
-          e.preventDefault();
-        }
-      };
-
       document.addEventListener("touchstart", handleTouchStart, {
         passive: true,
       });
       document.addEventListener("touchend", handleTouchEnd, { passive: true });
-      document.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
 
       return () => {
         document.removeEventListener("touchstart", handleTouchStart);
         document.removeEventListener("touchend", handleTouchEnd);
-        document.removeEventListener("touchmove", handleTouchMove);
         cancelAnimationFrame(rafId);
         lenis.destroy();
         lenisRef.current = null;
