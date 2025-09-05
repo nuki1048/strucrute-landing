@@ -1,10 +1,10 @@
-import { Box, Container, useMediaQuery } from "@chakra-ui/react";
-import SphereScene from "../Sphere/AnimatedScene";
+import { Box, Container } from "@chakra-ui/react";
+// import SphereScene from "../Sphere/AnimatedScene";
 import BrightTextRichLines from "../AnimatedTextReveal/AnimatedTextByLines";
 import BrightTextRich from "../AnimatedTextReveal/AnimatedText";
 
 export const Promo = () => {
-  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+  // const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   return (
     <Box
       id='hero'
