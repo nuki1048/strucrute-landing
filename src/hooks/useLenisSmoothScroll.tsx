@@ -37,12 +37,10 @@ export function useLenisSmoothScroll(
 
     // Add custom speed limiting for mobile
     if (isMobile) {
-      let lastTime = 0;
       const maxSpeed = 15; // Higher speed limit
 
       const originalRaf = lenis.raf;
       lenis.raf = (time: number) => {
-        const deltaTime = time - lastTime;
         const deltaSpeed = Math.abs(lenis.velocity);
 
         // Limit the scroll speed
@@ -50,7 +48,6 @@ export function useLenisSmoothScroll(
           lenis.velocity = lenis.velocity > 0 ? maxSpeed : -maxSpeed;
         }
 
-        lastTime = time;
         return originalRaf.call(lenis, time);
       };
     }
