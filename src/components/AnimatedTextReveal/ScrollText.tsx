@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-// RevealText.tsx
-
 import * as React from "react";
 import { chakra, useToken, type HTMLChakraProps } from "@chakra-ui/react";
 import {
@@ -10,58 +8,40 @@ import {
   useScroll,
   useTransform,
   type MotionValue,
-  isValidMotionProp,
 } from "framer-motion";
 
-/* ---------- Motion-enabled Chakra wrappers ---------- */
-const MotionSpan = chakra(motion.span, {
-  shouldForwardProp: (p) => isValidMotionProp(p) || typeof p === "string",
-});
-const MotionDiv = chakra(motion.div, {
-  shouldForwardProp: (p) => isValidMotionProp(p) || typeof p === "string",
-});
+const MotionSpan = chakra(motion.span);
+const MotionDiv = chakra(motion.div);
 
-/* ---------- Types ---------- */
 type Token = {
   type: "text" | "br";
-  html: string; // escaped text (&nbsp; for spaces when needed)
-  // styling flags (drive styles inline; do NOT rely on <i>/<b> tags)
+  html: string;
   italic?: boolean;
   bold?: boolean;
 
-  // <c> support
   mark?: boolean;
   markId?: string;
   markIndex?: number;
 };
 
 export type RevealTextProps = HTMLChakraProps<"div"> & {
-  /** You may include <i>, <b>, <em>, <strong>, <br/>, and <c>…</c> inside `text` */
   text: string;
   mode?: "line" | "word" | "letter";
   direction?: "up" | "down" | "left" | "right";
-  /** In-view: seconds before group starts */
   delay?: number;
-  /** In-view: seconds per item | Scroll: progress window (0..1) per item */
   duration?: number;
-  /** In-view: seconds between items | Scroll: progress offset (0..1) between items */
   stagger?: number;
   ease?: any;
-  /** false → replay again when re-entering viewport */
   once?: boolean;
   amount?: number;
   trigger?: "inView" | "scroll";
   offset?: [string, string];
-
-  /** Color a specific <c>…</c> (by id string or 1-based index). If omitted → color all <c>. */
   id?: string | number;
   colorText?: string;
 
-  /** Optional font family used for italic tokens */
   italicFontFamily?: string;
 };
 
-/* ---------- Tokenizer (preserves <br> and <c>; converts <i>/<b> to flags) ---------- */
 function escapeHTML(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -121,7 +101,6 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
     walk(c, { i: false, b: false, c: false });
 
   if (mode === "line") {
-    // Collapse into single token per line, keep only color mark (mixed italics per-line not supported)
     const out: Token[] = [];
     let buf: string[] = [];
     let bufMark = false;
@@ -169,7 +148,7 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
         if (!w) return;
         out.push({
           type: "text",
-          html: w, // no tags; just the word
+          html: w,
           italic: t.italic,
           bold: t.bold,
           mark: t.mark,
@@ -181,14 +160,13 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
     return out;
   }
 
-  // letter
   const out: Token[] = [];
   base.forEach((t) => {
     if (t.type === "br") {
       out.push({ type: "br", html: "" });
       return;
     }
-    const plain = t.html; // already escaped
+    const plain = t.html;
     for (let i = 0; i < plain.length; i++) {
       const ch = plain[i];
       out.push({
@@ -205,7 +183,6 @@ function tokenizeHtml(html: string, mode: "line" | "word" | "letter"): Token[] {
   return out;
 }
 
-/* ---------- Scroll item (keeps hooks order) ---------- */
 const ScrollItem: React.FC<{
   index: number;
   axis: "x" | "y";
@@ -230,7 +207,6 @@ const ScrollItem: React.FC<{
   );
 };
 
-/* ---------- Root component ---------- */
 export const RevealText: React.FC<RevealTextProps> = ({
   text,
   mode = "word",
@@ -239,7 +215,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
   duration = 0.6,
   stagger = 0.06,
   ease = [0.22, 1, 0.36, 1],
-  once = false, // replay on re-entry
+  once = false,
   amount = 0.4,
   trigger = "inView",
   offset = ["start 0.9", "end 0.1"],
@@ -266,6 +242,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
   const axis = direction === "left" || direction === "right" ? "x" : "y";
   const from = direction === "up" || direction === "left" ? 20 : -20;
 
+  // @ts-ignore
   const { scrollYProgress } = useScroll({ target: rootRef, offset });
 
   const shouldColor = (t: Token) => {
@@ -278,6 +255,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
   };
 
   return (
+    // @ts-ignore
     <MotionDiv
       ref={rootRef}
       className={className}
@@ -328,6 +306,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
                 aria-hidden='true'
                 variants={{
                   hidden: { opacity: 0, [axis]: from },
+                  // @ts-ignore
                   show: {
                     opacity: 1,
                     [axis]: 0,
