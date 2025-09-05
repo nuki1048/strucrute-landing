@@ -1,12 +1,13 @@
 // useLenisSmoothScroll.tsx
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export function useLenisSmoothScroll(
   opts?: ConstructorParameters<typeof Lenis>[0]
 ) {
   const lenisRef = useRef<Lenis | null>(null);
-
+  const isMobile = useMediaQuery(["(max-width: 768px)"]);
   useEffect(() => {
     // Respect users who prefer reduced motion
     const prefersReduced = window.matchMedia(
@@ -14,29 +15,33 @@ export function useLenisSmoothScroll(
     ).matches;
     if (prefersReduced) return;
 
-    // Detect if device is mobile/touch
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    ) || 'ontouchstart' in window;
-
     const lenis = new Lenis({
-      duration: 1.4, // overall feel (0.8–1.4)
-      easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+      duration: isMobile ? 1.2 : 1,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      // Mobile-specific configurations
-      touchMultiplier: isMobile ? 2 : 1, // Increase touch sensitivity on mobile
-      infinite: false, // Prevent infinite scroll issues on mobile
-      gestureOrientation: 'vertical', // Ensure vertical scrolling on mobile
+      touchMultiplier: isMobile ? 2.5 : 1,
+      infinite: false,
+      gestureOrientation: "vertical",
+      ...(isMobile && {
+        smoothTouch: true,
+        touchInertiaMultiplier: 35,
+        normalizeWheel: true,
+        lerp: 0.1,
+      }),
       ...opts,
     });
     lenisRef.current = lenis;
 
-    // Enhanced mobile touch handling
+    let rafId = 0;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
     if (isMobile) {
-      // Add touch event listeners for better mobile experience
       const handleTouchStart = (e: TouchEvent) => {
-        // Allow native touch scrolling for better mobile UX
         if (e.touches.length > 1) {
           lenis.stop();
         }
@@ -48,33 +53,36 @@ export function useLenisSmoothScroll(
         }
       };
 
-      // Add passive touch listeners
-      document.addEventListener('touchstart', handleTouchStart, { passive: true });
-      document.addEventListener('touchend', handleTouchEnd, { passive: true });
+      const handleTouchMove = (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          e.preventDefault();
+        }
+      };
 
-      // Cleanup touch listeners
+      document.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      document.addEventListener("touchend", handleTouchEnd, { passive: true });
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+
       return () => {
-        document.removeEventListener('touchstart', handleTouchStart);
-        document.removeEventListener('touchend', handleTouchEnd);
+        document.removeEventListener("touchstart", handleTouchStart);
+        document.removeEventListener("touchend", handleTouchEnd);
+        document.removeEventListener("touchmove", handleTouchMove);
         cancelAnimationFrame(rafId);
         lenis.destroy();
         lenisRef.current = null;
       };
     }
 
-    let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
-
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
     };
-  }, [opts]);
+  }, [opts, isMobile]);
 
   return lenisRef;
 }
