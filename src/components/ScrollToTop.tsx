@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ArrowUpIcon from "../assets/arrow-back.svg?react";
 
 export const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
