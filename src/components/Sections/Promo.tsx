@@ -53,7 +53,7 @@ export const Promo = () => {
           maskRepeat: "no-repeat",
         }}
       >
-        <SphereScene
+        {/* <SphereScene
           scrollStartSelector='#hero'
           scrollEndSelector='#section-2-end'
           minScale={isMobile ? 0.45 : 0.8}
@@ -68,7 +68,7 @@ export const Promo = () => {
           layerPhaseJitter={10}
           spinSpeed={0.1}
           fadeOutFromProgress={50}
-        />
+        /> */}
       </Box>
 
       <Container
