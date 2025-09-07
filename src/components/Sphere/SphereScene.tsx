@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // SphereScene.tsx
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -44,15 +45,6 @@ export type SphereSceneProps = {
   segments?: number;
 };
 
-function supportsInstancing(
-  gl: WebGLRenderingContext | WebGL2RenderingContext
-) {
-  // WebGL2: yes. WebGL1: need ANGLE_instanced_arrays
-  return (
-    gl instanceof WebGL2RenderingContext ||
-    !!gl.getExtension("ANGLE_instanced_arrays")
-  );
-}
 export function SphereScene({
   color = "#6860FF",
   layers = 120,
