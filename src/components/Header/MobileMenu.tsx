@@ -3,6 +3,7 @@ import CloseIcon from "../../assets/close-icon.svg?react";
 import { LanguageSwitcher } from "../LanguageSwitcher";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "../Logo/Logo";
+import { useTranslation } from "react-i18next";
 
 export const MobileMenu = ({
   isOpen,
@@ -11,6 +12,15 @@ export const MobileMenu = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const { t } = useTranslation();
+  const scrollTo = (id: string) => {
+    onClose();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -86,7 +96,7 @@ export const MobileMenu = ({
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <Link
-                href='#'
+                onClick={() => scrollTo("welcome")}
                 fontSize='40px'
                 textTransform='uppercase'
                 color='text'
@@ -99,7 +109,7 @@ export const MobileMenu = ({
                 display='block'
                 borderBottom='1px solid rgba(255, 255, 255, 0.1)'
               >
-                Про нас
+                {t("header.about")}
               </Link>
             </motion.div>
 
@@ -110,7 +120,7 @@ export const MobileMenu = ({
               transition={{ duration: 0.4, delay: 0.3 }}
             >
               <Link
-                href='#'
+                onClick={() => scrollTo("projects")}
                 fontSize='40px'
                 textTransform='uppercase'
                 color='text'
@@ -123,7 +133,7 @@ export const MobileMenu = ({
                 display='block'
                 borderBottom='1px solid rgba(255, 255, 255, 0.1)'
               >
-                Проєкти
+                {t("header.projects")}
               </Link>
             </motion.div>
 
@@ -134,7 +144,7 @@ export const MobileMenu = ({
               transition={{ duration: 0.4, delay: 0.4 }}
             >
               <Link
-                href='#'
+                onClick={() => scrollTo("footer")}
                 fontSize='40px'
                 textTransform='uppercase'
                 color='text'
@@ -147,7 +157,7 @@ export const MobileMenu = ({
                 display='block'
                 borderBottom='1px solid rgba(255, 255, 255, 0.1)'
               >
-                Консультація
+                {t("header.consultation")}
               </Link>
             </motion.div>
 

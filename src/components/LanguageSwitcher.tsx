@@ -1,22 +1,25 @@
 import { useState } from "react";
 import { Box, Text, HStack } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 interface LanguageSwitcherProps {
   onLanguageChange?: (language: "EN" | "UA") => void;
-  initialLanguage?: "EN" | "UA";
 }
 
 export const LanguageSwitcher = ({
   onLanguageChange,
-  initialLanguage = "EN",
 }: LanguageSwitcherProps) => {
+  const { i18n, t } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState<"EN" | "UA">(
-    initialLanguage
+    i18n.language as "EN" | "UA"
   );
 
-  const handleLanguageChange = (language: "EN" | "UA") => {
-    setCurrentLanguage(language);
-    onLanguageChange?.(language);
+  const handleLanguageChange = (languageCode: string) => {
+    i18n.changeLanguage(languageCode);
+    if (onLanguageChange) {
+      onLanguageChange(languageCode as "EN" | "UA");
+    }
+    setCurrentLanguage(languageCode as "EN" | "UA");
   };
 
   return (
@@ -74,7 +77,7 @@ export const LanguageSwitcher = ({
             zIndex={3}
             textAlign='center'
           >
-            EN
+            {t("languageSwitcher.en")}
           </Text>
         </Box>
 
@@ -100,7 +103,7 @@ export const LanguageSwitcher = ({
             zIndex={3}
             textAlign='center'
           >
-            UA
+            {t("languageSwitcher.uk")}
           </Text>
         </Box>
       </HStack>

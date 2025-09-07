@@ -1,7 +1,9 @@
 import { Link } from "@chakra-ui/react";
 import { LanguageSwitcher } from "../LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export const HeaderLinks = () => {
+  const { t } = useTranslation();
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -21,7 +23,7 @@ export const HeaderLinks = () => {
           color: "gray1",
         }}
       >
-        Про нас
+        {t("header.about")}
       </Link>
       <Link
         onClick={() => scrollTo("projects")}
@@ -33,7 +35,7 @@ export const HeaderLinks = () => {
           color: "gray1",
         }}
       >
-        Проекти
+        {t("header.projects")}
       </Link>
       <Link
         onClick={() => scrollTo("footer")}
@@ -45,7 +47,7 @@ export const HeaderLinks = () => {
           color: "gray1",
         }}
       >
-        Консультація
+        {t("header.consultation")}
       </Link>
       <LanguageSwitcher />
     </>

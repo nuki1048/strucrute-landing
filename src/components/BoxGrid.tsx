@@ -52,6 +52,16 @@ export const BoxGrid = ({
           visibility: "visible",
         },
       }}
+      _pressed={{
+        "& > *": {
+          filter: "blur(20px)",
+          transition: "filter 0.3s ease",
+        },
+        "&::after": {
+          opacity: 1,
+          visibility: "visible",
+        },
+      }}
       width='fit-content'
       _after={{
         content: `"${hoverText}"`,

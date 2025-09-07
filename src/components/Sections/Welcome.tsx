@@ -1,25 +1,27 @@
 import { Box, Container, useMediaQuery } from "@chakra-ui/react";
 import { ScrollRevealText } from "../AnimatedTextReveal/ScrollRevealText";
 import BrightTextRichLinesScroll from "../AnimatedTextReveal/ScrollRevealByLinesText";
+import { useTranslation } from "react-i18next";
 
 export const Welcome = () => {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery(["(max-width: 768px)"]);
-  const text = `<i>Structure Agency</i> - cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують ${
-    isMobile ? "" : "<br>"
-  }майбутнє ${isMobile ? "<br>" : ""} вашого бізнесу`;
+  const text = t("welcome-description", {
+    mobileBR: isMobile ? "<br>" : "",
+  });
 
   return (
     <Box
       position='relative'
       display='flex'
       justifyContent={{
-        lg: "flex-end",
+        lg: "flex-start",
         xl: "flex-end",
         "2xl": "center",
       }}
       paddingY='20px'
       w='100%'
-      h={{ base: "100%", md: "1100px" }}
+      h={{ base: "100%", md: "900px", lg: "1100px" }}
       paddingX={{
         base: "15px",
         md: "15px",
@@ -43,7 +45,12 @@ export const Welcome = () => {
         zIndex={2}
         display='flex'
         flexDirection='column'
-        alignItems='flex-end'
+        alignItems={{
+          base: "flex-start",
+          md: "flex-end",
+          lg: "flex-end",
+          xl: "flex-end",
+        }}
       >
         <Box
           w='100%'
@@ -59,7 +66,7 @@ export const Welcome = () => {
               fontWeight: 300,
             }}
             dimColor='rgba(255,255,255,0)'
-            text='Вітаємо'
+            text={t("welcome")}
             offset={["start 85%", "end 40%"]}
           />
         </Box>

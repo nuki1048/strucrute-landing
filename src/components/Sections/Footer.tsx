@@ -2,7 +2,9 @@ import { Box, Button, Grid, Link, Separator, Text } from "@chakra-ui/react";
 import BehanceIcon from "../../assets/behance-icon.svg?react";
 import DribbleIcon from "../../assets/dribble-icon.svg?react";
 import LinkedinIcon from "../../assets/linkedin-icon.svg?react";
+import { useTranslation } from "react-i18next";
 export const Footer = () => {
+  const { t } = useTranslation();
   return (
     <Box
       width='100%'
@@ -51,7 +53,7 @@ export const Footer = () => {
             fontWeight='regular'
             color='gray1'
           >
-            Digital products built fast, sharp, and ready to scale.
+            {t("footer.description")}
           </Text>
         </Box>
         <Text
@@ -64,7 +66,7 @@ export const Footer = () => {
           gridRow={{ base: "2", md: "1" }}
           gridColumn={{ base: "1/3", md: "2" }}
         >
-          © 2025 STRUCTURE. All rights reserved.
+          © 2025 {t("footer.structure")}. {t("footer.all-rights-reserved")}
         </Text>
         <Box
           display='flex'
@@ -78,14 +80,14 @@ export const Footer = () => {
             fontWeight='regular'
             color='white'
           >
-            agency@strctr.dev
+            {t("footer.email")}
           </Link>
           <Text
             fontSize='clamp(0.75rem, 0.6646rem + 0.3106vw, 1rem)'
             fontWeight='regular'
             color='gray1'
           >
-            Odesa · Remote Worldwide
+            {t("footer.location")}
           </Text>
           <Box display='flex' gap='20px'>
             <Button

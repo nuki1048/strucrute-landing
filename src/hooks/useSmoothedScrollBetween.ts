@@ -1,5 +1,16 @@
+// useSmoothedScrollBetween.ts
 import React from "react";
 import { damp, clamp01 } from "../utils/animationUtils";
+
+type Options = {
+  hysteresis?: number;
+  smoothness?: number;
+  observeLayout?: boolean;
+  scroller?: HTMLElement | Window;
+  minSpanPx?: number;
+  /** NEW: called after each tick (state is updated) */
+  onUpdate?: () => void;
+};
 
 export function useSmoothedScrollBetween(
   selectStart: string,
@@ -12,7 +23,8 @@ export function useSmoothedScrollBetween(
       ? window
       : (undefined as unknown as HTMLElement | Window),
     minSpanPx = 64,
-  } = {}
+    onUpdate,
+  }: Options = {}
 ) {
   const ref = React.useRef({
     startY: 0,
@@ -53,6 +65,7 @@ export function useSmoothedScrollBetween(
       state.startY = s;
       state.endY = e;
       state.span = Math.max(minSpanPx, e - s);
+      onUpdate?.(); // redraw once when anchors change
     };
 
     anchor();
@@ -89,6 +102,7 @@ export function useSmoothedScrollBetween(
       state.clamped = clamped;
       state.overPx = overPx;
 
+      onUpdate?.(); // ⬅ notify scene to invalidate when needed
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -108,6 +122,7 @@ export function useSmoothedScrollBetween(
     observeLayout,
     scroller,
     minSpanPx,
+    onUpdate,
   ]);
 
   return ref;

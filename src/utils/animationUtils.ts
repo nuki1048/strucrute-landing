@@ -15,3 +15,14 @@ export function segment(p: MotionValue<number>, a: number, b: number) {
 
 export const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 export const damp = THREE.MathUtils.damp;
+
+export function getPerfTier(): "high" | "med" | "low" {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mem = (navigator as any).deviceMemory ?? 4;
+  const cores = navigator.hardwareConcurrency ?? 4;
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+  if (mem >= 8 && cores >= 8 && !isMobile) return "high";
+  if (mem >= 4 && cores >= 4) return "med";
+  return "low";
+}

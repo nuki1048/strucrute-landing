@@ -7,15 +7,7 @@ import {
   gridVariants,
   textVariants,
 } from "../../animations/about";
-
-const listItems = [
-  "UI/UX-дизайн та розробку",
-  "Вебзастосунки",
-  "Мобільні застосунки",
-  "Безпеку та надійність",
-  "Інтерактивні рішення",
-  "Постійну підтримку й розвиток",
-];
+import { useTranslation } from "react-i18next";
 
 const keywords = [
   "Mobile Development",
@@ -86,14 +78,23 @@ const keywordsVariants = {
 };
 
 export const About = () => {
+  const { t } = useTranslation();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+  const listItems = [
+    t("about.ui-ux-design"),
+    t("about.web-applications"),
+    t("about.mobile-applications"),
+    t("about.security-and-reliability"),
+    t("about.interactive-solutions"),
+    t("about.continuous-support-and-development"),
+  ];
 
   return (
     <motion.div
       initial='hidden'
       whileInView='visible'
       exit='exit'
-      viewport={{ amount: 0.7 }}
+      viewport={{ amount: 0.1 }}
       variants={containerVariants}
     >
       <Box
@@ -106,7 +107,7 @@ export const About = () => {
         h={{ base: "100%", md: "630px" }}
         marginTop='150px'
         overflow='hidden'
-        paddingX={{ base: "60px", md: "100px" }}
+        paddingX={{ base: "45px", md: "100px" }}
       >
         <Container
           position='relative'
@@ -127,13 +128,14 @@ export const About = () => {
         >
           <motion.div variants={textVariants} style={{ width: "100%" }}>
             <Text
-              fontSize='clamp(1.125rem, 0.5485rem + 2.0963vw, 2.8125rem)'
+              fontSize='clamp(1.0625rem, 0.7849rem + 1.0093vw, 1.875rem)'
               color='white'
               lineHeight={1}
               fontWeight={500}
               textAlign='center'
             >
-              Ми рухаємося швидко та впевнено. Ви можете довірити нам:
+              Ми рухаємося швидко та впевнено. {isMobile && <br />} Ви можете
+              довірити нам:
             </Text>
           </motion.div>
 

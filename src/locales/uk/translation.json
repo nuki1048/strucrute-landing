@@ -1,0 +1,49 @@
+{
+  "loading": {
+    "title": "Підготовка вашого досвіду...",
+    "percentage": "{{count}}%",
+    "preparing": "Підготовка вашого досвіду..."
+  },
+  "languageSwitcher": {
+    "en": "EN",
+    "uk": "UA"
+  },
+  "header": {
+    "about": "Про нас",
+    "projects": "Проекти",
+    "consultation": "Консультація"
+  },
+  "structure": "Structure",
+  "visual-design": "[Visual Design]",
+  "web-and-mobile-development": "[Web and Mobile Development]",
+  "digital-products": "{цифрові продукти}",
+  "help-brands-to-grow": "які <br> допомагають брендам зростати",
+  "promo": {
+    "description": "Ми створюємо {{mobileBR}} <i>{цифрові продукти}</i>, які<br>допомогають брендам зростати"
+  },
+  "welcome": "Вітаємо",
+  "welcome-description": "<i>Structure Agency</i> - cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують {{mobileBR}} майбутнє вашого бізнесу",
+  "about": {
+    "ui-ux-design": "UI/UX-дизайн та розробку",
+    "web-applications": "Вебзастосунки",
+    "mobile-applications": "Мобільні застосунки",
+    "security-and-reliability": "Безпеку та надійність",
+    "interactive-solutions": "Інтерактивні рішення",
+    "continuous-support-and-development": "Постійну підтримку й розвиток"
+  },
+  "cards": {
+    "every-big-product": "КОЖЕН ВЕЛИКИЙ ПРОДУКТ ГОВОРИТЬ ВІЗУАЛЬНО",
+    "every-big-product-description": "ТАК НАРОДЖУЄТЬСЯ ДОВІРА",
+    "future-leaders": "МАЙБУТНІ ЛІДЕРИ НЕ КОПІЮЮТЬ",
+    "future-leaders-description": "ВОНА СТВОРЮЮТЬ ТРЕНДИ, ЯКІ НАСЛІДУЄ СВІТ",
+    "design-is-a-beginning": "ДИЗАЙН – ЦЕ ПОЧАТОК",
+    "design-is-a-beginning-description": "СПРАВЖНЯ ОСНОВА – ЦЕ КОД, ЩО ВИТРИМУЄ ЧАС І РОЗВИВАЄТЬСЯ ІЗ ТОБОЮ"
+  },
+  "footer": {
+    "description": "Цифрові продукти, створені швидко, чітко та готові до масштабування.",
+    "all-rights-reserved": "Всі права застережено.",
+    "email": "agency@strctr.dev",
+    "location": "Одеса · Віддалено по всьому світу",
+    "structure": "STRUCTURE"
+  }
+}

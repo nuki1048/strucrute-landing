@@ -112,7 +112,7 @@ export const ExpandedFormFloating = ({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        padding: isMobile ? "25px 30px" : "25px 35px",
+        padding: isMobile ? "25px 20px" : "25px 35px",
       }}
     >
       {currentStage === 1 ? (

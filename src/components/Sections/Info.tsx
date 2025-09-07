@@ -1,19 +1,25 @@
 import { Grid, useMediaQuery } from "@chakra-ui/react";
 import { BoxGrid } from "../BoxGrid";
 import { RevealText } from "../AnimatedTextReveal/ScrollText";
+import { useMemo } from "react";
 
 export const Info = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
+  const textMode = useMemo(() => (isMobile ? "word" : "letter"), [isMobile]);
   return (
     <Grid
       paddingX={{ base: "20px", md: "35px", "2xl": "65px" }}
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
-      gridTemplateRows={{ base: "repeat(5,100px)", md: "repeat(5,250px)" }}
+      gridTemplateRows={{
+        base: "repeat(5,100px)",
+        md: "repeat(4,200px)",
+        lg: "repeat(5,250px)",
+      }}
       gridAutoRows='auto'
       w='100%'
       marginTop={{ base: "100px", md: "0" }}
-      h={{ base: "100%", md: "980px" }}
+      h={{ base: "100%", md: "100%", lg: "980px" }}
       gap={{ base: "10px", md: "4" }}
     >
       <BoxGrid
@@ -32,7 +38,7 @@ export const Info = () => {
       >
         <RevealText
           text={"<c>Візуальна</c><br>ідентичність"}
-          mode='letter'
+          mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
@@ -53,7 +59,7 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-end'
         justifySelf='flex-end'
-        marginTop={{ base: "230px", md: "110px" }}
+        marginTop={{ base: "260px", md: "110px" }}
         hoverText='створення сайтів та веб-додатків: від простих лендингів до складних сервісів'
         hoverTextAlign='right'
         hoverTextTop={{ base: "30px", sm: "40px", md: "45%" }}
@@ -71,7 +77,7 @@ export const Info = () => {
       >
         <RevealText
           text={"Web<br>розробка"}
-          mode='letter'
+          mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
@@ -93,7 +99,7 @@ export const Info = () => {
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
-        marginTop={{ base: "0", xl: "110px" }}
+        marginTop={{ base: "30px", sm: "20px", md: "110px" }}
         hoverText='хороший UI/UX робить взаємодію простою та приємною'
         hoverTextAlign='left'
         height='fit-content'
@@ -106,7 +112,7 @@ export const Info = () => {
       >
         <RevealText
           text={"<i>Ui/Ux</i> дизайн"}
-          mode='letter'
+          mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
@@ -124,10 +130,11 @@ export const Info = () => {
 
       <BoxGrid
         gridColumn='1 /3'
-        gridRow={{ base: "4/5", md: "2/3", xl: "3 / 4" }}
+        gridRow={{ base: "4/5", md: "3/4", xl: "3 / 4" }}
         display='flex'
         flexDirection='column'
         alignItems='flex-end'
+        alignSelf='flex-start'
         justifyContent={{ base: "center", md: "flex-end" }}
         hoverText='зручні, безпечні та масштабовані рішення для бізнесу будь-якого рівня'
         hoverTextAlign='right'
@@ -145,7 +152,7 @@ export const Info = () => {
       >
         <RevealText
           text={"<i><c>E-</c></i>commerce<br>рішення"}
-          mode='letter'
+          mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
@@ -164,7 +171,7 @@ export const Info = () => {
 
       <BoxGrid
         gridColumn='1 / 2'
-        gridRow={{ base: "5 / 6", md: "3 / 4", xl: "3 / 5" }}
+        gridRow={{ base: "5 / 6", sm: "6", md: "4 / 5", xl: "3 / 5" }}
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
@@ -174,6 +181,7 @@ export const Info = () => {
         hoverText='робить продукт більш сучасним, залучаючим та зрозумілим для користувача'
         hoverTextAlign='left'
         width='max-content'
+        marginTop={{ base: "50px", sm: "0", xl: "50px", "2xl": "100px" }}
         hoverTextRight={{
           base: "-15%",
           sm: "0%",
@@ -191,7 +199,7 @@ export const Info = () => {
       >
         <RevealText
           text={"Інтерактивний<br><c>дизайн</c>"}
-          mode='letter'
+          mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'

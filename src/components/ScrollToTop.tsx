@@ -9,6 +9,7 @@ export const ScrollToTop = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
   const scrollToTop = () => {
+    setIsHovered(false);
     window.scrollTo({
       top: 0,
       behavior: "smooth",

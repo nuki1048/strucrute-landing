@@ -1,3 +1,4 @@
+// SphereScene.tsx
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useSmoothedScrollBetween } from "../../hooks/useSmoothedScrollBetween";
@@ -27,9 +28,7 @@ export type SphereSceneProps = {
   minScale?: number;
   maxScale?: number;
 
-  /** cap scale to fit viewport (default true) */
   clampToViewport?: boolean;
-  /** if true, never allow scale above 1 (original behavior). default false */
   neverUpscale?: boolean;
 
   fadeOutFromProgress?: number; // 0..1 or 0..100
@@ -37,8 +36,23 @@ export type SphereSceneProps = {
   fadeTailPx?: number;
 
   scrollElement?: HTMLElement | null;
+
+  /** NEW: single instanced draw (GPU) instead of many Lines (CPU). Default: true */
+  useInstancing?: boolean;
+
+  /** NEW: circle resolution (keeps 150 default for identical smoothness) */
+  segments?: number;
 };
 
+function supportsInstancing(
+  gl: WebGLRenderingContext | WebGL2RenderingContext
+) {
+  // WebGL2: yes. WebGL1: need ANGLE_instanced_arrays
+  return (
+    gl instanceof WebGL2RenderingContext ||
+    !!gl.getExtension("ANGLE_instanced_arrays")
+  );
+}
 export function SphereScene({
   color = "#6860FF",
   layers = 120,
@@ -60,56 +74,36 @@ export function SphereScene({
   minScale = 0.8,
   maxScale = 5,
   clampToViewport = true,
+  neverUpscale = false,
 
   fadeOutFromProgress,
   hideBelowAlpha = 0.02,
   fadeTailPx = 600,
 
   scrollElement = null,
+
+  useInstancing = true,
+  segments = 128,
 }: SphereSceneProps) {
   const { gl, size, camera } = useThree();
   const rootRef = React.useRef<THREE.Group>(null!);
+  const smoothScaleRef = React.useRef(1);
+  const startRef = React.useRef<number>(performance.now());
 
-  /* geometry */
-  const unitCircle = React.useMemo(() => {
-    const SEG = 150;
-    const pts: THREE.Vector3[] = [];
-    for (let i = 0; i <= SEG; i++) {
-      const a = (i / SEG) * Math.PI * 2;
-      pts.push(new THREE.Vector3(Math.cos(a), Math.sin(a), 0));
-    }
-    return new THREE.BufferGeometry().setFromPoints(pts);
-  }, []);
+  // Visibility gate (skip updates; with frameloop="demand" we'll also not render)
+  const [isVisible, setIsVisible] = React.useState(true);
+  const isVisibleRef = React.useRef(true);
+  React.useEffect(() => {
+    isVisibleRef.current = isVisible;
+  }, [isVisible]);
 
-  /* material */
-  const makeMaterial = React.useCallback(() => {
-    const m = new THREE.LineBasicMaterial({
-      color,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    (m as THREE.LineBasicMaterial).toneMapped = false;
-    return m;
-  }, [color]);
-
-  /* layer state */
-  type L = {
-    line: THREE.Line;
-    baseOpacity: number;
-    baseScaleX: number;
-    baseScaleY: number;
-    t: number;
-    phaseAcross: number;
-    phase0: number;
-    speedMul: number;
-  };
-  const layersData = React.useRef<L[]>([]);
-
+  // Scroll (with onUpdate callback to invalidate on demand)
   const scrollRef = useSmoothedScrollBetween(
     scrollStartSelector,
     scrollEndSelector,
-    { scroller: (scrollElement as HTMLElement) || window }
+    {
+      scroller: (scrollElement as HTMLElement) || window,
+    }
   );
 
   /* GL + camera */
@@ -135,35 +129,54 @@ export function SphereScene({
       size.height - startTopPadding,
       0
     );
+    // redraw once on layout change
   }, [camera, size, startTopPadding]);
 
-  const hash = React.useCallback((x: number) => {
-    const s = Math.sin(x * 127.1) * 43758.5453;
+  // Canvas in/out of viewport → stop everything when hidden
+  React.useEffect(() => {
+    if (!gl.domElement) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    obs.observe(gl.domElement);
+    return () => obs.disconnect();
+  }, [gl]);
+
+  /** ---------- Helpers ---------- */
+  const seeded = React.useCallback((i: number) => {
+    const s = Math.sin(i * 16807) * 10000;
     return s - Math.floor(s);
   }, []);
-  const [isVisible, setIsVisible] = React.useState(true);
 
-  /* build rings (batched) */
-  React.useEffect(() => {
-    const root = rootRef.current;
-    if (!root || !unitCircle) return;
-
-    for (const it of layersData.current) {
-      root.remove(it.line);
-      const m = it.line.material as THREE.Material | THREE.Material[];
-      if (Array.isArray(m)) m.forEach((mm) => mm.dispose());
-      else m?.dispose();
-      it.line.geometry?.dispose?.();
+  /** ---------- Geometry: base circle path ---------- */
+  const circleGeom = React.useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    const SEG = Math.max(8, Math.floor(segments));
+    for (let i = 0; i <= SEG; i++) {
+      const a = (i / SEG) * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a), Math.sin(a), 0));
     }
-    layersData.current = [];
+    return new THREE.BufferGeometry().setFromPoints(pts);
+  }, [segments]);
 
-    const rotAmp = THREE.MathUtils.degToRad(25);
+  /** ---------- Instanced path ---------- */
+  const instGeom = React.useMemo(() => {
+    if (!useInstancing) return null;
+
+    const geom = new THREE.InstancedBufferGeometry();
+    geom.index = circleGeom.index ?? null;
+    geom.setAttribute("position", circleGeom.getAttribute("position"));
+    geom.instanceCount = layers;
+
+    const baseScale = new Float32Array(layers * 2);
+    const baseOpacity = new Float32Array(layers);
+    const phaseAcrossArr = new Float32Array(layers);
+    const phase0Arr = new Float32Array(layers);
+    const speedMulArr = new Float32Array(layers);
+
     const W = -4,
       H = 1;
-
-    const linesToAdd: THREE.Line[] = [];
-    const newLayers: Array<L> = [];
-
     for (let i = 0; i < layers; i++) {
       const t = i / Math.max(1, layers - 1);
       const w = Math.max(80, sphereWidth + W * i);
@@ -171,19 +184,171 @@ export function SphereScene({
       const rx = w * 0.5;
       const ry = h * 0.5;
 
-      const mat = makeMaterial();
-      (mat as THREE.LineBasicMaterial).opacity = 0.6 * (1 - t * 0.4);
+      baseScale[i * 2 + 0] = rx;
+      baseScale[i * 2 + 1] = ry;
+
+      const r = seeded(i + 1337);
+      baseOpacity[i] = 0.6 * (1 - t * 0.4);
+      phaseAcrossArr[i] = 2 * Math.PI * layerPhaseCycles * t;
+      phase0Arr[i] = (r * 2 - 1) * layerPhaseJitter;
+      speedMulArr[i] = 1 + (r * 2 - 1) * layerSpeedJitter;
+    }
+
+    geom.setAttribute(
+      "iBaseScale",
+      new THREE.InstancedBufferAttribute(baseScale, 2)
+    );
+    geom.setAttribute(
+      "iBaseOpacity",
+      new THREE.InstancedBufferAttribute(baseOpacity, 1)
+    );
+    geom.setAttribute(
+      "iPhaseAcross",
+      new THREE.InstancedBufferAttribute(phaseAcrossArr, 1)
+    );
+    geom.setAttribute(
+      "iPhase0",
+      new THREE.InstancedBufferAttribute(phase0Arr, 1)
+    );
+    geom.setAttribute(
+      "iSpeedMul",
+      new THREE.InstancedBufferAttribute(speedMulArr, 1)
+    );
+    return geom;
+  }, [
+    useInstancing,
+    circleGeom,
+    layers,
+    sphereWidth,
+    sphereHeight,
+    layerPhaseCycles,
+    layerPhaseJitter,
+    layerSpeedJitter,
+    seeded,
+  ]);
+
+  /** ---------- Material(s) ---------- */
+  // GPU shader for instanced path
+  const shaderMatRef = React.useRef<THREE.ShaderMaterial>(null!);
+  const shaderMat = React.useMemo(() => {
+    if (!useInstancing) return null;
+    const mat = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: {
+        uColor: { value: new THREE.Color(color) },
+        uTime: { value: 0 },
+        uOmega: { value: (2 * Math.PI) / pulsePeriodSec },
+        uScalePulseAmt: { value: scalePulseAmt },
+        uFadeMul: { value: 1 },
+      },
+      vertexShader: /* glsl */ `
+        attribute vec3 position;
+        attribute vec2 iBaseScale;
+        attribute float iBaseOpacity;
+        attribute float iPhaseAcross;
+        attribute float iPhase0;
+        attribute float iSpeedMul;
+
+        uniform float uTime;
+        uniform float uOmega;
+        uniform float uScalePulseAmt;
+
+        varying float vOpacity;
+
+        void main() {
+          float phase = uOmega * uTime * iSpeedMul + iPhaseAcross + iPhase0;
+          float wave = 0.5 + 0.5 * sin(phase);
+
+          float s = 1.0 + (wave - 0.5) * 2.0 * uScalePulseAmt;
+          vec3 p = position;
+          p.x *= iBaseScale.x * s;
+          p.y *= iBaseScale.y * s;
+
+          vOpacity = iBaseOpacity * (0.75 + 0.25 * wave);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        precision highp float;
+        uniform vec3 uColor;
+        uniform float uFadeMul;
+        varying float vOpacity;
+        void main() {
+          gl_FragColor = vec4(uColor, vOpacity * uFadeMul);
+        }
+      `,
+    });
+    (mat as any).toneMapped = false;
+    return mat;
+  }, [useInstancing, color, pulsePeriodSec, scalePulseAmt]);
+
+  // Legacy CPU path (kept for fallback/compare)
+  type L = {
+    line: THREE.Line;
+    baseOpacity: number;
+    baseScaleX: number;
+    baseScaleY: number;
+    t: number;
+    phaseAcross: number;
+    phase0: number;
+    speedMul: number;
+  };
+  const layersData = React.useRef<L[]>([]);
+
+  /** build (instanced OR legacy) */
+  React.useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    // Clean previous legacy lines if any
+    for (const it of layersData.current) {
+      root.remove(it.line);
+      const m = it.line.material as THREE.Material | THREE.Material[];
+      if (Array.isArray(m)) m.forEach((mm) => mm.dispose());
+      else m?.dispose?.();
+      it.line.geometry?.dispose?.();
+    }
+    layersData.current = [];
+
+    if (useInstancing) {
+      // Nothing to mount here; we render a single <line> with instanced geometry below.
+      return;
+    }
+
+    // Legacy CPU path (original behavior)
+    const unitCircle = circleGeom;
+    const linesToAdd: THREE.Line[] = [];
+    const newLayers: Array<L> = [];
+
+    const W = -4,
+      H = 1;
+    for (let i = 0; i < layers; i++) {
+      const t = i / Math.max(1, layers - 1);
+      const w = Math.max(80, sphereWidth + W * i);
+      const h = Math.max(80, sphereHeight + H * i);
+      const rx = w * 0.5;
+      const ry = h * 0.5;
+
+      const mat = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        opacity: 0.6 * (1 - t * 0.4),
+      }) as THREE.LineBasicMaterial;
+      (mat as any).toneMapped = false;
 
       const line = new THREE.Line(unitCircle, mat);
-      line.rotation.z = Math.sin(t * Math.PI) * rotAmp;
+      line.rotation.z = Math.sin(t * Math.PI) * THREE.MathUtils.degToRad(25);
       line.scale.set(rx, ry, 1);
       line.frustumCulled = false;
 
-      const r = hash(i + 13.37);
-
+      const r = seeded(i + 13.37);
       newLayers.push({
         line,
-        baseOpacity: (mat as THREE.LineBasicMaterial).opacity,
+        baseOpacity: mat.opacity!,
         baseScaleX: rx,
         baseScaleY: ry,
         t,
@@ -197,18 +362,19 @@ export function SphereScene({
     if (linesToAdd.length) root.add(...linesToAdd);
     layersData.current = newLayers;
   }, [
+    useInstancing,
+    circleGeom,
     layers,
     sphereWidth,
     sphereHeight,
     layerPhaseCycles,
     layerPhaseJitter,
     layerSpeedJitter,
-    hash,
-    makeMaterial,
-    unitCircle,
+    color,
+    seeded,
   ]);
 
-  /* ---------- responsive fit cap ---------- */
+  /** ---------- responsive fit cap ---------- */
   const viewportPadding = 96;
   const computeEnvelopeRadius = React.useCallback(() => {
     const rx0 = Math.max(80, sphereWidth) * 0.5;
@@ -226,31 +392,19 @@ export function SphereScene({
       const availH = Math.max(1, vh - pad * 2);
       return Math.min(availW / (2 * R), availH / (2 * R));
     },
-    [computeEnvelopeRadius, viewportPadding]
+    [computeEnvelopeRadius]
   );
 
-  const smoothScaleRef = React.useRef(1);
-  const startRef = React.useRef<number>(performance.now());
-
-  React.useEffect(() => {
-    if (!gl.domElement) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.05 }
-    );
-    obs.observe(gl.domElement);
-    return () => obs.disconnect();
-  }, [gl]);
-
+  /** ---------- per-frame updates (cheap) ---------- */
   useFrame(() => {
-    if (!isVisible) return;
+    if (!isVisible) return; // ⬅ nothing computed, nothing drawn
+
     const time = (performance.now() - startRef.current) / 1000;
-    const omega = (2 * Math.PI) / pulsePeriodSec;
     const root = rootRef.current;
 
     const { smooth: pSmooth, overPx } = scrollRef.current;
-    const p = easeOutCubic(pSmooth); // eased for fades/position
-    const scaleP = pSmooth; // linear for scale
+    const p = easeOutCubic(pSmooth);
+    const scaleP = pSmooth;
 
     // fades
     let fadeStart = fadeOutFromProgress;
@@ -269,18 +423,27 @@ export function SphereScene({
       fadeMul *= postMul;
     }
 
-    // per-layer anim
-    for (let i = 0; i < layersData.current.length; i++) {
-      const L = layersData.current[i];
-      const phase = omega * time * L.speedMul + L.phaseAcross + L.phase0;
-      const wave = 0.5 + 0.5 * Math.sin(phase);
-      const mat = L.line.material as THREE.LineBasicMaterial;
-      mat.opacity = L.baseOpacity * (0.75 + 0.25 * wave) * fadeMul;
+    // Instanced: update cheap uniforms
+    if (useInstancing && shaderMatRef.current) {
+      shaderMatRef.current.uniforms.uTime.value = time;
+      shaderMatRef.current.uniforms.uFadeMul.value = fadeMul;
+    }
 
-      if (scalePulseAmt > 0) {
-        const sWave = 1 + (wave - 0.5) * 2 * scalePulseAmt;
-        L.line.scale.x = L.baseScaleX * sWave;
-        L.line.scale.y = L.baseScaleY * sWave;
+    // Legacy per-layer updates (only if not instanced)
+    if (!useInstancing) {
+      const omega = (2 * Math.PI) / pulsePeriodSec;
+      for (let i = 0; i < layersData.current.length; i++) {
+        const L = layersData.current[i];
+        const phase = omega * time * L.speedMul + L.phaseAcross + L.phase0;
+        const wave = 0.5 + 0.5 * Math.sin(phase);
+        const mat = L.line.material as THREE.LineBasicMaterial;
+        mat.opacity = L.baseOpacity * (0.75 + 0.25 * wave) * fadeMul;
+
+        if (scalePulseAmt > 0) {
+          const sWave = 1 + (wave - 0.5) * 2 * scalePulseAmt;
+          L.line.scale.x = L.baseScaleX * sWave;
+          L.line.scale.y = L.baseScaleY * sWave;
+        }
       }
     }
 
@@ -289,24 +452,23 @@ export function SphereScene({
     // spin
     root.rotation.z = time * spinSpeed;
 
-    // ---- Y follow (top edge -> center + offset) ----
+    // Y follow + scale
     const halfH = 0.5 * sphereHeight * smoothScaleRef.current;
     const yStart = size.height - startTopPadding - halfH;
     const yEnd = size.height * 0.5 + endYOffset;
     const yFollow = THREE.MathUtils.lerp(yStart, yEnd, p);
 
-    // ---- SCALE (linear progress; cap rules) ----
     const vw = size.width;
     const vh = typeof window !== "undefined" ? window.innerHeight : size.height;
 
     const scrollScale = THREE.MathUtils.lerp(minScale, maxScale, scaleP);
-
-    const edgeGuard = THREE.MathUtils.smoothstep(0.85, 1.0, pSmooth); // 0..1 near the end
-    const extraPad = 120 * edgeGuard; // add up to 120px padding close to the end
+    const edgeGuard = THREE.MathUtils.smoothstep(0.85, 1.0, pSmooth);
+    const extraPad = 120 * edgeGuard;
     const cap = clampToViewport
-      ? fitCap(vw, vh, viewportPadding + extraPad) // pass a larger padding
+      ? fitCap(vw, vh, viewportPadding + extraPad)
+      : neverUpscale
+      ? 1
       : Infinity;
-
     const targetScale = Math.min(scrollScale, cap);
 
     smoothScaleRef.current = THREE.MathUtils.lerp(
@@ -319,5 +481,15 @@ export function SphereScene({
     root.scale.setScalar(smoothScaleRef.current);
   });
 
-  return <group ref={rootRef} />;
+  /** ---------- Render ---------- */
+  return (
+    <group ref={rootRef}>
+      {useInstancing ? (
+        <line>
+          <primitive attach='geometry' object={instGeom!} />
+          <shaderMaterial ref={shaderMatRef} args={[shaderMat!]} />
+        </line>
+      ) : null}
+    </group>
+  );
 }

@@ -2,9 +2,21 @@ import { Box, Container, useMediaQuery } from "@chakra-ui/react";
 import SphereScene from "../Sphere/AnimatedScene";
 import BrightTextRichLines from "../AnimatedTextReveal/AnimatedTextByLines";
 import BrightTextRich from "../AnimatedTextReveal/AnimatedText";
+import { useTranslation } from "react-i18next";
 
 export const Promo = () => {
-  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+  const { t } = useTranslation();
+  const [isMobile, isTablet] = useMediaQuery([
+    "(max-width: 768px)",
+    "(max-width: 1024px)",
+  ]);
+
+  const getBottomOffset = () => {
+    if (isMobile) return -400;
+    if (isTablet) return -400;
+    return -150;
+  };
+  console.log(getBottomOffset());
   return (
     <Box
       id='hero'
@@ -33,7 +45,8 @@ export const Promo = () => {
         bottom='0'
         w='100%'
         h={{
-          base: "1500px",
+          base: "1400px",
+          md: "1600px",
           lg: "2000px",
           xl: "2000px",
         }}
@@ -60,11 +73,11 @@ export const Promo = () => {
           maxScale={isMobile ? 1.2 : 5}
           startTopPadding={isMobile ? 100 : 100}
           clampToViewport={false}
-          endYOffset={isMobile ? -400 : -150}
-          layers={120}
+          endYOffset={getBottomOffset()}
+          layers={isMobile ? 80 : 120}
           sphereWidth={660}
           sphereHeight={740}
-          layerSpeedJitter={7}
+          layerSpeedJitter={isMobile ? 3 : 7}
           layerPhaseJitter={10}
           spinSpeed={0.1}
           fadeOutFromProgress={50}
@@ -99,7 +112,7 @@ export const Promo = () => {
           }}
         >
           <BrightTextRich
-            text='Structure'
+            text={t("structure")}
             fontWeight='700'
             fontSize='clamp(3.125rem, 2.6053rem + 2.2173vw, 5rem)'
             color='text'
@@ -162,7 +175,9 @@ export const Promo = () => {
         </Box>
         <Box marginTop={{ base: "150px", md: "60px" }} alignSelf='flex-start'>
           <BrightTextRichLines
-            text={`Ми створюємо <i>{цифрові продукти}</i>, які<br>допомогають брендам зростати`}
+            text={t("promo.description", {
+              mobileBR: isMobile ? "<br>" : "",
+            })}
             fontSize='clamp(2rem, 1.6882rem + 1.3304vw, 3.125rem)'
             fontWeight='300'
             color='whiteAlpha.900' // wrapper color (lines override via animated style)

@@ -3,12 +3,13 @@ import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Card } from "./Card";
 import { segment } from "../../utils/animationUtils";
+import { useTranslation } from "react-i18next";
 
 const MotionBox = motion(Box);
 
 export const Cards: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
-
+  const { t } = useTranslation();
   const sectionH = useBreakpointValue({
     base: "520vh",
     md: "580vh",
@@ -76,8 +77,8 @@ export const Cards: React.FC = () => {
             pointerEvents='none'
           >
             <Card
-              title='КОЖЕН ВЕЛИКИЙ ПРОДУКТ ГОВОРИТЬ ВІЗУАЛЬНО'
-              description='ТАК НАРОДЖУЄТЬСЯ ДОВІРА'
+              title={t("cards.every-big-product")}
+              description={t("cards.every-big-product-description")}
               bg='white1'
               badgeText='Every big product'
               color='gray3'
@@ -92,8 +93,8 @@ export const Cards: React.FC = () => {
             pointerEvents='none'
           >
             <Card
-              title='МАЙБУТНІ ЛІДЕРИ НЕ КОПІЮЮТЬ'
-              description='ВОНА СТВОРЮЮТЬ ТРЕНДИ, ЯКІ НАСЛІДУЄ СВІТ'
+              title={t("cards.future-leaders")}
+              description={t("cards.future-leaders-description")}
               bg='pink1'
               badgeText='Future leaders'
               color='secondary'
@@ -107,8 +108,8 @@ export const Cards: React.FC = () => {
             zIndex={3}
           >
             <Card
-              title='ДИЗАЙН – ЦЕ ПОЧАТОК'
-              description='СПРАВЖНЯ ОСНОВА – ЦЕ КОД, ЩО ВИТРИМУЄ ЧАС І РОЗВИВАЄТЬСЯ ІЗ ТОБОЮ'
+              title={t("cards.design-is-a-beginning")}
+              description={t("cards.design-is-a-beginning-description")}
               bg='white1'
               badgeText='Design is a beginning'
               color='black1'

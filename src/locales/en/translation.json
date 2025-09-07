@@ -1,0 +1,24 @@
+{
+  "loading": {
+    "title": "Preparing your experience...",
+    "percentage": "{{count}}%",
+    "preparing": "Preparing your experience..."
+  },
+  "languageSwitcher": {
+    "en": "EN",
+    "uk": "УК"
+  },
+  "header": {
+    "about": "About",
+    "projects": "Projects",
+    "consultation": "Consultation"
+  },
+  "structure": "Structure",
+  "visual-design": "[Visual Design]",
+  "web-and-mobile-development": "[Web and Mobile Development]",
+  "digital-products": "{digital products}",
+  "help-brands-to-grow": "that <br> help brands grow",
+  "promo": {
+    "description": "We develop {{mobileBR}} <i>{digital products}</i> that <br> help brands grow"
+  }
+}

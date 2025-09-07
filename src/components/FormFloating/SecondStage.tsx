@@ -1,6 +1,7 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { Button as ButtonComponent } from "../Button";
 import { FormButton } from "./FormButton";
+import ArrowLeftIcon from "../../assets/arrow-back.svg?react";
 
 export const SecondStage = ({
   handlePreviousStage,
@@ -66,13 +67,19 @@ export const SecondStage = ({
             onClick={handlePreviousStage}
           >
             <Text color='white' fontSize='18px'>
-              ←
+              <ArrowLeftIcon />
             </Text>
           </Button>
           <ButtonComponent onClick={handleSubmit}>Відправити</ButtonComponent>
         </Box>
 
-        <div style={{ display: "flex", gap: "13px", flexDirection: "column" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "13px",
+          }}
+        >
           <FormButton onClose={onClose} />
         </div>
       </div>

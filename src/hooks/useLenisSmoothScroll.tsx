@@ -17,7 +17,7 @@ export function useLenisSmoothScroll(
     if (prefersReduced) return;
 
     const lenis = new Lenis({
-      duration: isMobile ? 1.2 : 1, // Faster duration
+      duration: isMobile ? 0.8 : 1, // Faster duration
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
       wheelMultiplier: isMobile ? 1.2 : 1.0, // Higher wheel speed
@@ -26,9 +26,9 @@ export function useLenisSmoothScroll(
       gestureOrientation: "vertical",
       ...(isMobile && {
         smoothTouch: true,
-        touchInertiaMultiplier: 15, // Higher inertia for more momentum
+        touchInertiaMultiplier: 20, // Higher inertia for more momentum
         normalizeWheel: true,
-        lerp: 0.4, // Higher lerp for faster response
+        lerp: 1.2, // Higher lerp for faster response
         syncTouch: true,
       }),
       ...opts,

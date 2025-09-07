@@ -13,10 +13,11 @@ export const Button = ({
     <ChakraButton
       onClick={onClick}
       disabled={disabled}
-      width='103px'
+      paddingX='35px'
+      paddingY='5px'
       height='42px'
       backgroundColor='primary'
-      borderRadius='10px'
+      borderRadius='15px'
       color='white'
       fontSize='16px'
       fontWeight='500'

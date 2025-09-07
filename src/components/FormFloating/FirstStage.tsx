@@ -18,13 +18,12 @@ export const FirstStage = ({
 }) => {
   return (
     <>
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems={{ base: "center", md: "flex-start" }}
+        gap='10px'
+        flex='1'
       >
         <Text
           fontSize='clamp(1rem, 0.9573rem + 0.1553vw, 1.125rem)'
@@ -36,10 +35,16 @@ export const FirstStage = ({
         >
           Мені потрібно:
         </Text>
-        <Text fontSize='12px' color='gray1' fontWeight='400' opacity={1}>
+        <Text
+          fontSize='12px'
+          color='gray1'
+          fontWeight='400'
+          opacity={1}
+          textAlign={{ base: "end", md: "inital" }}
+        >
           Можете обрати декілька варіантів...
         </Text>
-      </div>
+      </Box>
       <Box
         mt='25px'
         display='flex'
