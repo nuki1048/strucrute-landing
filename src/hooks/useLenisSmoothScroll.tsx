@@ -28,29 +28,12 @@ export function useLenisSmoothScroll(
         smoothTouch: true,
         touchInertiaMultiplier: 15, // Higher inertia for more momentum
         normalizeWheel: true,
-        lerp: 0.12, // Higher lerp for faster response
+        lerp: 0.4, // Higher lerp for faster response
         syncTouch: true,
       }),
       ...opts,
     });
     lenisRef.current = lenis;
-
-    // Add custom speed limiting for mobile
-    if (isMobile) {
-      const maxSpeed = 15; // Higher speed limit
-
-      const originalRaf = lenis.raf;
-      lenis.raf = (time: number) => {
-        const deltaSpeed = Math.abs(lenis.velocity);
-
-        // Limit the scroll speed
-        if (deltaSpeed > maxSpeed) {
-          lenis.velocity = lenis.velocity > 0 ? maxSpeed : -maxSpeed;
-        }
-
-        return originalRaf.call(lenis, time);
-      };
-    }
 
     let rafId = 0;
     const raf = (time: number) => {
