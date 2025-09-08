@@ -50,7 +50,7 @@ export default function Works() {
   ];
 
   return (
-    <Box bg='#09090A' minH='100vh' color='white'>
+    <Box bg='#09090A' minH='100vh' color='white' id='projects'>
       <CenterBurstGallery items={items} />
     </Box>
   );

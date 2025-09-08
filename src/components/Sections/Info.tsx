@@ -2,8 +2,10 @@ import { Grid, useMediaQuery } from "@chakra-ui/react";
 import { BoxGrid } from "../BoxGrid";
 import { RevealText } from "../AnimatedTextReveal/ScrollText";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Info = () => {
+  const { t } = useTranslation();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
   const textMode = useMemo(() => (isMobile ? "word" : "letter"), [isMobile]);
@@ -28,7 +30,7 @@ export const Info = () => {
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
-        hoverText='допомагає компанії виділитися, бути впізнаваною та викликати правильні емоції в аудиторії'
+        hoverText={t("info.visual-identity-description")}
         hoverTextAlign={isMobile ? "right" : "left"}
         hoverTextTop={{ base: "30%", md: "20%", lg: "30%" }}
         hoverTextRight={{ base: "-25%", sm: "-30%", md: "-40%", xl: "-30%" }}
@@ -37,7 +39,7 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={"<c>Візуальна</c><br>ідентичність"}
+          text={t("info.visual-identity")}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
@@ -60,7 +62,7 @@ export const Info = () => {
         alignItems='flex-end'
         justifySelf='flex-end'
         marginTop={{ base: "260px", md: "110px" }}
-        hoverText='створення сайтів та веб-додатків: від простих лендингів до складних сервісів'
+        hoverText={t("info.web-and-mobile-development-description")}
         hoverTextAlign='right'
         hoverTextTop={{ base: "30px", sm: "40px", md: "45%" }}
         hoverTextLeft={{
@@ -76,7 +78,7 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={"Web<br>розробка"}
+          text={t("info.web-and-mobile-development")}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
@@ -100,7 +102,7 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-start'
         marginTop={{ base: "30px", sm: "20px", md: "110px" }}
-        hoverText='хороший UI/UX робить взаємодію простою та приємною'
+        hoverText={t("info.ui-ux-design-description")}
         hoverTextAlign='left'
         height='fit-content'
         hoverTextRight={{ base: "-100%", sm: "-80%", md: "-60%", xl: "-55%" }}
@@ -111,7 +113,7 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={"<i>Ui/Ux</i> дизайн"}
+          text={t("info.ui-ux-design")}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
@@ -136,7 +138,7 @@ export const Info = () => {
         alignItems='flex-end'
         alignSelf='flex-start'
         justifyContent={{ base: "center", md: "flex-end" }}
-        hoverText='зручні, безпечні та масштабовані рішення для бізнесу будь-якого рівня'
+        hoverText={t("info.e-commerce-solutions-description")}
         hoverTextAlign='right'
         hoverTextLeft={{ base: "-35%", sm: "-20%", md: "-25%", xl: "-60%" }}
         hoverTextBottom={{
@@ -151,7 +153,7 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={"<i><c>E-</c></i>commerce<br>рішення"}
+          text={t("info.e-commerce-solutions")}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
@@ -178,7 +180,7 @@ export const Info = () => {
         justifyContent='flex-end'
         alignSelf='center'
         maxWHoverText='250px'
-        hoverText='робить продукт більш сучасним, залучаючим та зрозумілим для користувача'
+        hoverText={t("info.interactive-design-description")}
         hoverTextAlign='left'
         width='max-content'
         marginTop={{ base: "50px", sm: "0", xl: "50px", "2xl": "100px" }}
@@ -198,7 +200,7 @@ export const Info = () => {
         hoverTextTop='none'
       >
         <RevealText
-          text={"Інтерактивний<br><c>дизайн</c>"}
+          text={t("info.interactive-design")}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'

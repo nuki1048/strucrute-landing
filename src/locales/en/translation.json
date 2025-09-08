@@ -6,10 +6,10 @@
   },
   "languageSwitcher": {
     "en": "EN",
-    "uk": "УК"
+    "uk": "UA"
   },
   "header": {
-    "about": "About",
+    "about": "About us",
     "projects": "Projects",
     "consultation": "Consultation"
   },
@@ -19,6 +19,66 @@
   "digital-products": "{digital products}",
   "help-brands-to-grow": "that <br> help brands grow",
   "promo": {
-    "description": "We develop {{mobileBR}} <i>{digital products}</i> that <br> help brands grow"
+    "description": "We create {{mobileBR}} <i>{digital products}</i> {{desktopBR}} that help brands grow"
+  },
+  "welcome": "Welcome",
+  "welcome-description": "<i>Structure Agency</i> – a design and <br> digital product development studio. We <br> strive to create user <br> experiences and <i>structures</i> that shape {{mobileBR}} the future of your business",
+  "about": {
+    "ui-ux-design": "UI/UX design and development",
+    "web-applications": "Web applications",
+    "mobile-applications": "Mobile applications",
+    "security-and-reliability": "Security and reliability",
+    "interactive-solutions": "Interactive solutions",
+    "continuous-support-and-development": "Ongoing support and development",
+    "description": "We move fast and confidently. {{mobileBR}} You can trust us with:"
+  },
+  "cards": {
+    "every-big-product": "EVERY GREAT PRODUCT SPEAKS VISUALLY",
+    "every-big-product-description": "THIS IS HOW TRUST IS BORN",
+    "future-leaders": "FUTURE LEADERS DON’T COPY",
+    "future-leaders-description": "THEY CREATE TRENDS THAT THE WORLD FOLLOWS",
+    "design-is-a-beginning": "DESIGN IS THE BEGINNING",
+    "design-is-a-beginning-description": "THE TRUE FOUNDATION IS CODE THAT STANDS THE TEST OF TIME AND GROWS WITH YOU"
+  },
+  "footer": {
+    "description": "Digital products built fast, precise, and ready to scale.",
+    "all-rights-reserved": "All rights reserved.",
+    "email": "agency@strctr.dev",
+    "location": "Odesa · Remote worldwide",
+    "structure": "STRUCTURE"
+  },
+  "info": {
+    "visual-identity": "<c>Visual</c><br>identity",
+    "visual-identity-description": "helps a company stand out, be recognizable, and evoke the right emotions in its audience",
+    "web-and-mobile-development": "Web<br>development",
+    "web-and-mobile-development-description": "creating websites and web apps: from simple landing pages to complex services",
+    "ui-ux-design": "<i>Ui/Ux</i> design",
+    "ui-ux-design-description": "good UI/UX makes interaction simple and enjoyable",
+    "e-commerce-solutions": "<i><c>E-</c></i>commerce<br>solutions",
+    "e-commerce-solutions-description": "convenient, secure, and scalable solutions for businesses of any size",
+    "interactive-design": "Interactive<br><c>design</c>",
+    "interactive-design-description": "makes the product more modern, engaging, and user-friendly"
+  },
+  "works.title": "Our projects",
+  "any-screen.title": "ONE PRODUCT. ANY SCREEN.",
+  "form-floating": {
+    "description": "Tell us about your needs",
+    "form-items.1": "UI/UX design for website/landing/app",
+    "form-items.2": "Mobile app development",
+    "form-items.3": "Web app/landing development",
+    "form-fields.name": "Your name",
+    "form-fields.email": "Your email",
+    "form-fields.details": "Tell us more",
+    "second-stage.description": "Leave a short description about yourself so we can contact you:",
+    "second-stage.submit": "Submit",
+    "second-stage.submitting": "Submitting...",
+    "first-stage.description": "I need:",
+    "first-stage.description-2": "You can choose several options...",
+    "first-stage.next": "Next"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid-email": "Invalid email",
+    "name-too-short": "Name must be at least 2 characters long"
   }
 }

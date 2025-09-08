@@ -1,11 +1,13 @@
 import { chakra, Text } from "@chakra-ui/react";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 const MotionBox = chakra(motion.div);
 import "./AnyScreen.css";
 import SVG from "./Svg";
 
 export const AnyScreen = () => {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
   const [isActive, setIsActive] = useState(false);
@@ -60,8 +62,9 @@ export const AnyScreen = () => {
             fontWeight='400'
             color='gray2'
             textAlign='center'
+            textTransform='uppercase'
           >
-            ОДИН ПРОДУКТ. БУДЬ-ЯКИЙ ЕКРАН.
+            {t("any-screen.title")}
           </Text>
         </motion.div>
 

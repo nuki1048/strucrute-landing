@@ -14,16 +14,12 @@ import {
 import { lerp, seeded } from "../../utils/animationUtils";
 import { BurstCard } from "./BurstCard";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const MotionText = chakra(motion.h2);
 
-export function CenterBurstGallery({
-  items,
-  title = "НАШІ ПРОЕКТИ",
-}: {
-  items: WorkItem[];
-  title?: string;
-}) {
+export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
+  const { t } = useTranslation();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const safe = React.useMemo(
     () => (Array.isArray(items) ? items : []),
@@ -158,11 +154,12 @@ export function CenterBurstGallery({
             textAlign='center'
             fontWeight={800}
             letterSpacing='widest'
+            textTransform='uppercase'
             style={{ scale: titleScale, opacity: titleOpacity, y: titleY }}
             fontSize={{ base: "3xl", md: "7xl" }}
             id='projects'
           >
-            {title}
+            {t("works.title")}
           </MotionText>
 
           {cards.map((c) => (

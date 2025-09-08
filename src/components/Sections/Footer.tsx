@@ -5,6 +5,7 @@ import LinkedinIcon from "../../assets/linkedin-icon.svg?react";
 import { useTranslation } from "react-i18next";
 export const Footer = () => {
   const { t } = useTranslation();
+  const year = new Date().getFullYear();
   return (
     <Box
       width='100%'
@@ -45,8 +46,9 @@ export const Footer = () => {
             fontWeight='700'
             color='white'
             textAlign='left'
+            textTransform='uppercase'
           >
-            STRUCTURE
+            {t("structure")}
           </Text>
           <Text
             fontSize='clamp(0.75rem, 0.6646rem + 0.3106vw, 1rem)'
@@ -66,7 +68,7 @@ export const Footer = () => {
           gridRow={{ base: "2", md: "1" }}
           gridColumn={{ base: "1/3", md: "2" }}
         >
-          © 2025 {t("footer.structure")}. {t("footer.all-rights-reserved")}
+          © {year} {t("footer.structure")}. {t("footer.all-rights-reserved")}
         </Text>
         <Box
           display='flex'

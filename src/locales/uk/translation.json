@@ -19,7 +19,7 @@
   "digital-products": "{цифрові продукти}",
   "help-brands-to-grow": "які <br> допомагають брендам зростати",
   "promo": {
-    "description": "Ми створюємо {{mobileBR}} <i>{цифрові продукти}</i>, які<br>допомогають брендам зростати"
+    "description": "Ми створюємо {{mobileBR}} <i>{цифрові продукти}</i>, які {{desktopBR}} допомогають брендам зростати"
   },
   "welcome": "Вітаємо",
   "welcome-description": "<i>Structure Agency</i> - cтудія дизайну та <br> розробки цифрових продуктів. Ми <br> прагнемо створювати користувацький <br> досвід  та <i>структури</i>, які формують {{mobileBR}} майбутнє вашого бізнесу",
@@ -29,7 +29,8 @@
     "mobile-applications": "Мобільні застосунки",
     "security-and-reliability": "Безпеку та надійність",
     "interactive-solutions": "Інтерактивні рішення",
-    "continuous-support-and-development": "Постійну підтримку й розвиток"
+    "continuous-support-and-development": "Постійну підтримку й розвиток",
+    "description": "Ми рухаємося швидко та впевнено. {{mobileBR}} Ви можете довірити нам:"
   },
   "cards": {
     "every-big-product": "КОЖЕН ВЕЛИКИЙ ПРОДУКТ ГОВОРИТЬ ВІЗУАЛЬНО",
@@ -45,5 +46,39 @@
     "email": "agency@strctr.dev",
     "location": "Одеса · Віддалено по всьому світу",
     "structure": "STRUCTURE"
+  },
+  "info": {
+    "visual-identity": "<c>Візуальна</c><br>ідентичність",
+    "visual-identity-description": "допомагає компанії виділитися, бути впізнаваною та викликати правильні емоції в аудиторії",
+    "web-and-mobile-development": "Web<br>розробка",
+    "web-and-mobile-development-description": "створення сайтів та веб-додатків: від простих лендингів до складних сервісів",
+    "ui-ux-design": "<i>Ui/Ux</i> дизайн",
+    "ui-ux-design-description": "хороший UI/UX робить взаємодію простою та приємною",
+    "e-commerce-solutions": "<i><c>E-</c></i>commerce<br>рішення",
+    "e-commerce-solutions-description": "зручні, безпечні та масштабовані рішення для бізнесу будь-якого рівня",
+    "interactive-design": "Інтерактивний<br><c>дизайн</c>",
+    "interactive-design-description": "робить продукт більш сучасним, залучаючим та зрозумілим для користувача"
+  },
+  "works.title": "Наші проекти",
+  "any-screen.title": "ОДИН ПРОДУКТ. БУДЬ-ЯКИЙ ЕКРАН.",
+  "form-floating": {
+    "description": "Розкажіть нам про свої потреби",
+    "form-items.1": "UI/UX дизайн вебсайту/лендінгу/застосунку",
+    "form-items.2": "Розробка мобільного застосунку",
+    "form-items.3": "Розробка вебзастосунку/лендінгу",
+    "form-fields.name": "Ваше ім'я",
+    "form-fields.email": "Ваш e-mail",
+    "form-fields.details": "Розкажіть детальніше",
+    "second-stage.description": "Залиште коротку інформацію про себе, щоб ми могли зв'язатися з Вами:",
+    "second-stage.submit": "Відправити",
+    "second-stage.submitting": "Відправляємо...",
+    "first-stage.description": "Мені потрібно:",
+    "first-stage.description-2": "Можете обрати декілька варіантів...",
+    "first-stage.next": "Далі"
+  },
+  "validation": {
+    "required": "Це поле є обов'язковим",
+    "invalid-email": "Неправильний формат e-mail",
+    "name-too-short": "Ім'я повинно містити не менше 2 символів"
   }
 }

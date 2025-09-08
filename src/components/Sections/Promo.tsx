@@ -16,7 +16,6 @@ export const Promo = () => {
     if (isTablet) return -400;
     return -150;
   };
-  console.log(getBottomOffset());
   return (
     <Box
       id='hero'
@@ -177,6 +176,7 @@ export const Promo = () => {
           <BrightTextRichLines
             text={t("promo.description", {
               mobileBR: isMobile ? "<br>" : "",
+              desktopBR: isMobile ? "" : "<br>",
             })}
             fontSize='clamp(2rem, 1.6882rem + 1.3304vw, 3.125rem)'
             fontWeight='300'

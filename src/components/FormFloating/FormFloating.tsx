@@ -1,22 +1,44 @@
 import { Text, useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import useScroll from "../../hooks/useScroll";
 import { ExpandedFormFloating } from "./ExpandedFormFloating";
 import { FormButton } from "./FormButton";
 import { buttonVariants, containerVariants, textVariants } from "./animations";
+import { useTranslation } from "react-i18next";
 
 export const FormFloating = () => {
+  const { t } = useTranslation();
   const { isEndOfPage } = useScroll();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
 
   const handleButtonClick = () => {
     setIsExpanded(!isExpanded);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        if (isExpanded) {
+          setIsExpanded(false);
+        }
+      }
+    };
+
+    if (isExpanded) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded]);
+
   return (
     <motion.div
+      ref={formRef}
       variants={containerVariants(isMobile)}
       initial='hidden'
       animate={isExpanded ? "expanded" : "visible"}
@@ -51,7 +73,7 @@ export const FormFloating = () => {
               paddingLeft='20px'
               letterSpacing='0.16px'
             >
-              Розкажіть нам про свої потреби
+              {t("form-floating.description")}
             </Text>
           </motion.div>
 

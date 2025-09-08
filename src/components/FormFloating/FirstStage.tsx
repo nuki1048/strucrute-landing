@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { FormListItem } from "./FormListItem";
 import { Button as ButtonComponent } from "../Button";
 import { FormButton } from "./FormButton";
+import { useTranslation } from "react-i18next";
 
 export const FirstStage = ({
   formItems,
@@ -16,6 +17,7 @@ export const FirstStage = ({
   selectedItems: string[];
   setSelectedItems: (items: string[]) => void;
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Box
@@ -33,7 +35,7 @@ export const FirstStage = ({
           opacity={1}
           textWrap='nowrap'
         >
-          Мені потрібно:
+          {t("form-floating.first-stage.description")}
         </Text>
         <Text
           fontSize='12px'
@@ -42,7 +44,7 @@ export const FirstStage = ({
           opacity={1}
           textAlign={{ base: "end", md: "inital" }}
         >
-          Можете обрати декілька варіантів...
+          {t("form-floating.first-stage.description-2")}
         </Text>
       </Box>
       <Box
@@ -90,7 +92,7 @@ export const FirstStage = ({
           onClick={handleNextStage}
           disabled={selectedItems.length === 0}
         >
-          Далі
+          {t("form-floating.first-stage.next")}
         </ButtonComponent>
         <FormButton onClose={onClose} />
       </div>

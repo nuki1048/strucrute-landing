@@ -23,7 +23,6 @@ const keywords = [
 
 const createItemVariants = (index: number, isMobile: boolean) => {
   if (isMobile) {
-    // Mobile: simple sequential animation (01, 02, 03, 04, 05, 06)
     return {
       hidden: {
         opacity: 0,
@@ -37,13 +36,11 @@ const createItemVariants = (index: number, isMobile: boolean) => {
         transition: {
           duration: 0.5,
           ease: easeOut,
-          delay: 0.4 + index * 0.1, // Base delay + sequential delay
+          delay: 0.4 + index * 0.1,
         },
       },
     };
   } else {
-    // Desktop: line-by-line animation (01&04, 02&05, 03&06)
-    // Items 0,3 are line 0; items 1,4 are line 1; items 2,5 are line 2
     const lineIndex = index < 3 ? index : index - 3;
     return {
       hidden: {
@@ -58,7 +55,7 @@ const createItemVariants = (index: number, isMobile: boolean) => {
         transition: {
           duration: 0.5,
           ease: easeOut,
-          delay: lineIndex * 0.2, // Delay based on line, not individual item
+          delay: lineIndex * 0.2,
         },
       },
     };
@@ -107,7 +104,7 @@ export const About = () => {
         h={{ base: "100%", md: "630px" }}
         marginTop='150px'
         overflow='hidden'
-        paddingX={{ base: "45px", md: "100px" }}
+        paddingX={{ base: "20px", md: "100px" }}
       >
         <Container
           position='relative'
@@ -128,14 +125,15 @@ export const About = () => {
         >
           <motion.div variants={textVariants} style={{ width: "100%" }}>
             <Text
-              fontSize='clamp(1.0625rem, 0.7849rem + 1.0093vw, 1.875rem)'
+              fontSize='clamp(1.125rem, 0.5485rem + 2.0963vw, 2.8125rem)'
               color='white'
               lineHeight={1}
               fontWeight={500}
               textAlign='center'
             >
-              Ми рухаємося швидко та впевнено. {isMobile && <br />} Ви можете
-              довірити нам:
+              {t("about.description", {
+                mobileBR: isMobile ? "<br>" : "",
+              })}
             </Text>
           </motion.div>
 
@@ -187,14 +185,13 @@ export const About = () => {
           </motion.div>
         </Container>
 
-        {/* Animated Keywords Section */}
         <motion.div variants={keywordsVariants}>
           <Box
             mt={{ base: "30px", md: "90px" }}
             w='100%'
             h='40px'
             position='relative'
-            overflow='hidden' // important: mask the overflow
+            overflow='hidden'
             display='flex'
             alignItems='center'
             bg='transparent'

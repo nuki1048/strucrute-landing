@@ -32,13 +32,12 @@ export const FormListItem = ({
         cursor: "pointer",
         width: "100%",
         height: "39px",
-        padding: "10px",
+        padding: "20px",
         borderBottom: "1px solid",
         borderColor: "rgba(255, 255, 255, 0.1)",
         marginBottom: "2px",
       }}
     >
-      {/* Check Icon with Animation */}
       {isSelected && (
         <motion.div
           variants={checkIconVariants}
@@ -57,7 +56,6 @@ export const FormListItem = ({
         </motion.div>
       )}
 
-      {/* Number with Animation */}
       {!isSelected && (
         <motion.div
           variants={numberVariants}
@@ -83,7 +81,6 @@ export const FormListItem = ({
         </motion.div>
       )}
 
-      {/* Title */}
       <div
         style={{
           display: "flex",

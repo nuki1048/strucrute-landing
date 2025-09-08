@@ -2,18 +2,28 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import { Button as ButtonComponent } from "../Button";
 import { FormButton } from "./FormButton";
 import ArrowLeftIcon from "../../assets/arrow-back.svg?react";
+import { useTranslation } from "react-i18next";
+
+interface FormErrors {
+  [key: string]: string;
+}
 
 export const SecondStage = ({
   handlePreviousStage,
   handleSubmit,
   onClose,
   renderFormFields,
+  isSubmitting = false,
+  errors = {},
 }: {
   handlePreviousStage: () => void;
   handleSubmit: () => void;
   onClose: () => void;
   renderFormFields: () => React.ReactNode;
+  isSubmitting?: boolean;
+  errors?: FormErrors;
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -31,12 +41,18 @@ export const SecondStage = ({
           textAlign='left'
           opacity={1}
         >
-          Залиште коротку інформацію про себе, щоб ми могли зв'язатися з Вами:
+          {t("form-floating.second-stage.description")}
         </Text>
 
         <Box display='flex' flexDirection='column' gap='25px'>
           {renderFormFields()}
         </Box>
+
+        {errors.submit && (
+          <Text color='#ff6b6b' fontSize='sm'>
+            {errors.submit}
+          </Text>
+        )}
       </div>
 
       <div
@@ -65,12 +81,17 @@ export const SecondStage = ({
             justifyContent='center'
             _hover={{ bg: "rgba(255, 255, 255, 0.1)" }}
             onClick={handlePreviousStage}
+            disabled={isSubmitting}
           >
             <Text color='white' fontSize='18px'>
               <ArrowLeftIcon />
             </Text>
           </Button>
-          <ButtonComponent onClick={handleSubmit}>Відправити</ButtonComponent>
+          <ButtonComponent onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting
+              ? t("form-floating.second-stage.submitting")
+              : t("form-floating.second-stage.submit")}
+          </ButtonComponent>
         </Box>
 
         <div

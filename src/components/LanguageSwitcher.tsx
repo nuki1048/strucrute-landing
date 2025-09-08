@@ -2,24 +2,16 @@ import { useState } from "react";
 import { Box, Text, HStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-interface LanguageSwitcherProps {
-  onLanguageChange?: (language: "EN" | "UA") => void;
-}
-
-export const LanguageSwitcher = ({
-  onLanguageChange,
-}: LanguageSwitcherProps) => {
+export const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
-  const [currentLanguage, setCurrentLanguage] = useState<"EN" | "UA">(
-    i18n.language as "EN" | "UA"
+  const [currentLanguage, setCurrentLanguage] = useState<"en" | "uk">(
+    i18n.language as "en" | "uk"
   );
 
+  console.log(currentLanguage);
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
-    if (onLanguageChange) {
-      onLanguageChange(languageCode as "EN" | "UA");
-    }
-    setCurrentLanguage(languageCode as "EN" | "UA");
+    setCurrentLanguage(languageCode as "en" | "uk");
   };
 
   return (
@@ -38,7 +30,7 @@ export const LanguageSwitcher = ({
       <Box
         position='absolute'
         top='2px'
-        left={currentLanguage === "EN" ? "2px" : "50%"}
+        left={currentLanguage === "en" ? "2px" : "50%"}
         w='50%'
         h='calc(100% - 4px)'
         borderRadius='full'
@@ -60,7 +52,7 @@ export const LanguageSwitcher = ({
           borderRadius='full'
           px='15px'
           py='9px'
-          onClick={() => handleLanguageChange("EN")}
+          onClick={() => handleLanguageChange("en")}
           cursor='pointer'
           w='50%'
           transition='all 0.2s ease'
@@ -86,7 +78,7 @@ export const LanguageSwitcher = ({
           borderRadius='full'
           px='15px'
           py='9px'
-          onClick={() => handleLanguageChange("UA")}
+          onClick={() => handleLanguageChange("uk")}
           cursor='pointer'
           w='50%'
           transition='all 0.2s ease'

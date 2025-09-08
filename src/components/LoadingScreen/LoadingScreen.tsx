@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useMediaQuery } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,19 +14,18 @@ export const LoadingScreen = ({
 }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const { t } = useTranslation();
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
   useEffect(() => {
     if (!isVisible) return;
 
-    // Smoother progress simulation with better easing
     const startTime = Date.now();
-    const duration = 3000; // 3 seconds total
+    const duration = 3000;
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
       const rawProgress = Math.min(elapsed / duration, 1);
 
-      // Apply easing function for smoother feel
       const easedProgress = 1 - Math.pow(1 - rawProgress, 3); // easeOutCubic
       const finalProgress = easedProgress * 100;
 
@@ -35,17 +34,14 @@ export const LoadingScreen = ({
       if (finalProgress < 100) {
         requestAnimationFrame(updateProgress);
       } else {
-        // Small delay at 100% for visual completion
         setTimeout(() => onComplete(), 300);
       }
     };
 
-    // Start the animation
     requestAnimationFrame(updateProgress);
   }, [isVisible, onComplete]);
 
-  // Calculate stroke-dasharray for circular progress
-  const radius = 60;
+  const radius = isMobile ? 40 : 60;
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = circumference;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -81,13 +77,12 @@ export const LoadingScreen = ({
             minH='100vh'
             w='100%'
           >
-            {/* Logo Animation with smoother entrance */}
             <motion.div
               initial={{ scale: 0.5, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{
                 duration: 1.2,
-                ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier
+                ease: [0.25, 0.46, 0.45, 0.94],
                 delay: 0.2,
               }}
             >
@@ -103,14 +98,13 @@ export const LoadingScreen = ({
               </Text>
             </motion.div>
 
-            {/* Circular Progress Bar with smoother animation */}
             <Box
               position='relative'
               display='flex'
               alignItems='center'
               justifyContent='center'
-              w='140px'
-              h='140px'
+              w={isMobile ? "100px" : "140px"}
+              h={isMobile ? "100px" : "140px"}
             >
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
@@ -118,24 +112,22 @@ export const LoadingScreen = ({
                 transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
               >
                 <svg
-                  width='140'
-                  height='140'
+                  width={isMobile ? "100" : "140"}
+                  height={isMobile ? "100" : "140"}
                   style={{ transform: "rotate(-90deg)" }}
                 >
-                  {/* Background circle */}
                   <circle
-                    cx='70'
-                    cy='70'
+                    cx={isMobile ? "50" : "70"}
+                    cy={isMobile ? "50" : "70"}
                     r={radius}
                     stroke='#2C2C2C'
                     strokeWidth='3'
                     fill='none'
                     opacity={0.3}
                   />
-                  {/* Progress circle with single color */}
                   <motion.circle
-                    cx='70'
-                    cy='70'
+                    cx={isMobile ? "50" : "70"}
+                    cy={isMobile ? "50" : "70"}
                     r={radius}
                     stroke='#4843AE'
                     strokeWidth='3'
@@ -152,7 +144,6 @@ export const LoadingScreen = ({
                 </svg>
               </motion.div>
 
-              {/* Percentage text with smooth counter animation */}
               <Box
                 position='absolute'
                 display='flex'
@@ -166,7 +157,7 @@ export const LoadingScreen = ({
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8, duration: 0.5 }}
                   style={{
-                    fontSize: "24px",
+                    fontSize: isMobile ? "20px" : "24px",
                     fontWeight: "bold",
                     color: "white",
                     textAlign: "center",
@@ -177,7 +168,6 @@ export const LoadingScreen = ({
               </Box>
             </Box>
 
-            {/* Loading Text with staggered animation */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
