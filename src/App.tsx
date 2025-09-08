@@ -35,7 +35,12 @@ function App() {
       />
 
       {showLoading ? null : (
-        <Box bg='background' w='100%' paddingY={{ base: "28px", md: "15px" }}>
+        <Box
+          bg='background'
+          w='100%'
+          paddingY={{ base: "28px", md: "15px" }}
+          position='relative' // Add this to fix scroll offset calculation
+        >
           <Global
             styles={`
     html, body { 

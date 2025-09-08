@@ -74,7 +74,8 @@
     "second-stage.submitting": "Відправляємо...",
     "first-stage.description": "Мені потрібно:",
     "first-stage.description-2": "Можете обрати декілька варіантів...",
-    "first-stage.next": "Далі"
+    "first-stage.next": "Далі",
+    "validation.submit-error": "Не вдалося відправити форму, спробуйте пізніше"
   },
   "validation": {
     "required": "Це поле є обов'язковим",

@@ -31,11 +31,12 @@ export const FormListItem = ({
         gap: "7px",
         cursor: "pointer",
         width: "100%",
-        height: "39px",
-        padding: "20px",
+        padding: "10px",
         borderBottom: "1px solid",
         borderColor: "rgba(255, 255, 255, 0.1)",
         marginBottom: "2px",
+        justifyContent: "space-between",
+        alignItems: "center",
       }}
     >
       {isSelected && (

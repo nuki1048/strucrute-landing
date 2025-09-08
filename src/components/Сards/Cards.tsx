@@ -5,7 +5,7 @@ import { Card } from "./Card";
 import { segment } from "../../utils/animationUtils";
 import { useTranslation } from "react-i18next";
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 export const Cards: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
@@ -62,7 +62,7 @@ export const Cards: React.FC = () => {
       <Box
         position='sticky'
         top={{ base: "8vh", md: "8vh" }}
-        h='110vh'
+        h='155vh'
         overflow='visible'
         display='flex'
         alignItems='center'

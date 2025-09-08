@@ -22,7 +22,7 @@
     "description": "We create {{mobileBR}} <i>{digital products}</i> {{desktopBR}} that help brands grow"
   },
   "welcome": "Welcome",
-  "welcome-description": "<i>Structure Agency</i> – a design and <br> digital product development studio. We <br> strive to create user <br> experiences and <i>structures</i> that shape {{mobileBR}} the future of your business",
+  "welcome-description": "<i>Structure Agency</i> – a design and <br> digital product development studio. We strive to create user experiences and <i>structures</i> that shape the future of your business",
   "about": {
     "ui-ux-design": "UI/UX design and development",
     "web-applications": "Web applications",
@@ -50,7 +50,7 @@
   "info": {
     "visual-identity": "<c>Visual</c><br>identity",
     "visual-identity-description": "helps a company stand out, be recognizable, and evoke the right emotions in its audience",
-    "web-and-mobile-development": "Web<br>development",
+    "web-and-mobile-development": "<i>Web</i><br>development",
     "web-and-mobile-development-description": "creating websites and web apps: from simple landing pages to complex services",
     "ui-ux-design": "<i>Ui/Ux</i> design",
     "ui-ux-design-description": "good UI/UX makes interaction simple and enjoyable",
@@ -74,7 +74,8 @@
     "second-stage.submitting": "Submitting...",
     "first-stage.description": "I need:",
     "first-stage.description-2": "You can choose several options...",
-    "first-stage.next": "Next"
+    "first-stage.next": "Next",
+    "validation.submit-error": "Failed to submit form, please try again later"
   },
   "validation": {
     "required": "This field is required",

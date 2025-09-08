@@ -8,7 +8,6 @@ export const LanguageSwitcher = () => {
     i18n.language as "en" | "uk"
   );
 
-  console.log(currentLanguage);
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
     setCurrentLanguage(languageCode as "en" | "uk");
@@ -46,6 +45,8 @@ export const LanguageSwitcher = () => {
         overflow='hidden'
         position='relative'
         zIndex={2}
+        height='100%'
+        alignItems='center'
       >
         <Box
           bg='transparent'
@@ -55,6 +56,10 @@ export const LanguageSwitcher = () => {
           onClick={() => handleLanguageChange("en")}
           cursor='pointer'
           w='50%'
+          h='100%'
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
           transition='all 0.2s ease'
           _hover={{
             bg: "rgba(255, 255, 255, 0.05)",
@@ -81,6 +86,10 @@ export const LanguageSwitcher = () => {
           onClick={() => handleLanguageChange("uk")}
           cursor='pointer'
           w='50%'
+          h='100%'
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
           transition='all 0.2s ease'
           _hover={{
             bg: "rgba(255, 255, 255, 0.05)",

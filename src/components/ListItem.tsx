@@ -32,7 +32,7 @@ export const ListItem = ({
         fontSize='clamp(1.125rem, 0.8688rem + 0.9317vw, 1.875rem)'
         color='white'
         lineHeight={1}
-        fontWeight={400}
+        fontWeight={300}
       >
         {title}
       </Text>

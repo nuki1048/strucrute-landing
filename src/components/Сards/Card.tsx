@@ -45,7 +45,6 @@ export const Card = ({
         fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
         fontWeight='400'
         color={color}
-        textAlign='center'
         lineHeight={1.2}
       >
         {title}

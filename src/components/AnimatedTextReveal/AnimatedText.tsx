@@ -10,7 +10,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 
-const MotionSpan = motion(chakra.span);
+const MotionSpan = motion.create(chakra.span);
 
 type BrightTextRichProps = {
   text: string;
