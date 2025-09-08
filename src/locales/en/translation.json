@@ -79,6 +79,7 @@
   "validation": {
     "required": "This field is required",
     "invalid-email": "Invalid email",
-    "name-too-short": "Name must be at least 2 characters long"
+    "name-too-short": "Name must be at least 2 characters long",
+    "submit-error": "Failed to submit form, please try again later"
   }
 }
