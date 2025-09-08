@@ -1,8 +1,9 @@
 import { Box, Container, useMediaQuery } from "@chakra-ui/react";
-import SphereScene from "../Sphere/AnimatedScene";
 import BrightTextRichLines from "../AnimatedTextReveal/AnimatedTextByLines";
 import BrightTextRich from "../AnimatedTextReveal/AnimatedText";
 import { useTranslation } from "react-i18next";
+import { lazy } from "react";
+const SphereScene = lazy(() => import("../Sphere/AnimatedScene"));
 
 export const Promo = () => {
   const { t } = useTranslation();

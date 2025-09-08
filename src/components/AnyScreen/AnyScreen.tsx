@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 const MotionBox = chakra(motion.div);
 import "./AnyScreen.css";
-import SVG from "./Svg";
+import AnyScreenSVG from "../AnyScreenSVG";
 
 export const AnyScreen = () => {
   const { t } = useTranslation();
@@ -67,8 +67,7 @@ export const AnyScreen = () => {
             {t("any-screen.title")}
           </Text>
         </motion.div>
-
-        <SVG isActive={isActive} />
+        <AnyScreenSVG isActive={isActive} />
       </MotionBox>
     </motion.div>
   );
