@@ -3,9 +3,6 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
-import importToCDN from "vite-plugin-cdn-import";
-
-const useCDN = process.env.NODE_ENV === "production";
 
 function manualChunks(id: string) {
   if (id.includes("node_modules")) {
@@ -25,17 +22,14 @@ function manualChunks(id: string) {
       return "chakra-emotion";
     if (pkg === "framer-motion") return "framer-motion";
 
-    // If using CDN, these will be external and won't appear in chunks anyway
-    if (!useCDN) {
-      if (pkg === "three" || pkg?.startsWith("three")) return "three-core";
-      if (
-        pkg === "@react-three/fiber" ||
-        pkg === "@react-three/drei" ||
-        pkg === "@react-three/postprocessing"
-      )
-        return "react-three";
-      if (pkg === "gsap") return "gsap";
-    }
+    if (pkg === "three" || pkg?.startsWith("three")) return "three-core";
+    if (
+      pkg === "@react-three/fiber" ||
+      pkg === "@react-three/drei" ||
+      pkg === "@react-three/postprocessing"
+    )
+      return "react-three";
+    if (pkg === "gsap") return "gsap";
 
     if (pkg === "lenis") return "lenis";
     return "vendor";
@@ -78,18 +72,6 @@ export default defineConfig({
       },
     }),
 
-    useCDN &&
-      importToCDN({
-        prodUrl: "https://cdn.jsdelivr.net/npm/{name}@{version}/{path}",
-        modules: [
-          {
-            name: "three",
-            var: "THREE",
-            path: "build/three.min.js",
-          },
-        ],
-      }),
-
     visualizer({
       filename: "dist/stats.html",
       open: false,
@@ -106,19 +88,11 @@ export default defineConfig({
     reportCompressedSize: false,
     chunkSizeWarningLimit: 800,
     rollupOptions: {
-      // Mark CDN libs as external so Rollup doesn’t bundle them
-      external: useCDN ? ["three", "gsap"] : [],
       output: {
         manualChunks,
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash][extname]",
-        // When external, Rollup may need globals map for legacy formats;
-        // for ESM this is typically ignored, but safe to provide:
-        globals: {
-          three: "THREE",
-          gsap: "gsap",
-        },
       },
       treeshake: {
         moduleSideEffects: false,
@@ -132,7 +106,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["react", "react-dom", "framer-motion", "@chakra-ui/react"],
-    // keep three/gsap in dev prebundle for fast HMR
   },
   esbuild: {
     drop: ["console", "debugger"],
