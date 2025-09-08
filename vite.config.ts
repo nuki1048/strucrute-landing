@@ -95,7 +95,7 @@ export default defineConfig({
         assetFileNames: "assets/[name]-[hash][extname]",
       },
       treeshake: {
-        moduleSideEffects: false,
+        moduleSideEffects: true,
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
       },
