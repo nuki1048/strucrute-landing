@@ -126,6 +126,7 @@ export const Promo = () => {
               lg: "130px",
               xl: "130px",
             }}
+            as='h1'
             dimColor='rgba(255,255,255,0)'
           />
         </Box>

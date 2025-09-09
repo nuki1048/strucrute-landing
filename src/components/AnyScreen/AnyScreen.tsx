@@ -58,11 +58,12 @@ export const AnyScreen = () => {
       >
         <motion.div variants={titleVariants}>
           <Text
+            as='h2'
             fontSize='clamp(1.25rem, -0.1378rem + 5.0466vw, 5.3125rem)'
             fontWeight='400'
-            color='gray2'
             textAlign='center'
             textTransform='uppercase'
+            className='shimmer-text'
           >
             {t("any-screen.title")}
           </Text>

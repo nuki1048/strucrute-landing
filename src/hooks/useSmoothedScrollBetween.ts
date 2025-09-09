@@ -1,4 +1,4 @@
-// useSmoothedScrollBetween.ts
+// useSmoothedScrollBetween.ts - Fixed for positioning issues
 import React from "react";
 import { damp, clamp01 } from "../utils/animationUtils";
 
@@ -8,7 +8,6 @@ type Options = {
   observeLayout?: boolean;
   scroller?: HTMLElement | Window;
   minSpanPx?: number;
-  /** NEW: called after each tick (state is updated) */
   onUpdate?: () => void;
 };
 
@@ -37,6 +36,21 @@ export function useSmoothedScrollBetween(
     lastTs: performance.now(),
   });
 
+  // Track cleanup functions
+  const cleanupRef = React.useRef<{
+    rafId: number | null;
+    resizeHandler: (() => void) | null;
+    loadHandler: (() => void) | null;
+    roA: ResizeObserver | null;
+    roB: ResizeObserver | null;
+  }>({
+    rafId: null,
+    resizeHandler: null,
+    loadHandler: null,
+    roA: null,
+    roB: null,
+  });
+
   React.useEffect(() => {
     const a = document.querySelector(selectStart) as HTMLElement | null;
     const b = document.querySelector(selectEnd) as HTMLElement | null;
@@ -50,12 +64,12 @@ export function useSmoothedScrollBetween(
         : (scroller as HTMLElement).scrollTop;
 
     const getDocY = (el: HTMLElement) => {
-      const r = el.getBoundingClientRect().top;
-      return (
-        (scroller === window
+      const rect = el.getBoundingClientRect();
+      const scrollTop =
+        scroller === window
           ? window.scrollY || window.pageYOffset || 0
-          : (scroller as HTMLElement).scrollTop) + r
-      );
+          : (scroller as HTMLElement).scrollTop;
+      return scrollTop + rect.top;
     };
 
     const anchor = () => {
@@ -65,13 +79,23 @@ export function useSmoothedScrollBetween(
       state.startY = s;
       state.endY = e;
       state.span = Math.max(minSpanPx, e - s);
-      onUpdate?.(); // redraw once when anchors change
+      onUpdate?.();
     };
 
     anchor();
-    const onResize = () => anchor();
-    window.addEventListener("resize", onResize, { passive: true });
 
+    // Create handlers
+    const resizeHandler = () => anchor();
+    const loadHandler = () => anchor();
+
+    // Store handlers for cleanup
+    cleanupRef.current.resizeHandler = resizeHandler;
+    cleanupRef.current.loadHandler = loadHandler;
+
+    window.addEventListener("resize", resizeHandler, { passive: true });
+    window.addEventListener("load", loadHandler);
+
+    // ResizeObserver setup
     let roA: ResizeObserver | undefined;
     let roB: ResizeObserver | undefined;
     if (observeLayout && "ResizeObserver" in window) {
@@ -79,40 +103,75 @@ export function useSmoothedScrollBetween(
       roB = new ResizeObserver(anchor);
       roA.observe(a);
       roB.observe(b);
+
+      cleanupRef.current.roA = roA;
+      cleanupRef.current.roB = roB;
     }
-    const onLoad = () => anchor();
-    window.addEventListener("load", onLoad);
 
-    let raf = 0;
+    // Optimized RAF loop with proper cleanup and error handling
     const tick = (ts: number) => {
-      const dt = Math.max(0, (ts - state.lastTs) / 1000);
-      state.lastTs = ts;
+      try {
+        const dt = Math.max(0, (ts - state.lastTs) / 1000);
+        state.lastTs = ts;
 
-      const y = getScrollTop();
-      const raw = (y - state.startY) / state.span;
+        const y = getScrollTop();
+        const raw = (y - state.startY) / state.span;
 
-      let clamped = clamp01(raw);
-      if (clamped < hysteresis) clamped = 0;
-      else if (clamped > 1 - hysteresis) clamped = 1;
+        let clamped = clamp01(raw);
+        if (clamped < hysteresis) clamped = 0;
+        else if (clamped > 1 - hysteresis) clamped = 1;
 
-      const overPx = Math.max(0, y - state.endY);
+        const overPx = Math.max(0, y - state.endY);
 
-      state.smooth = damp(state.smooth, clamped, smoothness, dt);
-      state.raw = raw;
-      state.clamped = clamped;
-      state.overPx = overPx;
+        state.smooth = damp(state.smooth, clamped, smoothness, dt);
+        state.raw = raw;
+        state.clamped = clamped;
+        state.overPx = overPx;
 
-      onUpdate?.(); // ⬅ notify scene to invalidate when needed
-      raf = requestAnimationFrame(tick);
+        onUpdate?.();
+
+        // Only continue if not cleaned up
+        if (cleanupRef.current.rafId !== null) {
+          cleanupRef.current.rafId = requestAnimationFrame(tick);
+        }
+      } catch (error) {
+        console.error("Scroll tick error:", error);
+        // Stop the RAF loop on error to prevent freezing
+        if (cleanupRef.current.rafId !== null) {
+          cancelAnimationFrame(cleanupRef.current.rafId);
+          cleanupRef.current.rafId = null;
+        }
+      }
     };
-    raf = requestAnimationFrame(tick);
+
+    cleanupRef.current.rafId = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("load", onLoad);
-      roA?.disconnect?.();
-      roB?.disconnect?.();
+      // Cancel RAF
+      if (cleanupRef.current.rafId !== null) {
+        cancelAnimationFrame(cleanupRef.current.rafId);
+        cleanupRef.current.rafId = null;
+      }
+
+      // Remove event listeners
+      if (cleanupRef.current.resizeHandler) {
+        window.removeEventListener("resize", cleanupRef.current.resizeHandler);
+        cleanupRef.current.resizeHandler = null;
+      }
+      if (cleanupRef.current.loadHandler) {
+        window.removeEventListener("load", cleanupRef.current.loadHandler);
+        cleanupRef.current.loadHandler = null;
+      }
+
+      // Disconnect ResizeObservers
+      if (cleanupRef.current.roA) {
+        cleanupRef.current.roA.disconnect();
+        cleanupRef.current.roA = null;
+      }
+      if (cleanupRef.current.roB) {
+        cleanupRef.current.roB.disconnect();
+        cleanupRef.current.roB = null;
+      }
     };
   }, [
     selectStart,

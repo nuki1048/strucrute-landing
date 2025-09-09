@@ -6,7 +6,12 @@ export default function SphereSceneR3F(props: SphereSceneProps) {
   return (
     <div
       className={props.className}
-      style={{ width: "100%", height: "100%", ...props.style }}
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: "400px", // Ensure minimum height
+        ...props.style,
+      }}
     >
       <Canvas
         orthographic
@@ -19,14 +24,23 @@ export default function SphereSceneR3F(props: SphereSceneProps) {
           stencil: false,
           powerPreference: "high-performance",
           premultipliedAlpha: true,
-          failIfMajorPerformanceCaveat: true,
+          failIfMajorPerformanceCaveat: false,
         }}
-        style={{ display: "block" }}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+        }}
+        onCreated={({ gl }) => {
+          console.log("Canvas created:", gl);
+        }}
+        onError={(error) => {
+          console.error("Canvas error:", error);
+        }}
       >
         <color attach='background' args={["#09090A"]} />
-
-        <SphereScene {...props} useInstancing={false} />
-
+        <SphereScene {...props} useInstancing={false} />{" "}
+        {/* Disable instancing for now */}
         <EffectComposer multisampling={0} enableNormalPass={false}>
           <Bloom
             intensity={0.9}

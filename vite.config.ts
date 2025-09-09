@@ -42,7 +42,6 @@ export default defineConfig({
   plugins: [
     react(),
     svgr({
-      // ⬇️ only *.svg?react will become React components
       include: "**/*.svg?react",
       svgrOptions: {
         svgo: true,

@@ -1,5 +1,5 @@
 // useLenisSmoothScroll.tsx
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Lenis from "lenis";
 import { useMediaQuery } from "@chakra-ui/react";
 
@@ -7,7 +7,23 @@ export function useLenisSmoothScroll(
   opts?: ConstructorParameters<typeof Lenis>[0]
 ) {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const isDestroyedRef = useRef(false);
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
+
+  // Memoized cleanup function to prevent recreation
+  const cleanup = useCallback(() => {
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
+
+    if (lenisRef.current && !isDestroyedRef.current) {
+      lenisRef.current.destroy();
+      lenisRef.current = null;
+      isDestroyedRef.current = true;
+    }
+  }, []);
 
   useEffect(() => {
     // Respect users who prefer reduced motion
@@ -16,65 +32,84 @@ export function useLenisSmoothScroll(
     ).matches;
     if (prefersReduced) return;
 
+    // Cleanup any existing instance
+    cleanup();
+
+    // Reset destroyed flag
+    isDestroyedRef.current = false;
+
     const lenis = new Lenis({
-      duration: isMobile ? 0.8 : 1, // Faster duration
+      duration: isMobile ? 0.8 : 1,
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: isMobile ? 1.2 : 1.0, // Higher wheel speed
-      touchMultiplier: isMobile ? 1.5 : 1, // Higher touch speed
+      wheelMultiplier: isMobile ? 1.2 : 1.0,
+      touchMultiplier: isMobile ? 1.5 : 1,
       infinite: false,
       gestureOrientation: "vertical",
       ...(isMobile && {
         smoothTouch: true,
-        touchInertiaMultiplier: 20, // Higher inertia for more momentum
+        touchInertiaMultiplier: 20,
         normalizeWheel: true,
-        lerp: 1.2, // Higher lerp for faster response
+        lerp: 1.2,
         syncTouch: true,
       }),
       ...opts,
     });
+
     lenisRef.current = lenis;
 
-    let rafId = 0;
+    // Optimized RAF loop with proper cleanup
     const raf = (time: number) => {
+      if (isDestroyedRef.current || !lenisRef.current) return;
+
       lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
+      rafIdRef.current = requestAnimationFrame(raf);
     };
-    rafId = requestAnimationFrame(raf);
+    rafIdRef.current = requestAnimationFrame(raf);
+
+    // Mobile touch handlers with proper cleanup
+    let touchStartHandler: ((e: TouchEvent) => void) | null = null;
+    let touchEndHandler: ((e: TouchEvent) => void) | null = null;
 
     if (isMobile) {
-      const handleTouchStart = (e: TouchEvent) => {
-        if (e.touches.length > 1) {
+      touchStartHandler = (e: TouchEvent) => {
+        if (e.touches.length > 1 && lenisRef.current) {
           lenis.stop();
         }
       };
 
-      const handleTouchEnd = (e: TouchEvent) => {
-        if (e.touches.length === 0) {
+      touchEndHandler = (e: TouchEvent) => {
+        if (e.touches.length === 0 && lenisRef.current) {
           lenis.start();
         }
       };
 
-      document.addEventListener("touchstart", handleTouchStart, {
+      document.addEventListener("touchstart", touchStartHandler, {
         passive: true,
       });
-      document.addEventListener("touchend", handleTouchEnd, { passive: true });
-
-      return () => {
-        document.removeEventListener("touchstart", handleTouchStart);
-        document.removeEventListener("touchend", handleTouchEnd);
-        cancelAnimationFrame(rafId);
-        lenis.destroy();
-        lenisRef.current = null;
-      };
+      document.addEventListener("touchend", touchEndHandler, { passive: true });
     }
 
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      lenisRef.current = null;
+      // Cleanup touch handlers
+      if (touchStartHandler) {
+        document.removeEventListener("touchstart", touchStartHandler);
+      }
+      if (touchEndHandler) {
+        document.removeEventListener("touchend", touchEndHandler);
+      }
+
+      // Cleanup RAF and Lenis
+      cleanup();
     };
-  }, [opts, isMobile]);
+  }, [opts, isMobile, cleanup]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanup();
+    };
+  }, [cleanup]);
 
   return lenisRef;
 }

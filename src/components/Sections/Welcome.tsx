@@ -71,6 +71,7 @@ export const Welcome = () => {
           />
         </Box>
         <Box
+          position='relative'
           w='100%'
           borderRadius='10px'
           maxW={{
