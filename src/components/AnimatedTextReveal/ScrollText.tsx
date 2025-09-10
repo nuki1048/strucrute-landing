@@ -7,6 +7,7 @@ import {
   useToken,
   type HTMLChakraProps,
   useMediaQuery,
+  Text,
 } from "@chakra-ui/react";
 import {
   motion,
@@ -298,7 +299,9 @@ export const RevealText: React.FC<RevealTextProps> = ({
           );
 
         const inner = (
-          <span
+          <Text
+            as='span'
+            fontFamily='raleway'
             style={{
               ...(shouldColor(seg) ? { color: colorResolved } : null),
               ...(seg.italic ? { fontStyle: "italic" } : null),

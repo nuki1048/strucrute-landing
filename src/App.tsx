@@ -52,6 +52,7 @@ function App() {
       /* Mobile smooth scroll improvements */
       -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
       overscroll-behavior-y: none; /* Prevent bounce on mobile */
+      font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
     }
     
     /* Lenis smooth scroll styles */
