@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 export const Info = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
-
+  const isEnglish = useMemo(() => i18n.language === "en", [i18n.language]);
   const textMode = useMemo(() => (isMobile ? "word" : "letter"), [isMobile]);
   return (
     <Grid
@@ -15,14 +15,13 @@ export const Info = () => {
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
       gridTemplateRows={{
         base: "repeat(5,100px)",
-        md: "repeat(4,200px)",
-        lg: "repeat(5,250px)",
+        md: "repeat(4,min-content)", // Changed from "auto" to "min-content"
+        lg: "repeat(5,min-content)", // Changed from "auto" to "min-content"
       }}
-      gridAutoRows='auto'
+      gridAutoRows='min-content' // Changed from "auto" to "min-content"
       w='100%'
       marginTop={{ base: "100px", md: "0" }}
-      h={{ base: "100%", md: "100%", lg: "980px" }}
-      gap={{ base: "10px", md: "4" }}
+      gap={{ base: "10px", md: "20px" }}
     >
       <BoxGrid
         gridColumn='1 / 2'
@@ -61,7 +60,10 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-end'
         justifySelf='flex-end'
-        marginTop={{ base: "260px", md: "110px" }}
+        transform={{
+          base: "translateY(260px)",
+          md: isEnglish ? "translateY(65px)" : "translateY(100px)",
+        }}
         hoverText={t("info.web-and-mobile-development-description")}
         hoverTextAlign='right'
         hoverTextTop={{ base: "30px", sm: "40px", md: "45%" }}
@@ -101,7 +103,11 @@ export const Info = () => {
         display='flex'
         flexDirection='column'
         alignItems='flex-start'
-        marginTop={{ base: "30px", sm: "20px", md: "110px" }}
+        transform={{
+          base: "translateY(30px)",
+          sm: "translateY(20px)",
+          md: "translateY(50px)",
+        }}
         hoverText={t("info.ui-ux-design-description")}
         hoverTextAlign='left'
         height='fit-content'
@@ -183,7 +189,7 @@ export const Info = () => {
         hoverText={t("info.interactive-design-description")}
         hoverTextAlign='left'
         width='max-content'
-        marginTop={{ base: "50px", sm: "0", xl: "50px", "2xl": "100px" }}
+        marginTop={{ base: "50px", sm: "0", xl: "110px", "2xl": "100px" }}
         hoverTextRight={{
           base: "-15%",
           sm: "0%",

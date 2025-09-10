@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from "react";
-import { chakra, useToken, type HTMLChakraProps } from "@chakra-ui/react";
+import {
+  chakra,
+  Separator,
+  useToken,
+  type HTMLChakraProps,
+} from "@chakra-ui/react";
 import {
   motion,
   useInView,
@@ -278,7 +283,17 @@ export const RevealText: React.FC<RevealTextProps> = ({
       }
     >
       {tokens.map((seg, idx) => {
-        if (seg.type === "br") return <br key={`br-${idx}`} />;
+        if (seg.type === "br")
+          return (
+            <Separator
+              style={{
+                height: "1px",
+                margin: "-15px",
+                padding: 0,
+                border: "none",
+              }}
+            />
+          );
 
         const inner = (
           <span

@@ -83,6 +83,7 @@ export function BurstCard({
           h='100%'
           objectFit='cover'
           draggable={false}
+          loading='lazy'
         />
       )}
     </MotionBox>

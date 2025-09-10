@@ -100,6 +100,7 @@ export const BlurredBackground = () => {
           maxH={{ base: "200px", md: "300px", lg: "400px" }}
           objectFit='contain'
           boxShadow='0 20px 40px rgba(0,0,0,0.3)'
+          loading='lazy'
         />
       </motion.div>
     </Box>
