@@ -103,7 +103,7 @@ export const About = () => {
         w='100%'
         marginTop='150px'
         overflow='hidden'
-        paddingX={{ base: "40px", sm: "100px", lg: "250px" }}
+        paddingX={{ base: "40px", sm: "100px", xl: "250px" }}
       >
         <Container
           position='relative'
