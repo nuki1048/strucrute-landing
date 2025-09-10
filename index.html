@@ -17,6 +17,62 @@
 
     <meta name="theme-color" content="#4843AE" />
 
+    <!-- Critical CSS for LCP optimization -->
+    <style>
+      /* Critical styles for above-the-fold content */
+      body {
+        margin: 0;
+        padding: 0;
+        background: #09090A;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      #root {
+        min-height: 100vh;
+        background: #09090A;
+      }
+      
+      /* Critical text styles for LCP element */
+      .critical-text {
+        font-size: clamp(2rem, 1.6882rem + 1.3304vw, 3.125rem);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.2;
+        font-family: 'Noto Serif Display', serif;
+        font-style: italic;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Hide animated content until loaded */
+      .bt-no-prepaint {
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+      
+      /* Loading screen styles */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #09090A;
+      }
+    </style>
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="/src/assets/fonts/noto-serif/NotoSerifDisplay_Condensed-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/src/assets/fonts/noto-serif/NotoSerifDisplay_Condensed-Italic.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/src/assets/fonts/pp-mori/PPMori-Regular.otf" as="font" type="font/otf" crossorigin>
+
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
     <meta

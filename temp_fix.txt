@@ -1,0 +1,13 @@
+      {tokens.map((seg, idx) => {
+        if (seg.type === "br")
+          return (
+            <Separator
+              key={`separator-${idx}`}
+              style={{
+                height: "1px",
+                margin: isTablet ? "-5px" : "-15px",
+                padding: 0,
+                border: "none",
+              }}
+            />
+          );

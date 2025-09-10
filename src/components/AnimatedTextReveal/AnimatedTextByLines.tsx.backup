@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// BrightTextRichLines.tsx (LCP optimized version)
+// BrightTextRichLines.tsx (strict no-prepaint version)
 
 import * as React from "react";
 import { chakra, useToken } from "@chakra-ui/react";
@@ -127,6 +127,7 @@ export function BrightTextRichLines({
   loop = false,
   yoyo = false,
   italicFontFamily,
+  strictHideMode = "css",
   ...textProps
 }: BrightTextRichLinesProps) {
   const [dimTok, brightTok] = useToken("colors", [dimColor, brightColor]);
@@ -135,20 +136,6 @@ export function BrightTextRichLines({
 
   const progress = useMotionValue(0);
   const [started, setStarted] = React.useState<boolean>(false);
-  const [isVisible, setIsVisible] = React.useState<boolean>(false);
-
-  // LCP Optimization: Show text immediately, then animate
-  React.useEffect(() => {
-    // Show text immediately for LCP
-    setIsVisible(true);
-
-    // Start animation after a short delay
-    const timer = setTimeout(() => {
-      setStarted(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // external progress → mirror and flip started only when it moves
   React.useEffect(() => {
@@ -162,7 +149,7 @@ export function BrightTextRichLines({
 
   // autoplay path
   React.useEffect(() => {
-    if (externalProgress || !autoplay || !isVisible) return;
+    if (externalProgress || !autoplay) return;
 
     const repeats =
       loop === true
@@ -181,16 +168,7 @@ export function BrightTextRichLines({
     });
 
     return () => controls.stop();
-  }, [
-    externalProgress,
-    autoplay,
-    duration,
-    delay,
-    loop,
-    yoyo,
-    progress,
-    isVisible,
-  ]);
+  }, [externalProgress, autoplay, duration, delay, loop, yoyo, progress]);
 
   const wrapperOpacity = useTransform(progress, () =>
     hideUntilStart && !started ? 0 : 1
@@ -221,15 +199,33 @@ export function BrightTextRichLines({
     return null;
   };
 
-  // LCP Optimization: Always render text, but with different opacity
+  // ── STRICT: unmount content entirely until started ──
+  if (hideUntilStart && !started && strictHideMode === "unmount") {
+    return (
+      <chakra.span
+        aria-hidden='true'
+        {...textProps}
+        // @ts-ignore
+        sx={{
+          whiteSpace: "pre-wrap",
+          textRendering: "optimizeLegibility",
+          fontKerning: "normal",
+          // @ts-ignore
+          ...textProps.sx,
+        }}
+      />
+    );
+  }
+
+  // ── CSS mode: keep layout but fully hidden until start ──
   return (
     <chakra.span
       className={hideUntilStart && !started ? "bt-no-prepaint" : undefined}
-      style={{
-        // Show text immediately for LCP, but with reduced opacity
-        visibility: isVisible ? "visible" : "hidden",
-        opacity: isVisible ? (hideUntilStart && !started ? 0.3 : 1) : 0,
-      }}
+      style={
+        hideUntilStart && !started
+          ? { visibility: "hidden", opacity: 0 }
+          : undefined
+      }
       {...textProps}
       // @ts-ignore
       sx={{
@@ -256,8 +252,6 @@ export function BrightTextRichLines({
             dim={dim}
             bright={bright}
             glow={glow}
-            isVisible={isVisible}
-            started={started}
           >
             {lineNodes.map((n, j) => renderInline(n, `n-${i}-${j}`))}
           </AnimatedLine>
@@ -276,8 +270,6 @@ function AnimatedLine({
   dim,
   bright,
   glow,
-  isVisible,
-  started,
 }: React.PropsWithChildren<{
   index: number;
   total: number;
@@ -286,8 +278,6 @@ function AnimatedLine({
   dim: string;
   bright: string;
   glow: string;
-  isVisible: boolean;
-  started: boolean;
 }>) {
   const t = useTransform(progress, (p) => {
     const ahead = p * total - index;
@@ -298,14 +288,11 @@ function AnimatedLine({
   const color = useTransform(t, [0, 1], [dim, bright]);
   const shadow = useTransform(t, (v) => (v > 0.75 ? glow : "none"));
 
-  // LCP Optimization: Show text immediately with fallback color
-  const fallbackColor = isVisible && !started ? bright : undefined;
-
   return (
     <>
       <MotionSpan
         style={{
-          color: fallbackColor || color,
+          color,
           textShadow: shadow,
           display: "inline",
           willChange: "color, text-shadow",

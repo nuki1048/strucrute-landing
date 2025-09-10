@@ -287,6 +287,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
         if (seg.type === "br")
           return (
             <Separator
+              key={idx}
               style={{
                 height: "1px",
                 margin: isTablet ? "-5px" : "-15px",

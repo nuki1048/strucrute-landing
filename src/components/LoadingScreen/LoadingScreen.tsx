@@ -20,7 +20,8 @@ export const LoadingScreen = ({
     if (!isVisible) return;
 
     const startTime = Date.now();
-    const duration = 3000;
+    // LCP Optimization: Reduce loading time from 3s to 1.5s
+    const duration = 1500;
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
@@ -34,7 +35,8 @@ export const LoadingScreen = ({
       if (finalProgress < 100) {
         requestAnimationFrame(updateProgress);
       } else {
-        setTimeout(() => onComplete(), 300);
+        // LCP Optimization: Reduce delay before showing content
+        setTimeout(() => onComplete(), 100);
       }
     };
 
@@ -52,7 +54,7 @@ export const LoadingScreen = ({
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
           style={{
             position: "fixed",
             top: 0,
@@ -81,9 +83,9 @@ export const LoadingScreen = ({
               initial={{ scale: 0.5, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{
-                duration: 1.2,
+                duration: 0.8, // LCP Optimization: Faster animation
                 ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.2,
+                delay: 0.1, // LCP Optimization: Reduced delay
               }}
             >
               <Text
@@ -109,7 +111,7 @@ export const LoadingScreen = ({
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
               >
                 <svg
                   width={isMobile ? "100" : "140"}
@@ -155,7 +157,7 @@ export const LoadingScreen = ({
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8, duration: 0.5 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
                   style={{
                     fontSize: isMobile ? "20px" : "24px",
                     fontWeight: "bold",
@@ -171,7 +173,7 @@ export const LoadingScreen = ({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
+              transition={{ delay: 0.5, duration: 0.4, ease: "easeOut" }}
             >
               <Text
                 fontSize='sm'
