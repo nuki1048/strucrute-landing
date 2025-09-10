@@ -171,7 +171,6 @@ export const ExpandedFormFloating = ({
 
     try {
       await sendToTelegramBot({ selectedItems, formData });
-      console.log("Form submitted successfully:", { selectedItems, formData });
       setCurrentStage(3);
     } catch (error) {
       console.error("Failed to submit form:", error);

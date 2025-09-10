@@ -31,9 +31,6 @@ export default function SphereSceneR3F(props: SphereSceneProps) {
           width: "100%",
           height: "100%",
         }}
-        onCreated={({ gl }) => {
-          console.log("Canvas created:", gl);
-        }}
         onError={(error) => {
           console.error("Canvas error:", error);
         }}
