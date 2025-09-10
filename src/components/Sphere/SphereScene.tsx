@@ -83,7 +83,7 @@ export function SphereScene({
   const startRef = React.useRef<number>(performance.now());
 
   // Visibility gate (skip updates; with frameloop="demand" we'll also not render)
-  const [isVisible, setIsVisible] = React.useState(true);
+  // const [isVisible, setIsVisible] = React.useState(true);
   const isVisibleRef = React.useRef(true);
   React.useEffect(() => {
     isVisibleRef.current = true; // Always keep it visible

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 export const LanguageSwitcher = ({
   onLanguageChange,
 }: {
-  onLanguageChange: () => void;
+  onLanguageChange?: () => void;
 }) => {
   const { i18n, t } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState<"en" | "uk">(
