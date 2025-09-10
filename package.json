@@ -10,7 +10,8 @@
     "build:check": "tsc -b && vite build --mode production",
     "analyze:chunks": "node scripts/analyze-chunks.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.25.0",
@@ -41,6 +42,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
     "rollup-plugin-visualizer": "^6.0.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
@@ -48,5 +51,12 @@
     "vite-plugin-svgo": "^2.0.0",
     "vite-plugin-svgr": "^4.3.0"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "tsc --noEmit",
+      "git add"
+    ]
+  }
 }
