@@ -111,10 +111,4 @@ export default defineConfig({
   esbuild: {
     drop: ["console", "debugger"],
   },
-  // LCP Optimization: Preload critical resources
-  server: {
-    headers: {
-      'Link': '</src/assets/fonts/noto-serif/NotoSerifDisplay_Condensed-Regular.ttf>; rel=preload; as=font; type=font/ttf; crossorigin, </src/assets/fonts/noto-serif/NotoSerifDisplay_Condensed-Italic.ttf>; rel=preload; as=font; type=font/ttf; crossorigin, </src/assets/fonts/pp-mori/PPMori-Regular.otf>; rel=preload; as=font; type=font/otf; crossorigin'
-    }
-  }
 });
