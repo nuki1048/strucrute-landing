@@ -15,7 +15,7 @@ export const LanguageSwitcher = ({
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
     setCurrentLanguage(languageCode as "en" | "uk");
-    onLanguageChange();
+    onLanguageChange?.();
   };
 
   return (
