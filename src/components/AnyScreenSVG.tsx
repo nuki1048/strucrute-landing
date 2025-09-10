@@ -1,9 +1,18 @@
-import AnyScreenSVG from "../assets/any-screen.svg?react";
+import { Suspense } from "react";
+import AnyScreenSVG from "../assets/any-screen.svg";
 
 export default function HeroVisual({
   isActive = false,
 }: {
   isActive?: boolean;
 }) {
-  return <AnyScreenSVG className={`${isActive ? "active" : ""}`} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <img
+        src={AnyScreenSVG}
+        className={`${isActive ? "active" : ""}`}
+        loading='lazy'
+      />
+    </Suspense>
+  );
 }
