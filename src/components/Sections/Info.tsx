@@ -14,7 +14,7 @@ export const Info = () => {
       paddingX={{ base: "20px", md: "35px", "2xl": "65px" }}
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
       gridTemplateRows={{
-        base: "repeat(5,100px)",
+        base: "repeat(5,min-content)",
         md: "repeat(4,min-content)", // Changed from "auto" to "min-content"
         lg: "repeat(5,min-content)", // Changed from "auto" to "min-content"
       }}
@@ -55,18 +55,18 @@ export const Info = () => {
 
       <BoxGrid
         gridColumn={{ base: "1 / 2", sm: "2 / 3", md: "2 / 3" }}
-        gridRow='1 / 2'
+        gridRow={{ sm: "2", md: "1 / 2" }}
         display='flex'
         flexDirection='column'
         alignItems='flex-end'
         justifySelf='flex-end'
         transform={{
-          base: "translateY(260px)",
+          base: "translateY(0)",
           md: isEnglish ? "translateY(65px)" : "translateY(100px)",
         }}
         hoverText={t("info.web-and-mobile-development-description")}
         hoverTextAlign='right'
-        hoverTextTop={{ base: "30px", sm: "40px", md: "45%" }}
+        hoverTextTop={{ base: "30px", sm: "40px", md: "25%" }}
         hoverTextLeft={{
           base: "-45%",
           sm: "-20%",
@@ -104,7 +104,7 @@ export const Info = () => {
         flexDirection='column'
         alignItems='flex-start'
         transform={{
-          base: "translateY(30px)",
+          base: "translateY(0)",
           sm: "translateY(20px)",
           md: "translateY(50px)",
         }}
@@ -153,7 +153,7 @@ export const Info = () => {
           md: "-20%",
           xl: "initial",
         }}
-        hoverTextTop={{ base: "initial", xl: "40%" }}
+        hoverTextTop={{ base: "initial", xl: "25%" }}
         maxWHoverText={{ base: "200px", md: "250px", xl: "380px" }}
         justifySelf='flex-end'
         width='max-content'
@@ -189,7 +189,10 @@ export const Info = () => {
         hoverText={t("info.interactive-design-description")}
         hoverTextAlign='left'
         width='max-content'
-        marginTop={{ base: "50px", sm: "0", xl: "110px", "2xl": "100px" }}
+        transform={{
+          sm: "translateY(0)",
+          xl: "translateY(110px)",
+        }}
         hoverTextRight={{
           base: "-15%",
           sm: "0%",

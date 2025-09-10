@@ -30,7 +30,9 @@
     "security-and-reliability": "Security and reliability",
     "interactive-solutions": "Interactive solutions",
     "continuous-support-and-development": "Ongoing support and development",
-    "description": "We move fast and confidently. {{mobileBR}} You can trust us with:"
+    "description": "We move fast and confidently. \n You can trust us with:",
+    "we-move-fast": "We move fast and confidently.",
+    "you-can-trust-us-with": "You can trust us with:"
   },
   "cards": {
     "every-big-product": "EVERY GREAT PRODUCT SPEAKS VISUALLY",
@@ -60,7 +62,7 @@
     "interactive-design-description": "makes the product more modern, engaging, and user-friendly"
   },
   "works.title": "Our projects",
-  "any-screen.title": "ONE PRODUCT. ANY SCREEN.",
+  "any-screen.title": "One product – any screen.",
   "form-floating": {
     "description": "Tell us about your needs",
     "form-items.1": "UI/UX design for website/landing/app",

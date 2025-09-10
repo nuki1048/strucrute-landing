@@ -1,6 +1,6 @@
 import { Box, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import mockup from "../../assets/macbook-mockup.png";
+import mockup from "../../assets/macbook-mockup.png?format=webp&as=src";
 
 export const MockupCarousel = () => {
   return (

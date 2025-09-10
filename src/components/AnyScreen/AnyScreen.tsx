@@ -62,7 +62,6 @@ export const AnyScreen = () => {
             fontSize='clamp(1.25rem, -0.1378rem + 5.0466vw, 5.3125rem)'
             fontWeight='400'
             textAlign='center'
-            textTransform='uppercase'
             className='shimmer-text'
           >
             {t("any-screen.title")}

@@ -174,7 +174,7 @@ export const MobileMenu = ({
                 marginTop: "auto",
               }}
             >
-              <LanguageSwitcher />
+              <LanguageSwitcher onLanguageChange={onClose} />
             </motion.div>
           </Box>
         </motion.div>

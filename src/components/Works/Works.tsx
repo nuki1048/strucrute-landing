@@ -4,14 +4,14 @@ import { BlurredBackground } from "../BlurredBackground/BlurredBackground";
 import { CenterBurstGallery } from "./CenterBurstGallery";
 import type { WorkItem } from "../../types/types";
 
-import mockup1 from "../../assets/audiophile-promo.png";
-import mockup2 from "../../assets/audophile-products.png";
-import mockup3 from "../../assets/flowers-form.png";
-import mockup4 from "../../assets/flowers-promo.png";
-import mockup5 from "../../assets/guitarshop-promo.png";
-import mockup6 from "../../assets/gitarshop-footer.png";
-import mockup7 from "../../assets/furniro-promo.png";
-import mockup8 from "../../assets/furniro-second.png";
+import mockup1 from "../../assets/audiophile-promo.png?format=webp&as=src";
+import mockup2 from "../../assets/audophile-products.png?format=webp&as=src";
+import mockup3 from "../../assets/flowers-form.png?format=webp&as=src";
+import mockup4 from "../../assets/flowers-promo.png?format=webp&as=src";
+import mockup5 from "../../assets/guitarshop-promo.png?format=webp&as=src";
+import mockup6 from "../../assets/gitarshop-footer.png?format=webp&as=src";
+import mockup7 from "../../assets/furniro-promo.png?format=webp&as=src";
+import mockup8 from "../../assets/furniro-second.png?format=webp&as=src";
 
 export default function Works() {
   const items: WorkItem[] = [

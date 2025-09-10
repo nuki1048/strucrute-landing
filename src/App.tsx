@@ -21,7 +21,8 @@ import { ScrollToTop } from "./components/ScrollToTop";
 
 function App() {
   useLenisSmoothScroll();
-  const [showLoading, setShowLoading] = useState(true);
+  const isDev = process.env.NODE_ENV === "development";
+  const [showLoading, setShowLoading] = useState(!isDev);
 
   const handleLoadingComplete = () => {
     setShowLoading(false);

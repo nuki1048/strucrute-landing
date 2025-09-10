@@ -86,8 +86,8 @@ export function SphereScene({
   const [isVisible, setIsVisible] = React.useState(true);
   const isVisibleRef = React.useRef(true);
   React.useEffect(() => {
-    isVisibleRef.current = isVisible;
-  }, [isVisible]);
+    isVisibleRef.current = true; // Always keep it visible
+  }, []);
 
   // Scroll (with onUpdate callback to invalidate on demand)
   const scrollRef = useSmoothedScrollBetween(
@@ -126,13 +126,14 @@ export function SphereScene({
 
   // Canvas in/out of viewport → stop everything when hidden
   React.useEffect(() => {
-    if (!gl.domElement) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.05 }
-    );
-    obs.observe(gl.domElement);
-    return () => obs.disconnect();
+    // Disabled: Always keep sphere visible
+    // if (!gl.domElement) return;
+    // const obs = new IntersectionObserver(
+    //   ([entry]) => setIsVisible(entry.isIntersecting),
+    //   { threshold: 0.05 }
+    // );
+    // obs.observe(gl.domElement);
+    // return () => obs.disconnect();
   }, [gl]);
 
   /** ---------- Helpers ---------- */
@@ -389,7 +390,7 @@ export function SphereScene({
 
   /** ---------- per-frame updates (cheap) ---------- */
   useFrame(() => {
-    if (!isVisible) return; // ⬅ nothing computed, nothing drawn
+    // if (!isVisible) return; // ⬅ Disabled: always render
 
     const time = (performance.now() - startRef.current) / 1000;
     const root = rootRef.current;

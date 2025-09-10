@@ -101,10 +101,9 @@ export const About = () => {
         alignItems='center'
         paddingY='20px'
         w='100%'
-        h={{ base: "100%", md: "630px" }}
         marginTop='150px'
         overflow='hidden'
-        paddingX={{ base: "20px", md: "100px" }}
+        paddingX={{ base: "40px", sm: "100px", lg: "250px" }}
       >
         <Container
           position='relative'
@@ -125,15 +124,16 @@ export const About = () => {
         >
           <motion.div variants={textVariants} style={{ width: "100%" }}>
             <Text
-              fontSize='clamp(1.125rem, 0.5485rem + 2.0963vw, 2.8125rem)'
+              fontSize='clamp(1.5625rem, 0.7298rem + 3.028vw, 4rem)'
               color='white'
               lineHeight={1}
               fontWeight={500}
-              textAlign='center'
+              width={{ base: "300px", sm: "fit-content" }}
+              textWrap={{ base: "wrap", md: "nowrap" }}
             >
-              {t("about.description", {
-                mobileBR: isMobile ? "<br>" : "",
-              })}
+              {t("about.we-move-fast")}
+              {!isMobile && <br />}
+              {t("about.you-can-trust-us-with")}
             </Text>
           </motion.div>
 

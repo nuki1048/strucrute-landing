@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Box, Text, HStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-export const LanguageSwitcher = () => {
+export const LanguageSwitcher = ({
+  onLanguageChange,
+}: {
+  onLanguageChange: () => void;
+}) => {
   const { i18n, t } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState<"en" | "uk">(
     i18n.language as "en" | "uk"
@@ -11,6 +15,7 @@ export const LanguageSwitcher = () => {
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
     setCurrentLanguage(languageCode as "en" | "uk");
+    onLanguageChange();
   };
 
   return (

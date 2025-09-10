@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
+import { imagetools } from "vite-imagetools";
 
 function manualChunks(id: string) {
   if (id.includes("node_modules")) {
@@ -41,6 +42,7 @@ function manualChunks(id: string) {
 export default defineConfig({
   plugins: [
     react(),
+    imagetools(),
     svgr({
       include: "**/*.svg?react",
       svgrOptions: {

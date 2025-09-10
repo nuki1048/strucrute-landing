@@ -1,7 +1,7 @@
 import { Box, Text, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef } from "react";
-import image from "../../assets/cloud-image.png";
+import image from "../../assets/cloud-image.png?format=webp&as=src";
 
 export const BlurredBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);

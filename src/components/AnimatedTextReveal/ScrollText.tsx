@@ -6,6 +6,7 @@ import {
   Separator,
   useToken,
   type HTMLChakraProps,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import {
   motion,
@@ -232,7 +233,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
 }) => {
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const inView = useInView(rootRef, { amount, once });
-
+  const isTablet = useMediaQuery(["(max-width: 768px)"]);
   const [tokens, setTokens] = React.useState<Token[]>([]);
   React.useEffect(() => {
     setTokens(tokenizeHtml(text, mode));
@@ -288,7 +289,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
             <Separator
               style={{
                 height: "1px",
-                margin: "-15px",
+                margin: isTablet ? "-5px" : "-15px",
                 padding: 0,
                 border: "none",
               }}
