@@ -8,11 +8,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { I18nextProvider } from "react-i18next";
 import { PostHogProvider } from "posthog-js/react";
 import type { PostHogConfig } from "posthog-js";
+import Hotjar from "@hotjar/browser";
 
 const options: Partial<PostHogConfig> = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
   defaults: "2025-05-24",
 };
+
+const siteId = 6517746;
+const hotjarVersion = 6;
+
+Hotjar.init(siteId, hotjarVersion);
 
 const initApp = () => {
   createRoot(document.getElementById("root")!).render(

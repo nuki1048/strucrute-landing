@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./components/Header/Header";
 import { LoadingScreen } from "./components/LoadingScreen/LoadingScreen";
 
@@ -18,6 +18,7 @@ import {
 import { FormFloating } from "./components/FormFloating/FormFloating";
 import { Cards } from "./components/Сards/Cards";
 import { ScrollToTop } from "./components/ScrollToTop";
+import posthog from "posthog-js";
 
 function App() {
   useLenisSmoothScroll();
@@ -28,6 +29,9 @@ function App() {
     setShowLoading(false);
   };
 
+  useEffect(() => {
+    posthog.capture("$pageview");
+  }, []);
   return (
     <>
       <LoadingScreen

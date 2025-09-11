@@ -1,12 +1,13 @@
 import { Link } from "@chakra-ui/react";
 import { LanguageSwitcher } from "../LanguageSwitcher";
 import { useTranslation } from "react-i18next";
-
+import posthog from "posthog-js";
 export const HeaderLinks = () => {
   const { t } = useTranslation();
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
+      posthog.capture("header-link-click", { link: id });
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
