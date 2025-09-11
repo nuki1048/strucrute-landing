@@ -18,7 +18,7 @@ import {
 import { FormFloating } from "./components/FormFloating/FormFloating";
 import { Cards } from "./components/Сards/Cards";
 import { ScrollToTop } from "./components/ScrollToTop";
-import posthog from "posthog-js";
+import mixpanel from "mixpanel-browser/src/loaders/loader-module-core";
 
 function App() {
   useLenisSmoothScroll();
@@ -30,7 +30,7 @@ function App() {
   };
 
   useEffect(() => {
-    posthog.capture("$pageview");
+    mixpanel.track("Page View");
   }, []);
   return (
     <>
