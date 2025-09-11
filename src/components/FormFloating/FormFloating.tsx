@@ -6,6 +6,7 @@ import { ExpandedFormFloating } from "./ExpandedFormFloating";
 import { FormButton } from "./FormButton";
 import { buttonVariants, containerVariants, textVariants } from "./animations";
 import { useTranslation } from "react-i18next";
+import posthog from "posthog-js";
 
 export const FormFloating = () => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ export const FormFloating = () => {
   const formRef = useRef<HTMLDivElement>(null);
 
   const handleButtonClick = () => {
+    posthog.capture("form-floating-button-click");
     setIsExpanded(!isExpanded);
   };
 
