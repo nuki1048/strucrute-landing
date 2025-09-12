@@ -9,7 +9,7 @@ const SphereScene = lazy(() => import("../Sphere/AnimatedScene"));
 
 export const Promo = () => {
   const { t } = useTranslation();
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const [isMobile, isTablet] = useMediaQuery([
     "(max-width: 768px)",
     "(max-width: 1024px)",
@@ -22,8 +22,8 @@ export const Promo = () => {
   };
 
   useEffect(() => {
-    track("promo_view", { deviceType });
-  }, [deviceType]);
+    track("promo_view", { ...commonProps });
+  }, [commonProps]);
 
   return (
     <Box
