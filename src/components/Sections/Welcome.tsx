@@ -15,7 +15,7 @@ export const Welcome = () => {
   });
 
   useEffect(() => {
-    track("view_welcome", { ...commonProps });
+    track("welcome_view", { ...commonProps });
   }, [commonProps]);
 
   return (
