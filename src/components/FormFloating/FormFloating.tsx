@@ -6,6 +6,8 @@ import { ExpandedFormFloating } from "./ExpandedFormFloating";
 import { FormButton } from "./FormButton";
 import { buttonVariants, containerVariants, textVariants } from "./animations";
 import { useTranslation } from "react-i18next";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+import { track } from "@vercel/analytics";
 
 export const FormFloating = () => {
   const { t } = useTranslation();
@@ -13,9 +15,10 @@ export const FormFloating = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
-
+  const { deviceType } = useCommonDeviceProps();
   const handleButtonClick = () => {
     setIsExpanded(!isExpanded);
+    track("form_floating_button_click", { deviceType });
   };
 
   useEffect(() => {

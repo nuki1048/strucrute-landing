@@ -2,13 +2,21 @@ import { Box, Container, useMediaQuery } from "@chakra-ui/react";
 import { ScrollRevealText } from "../AnimatedTextReveal/ScrollRevealText";
 import BrightTextRichLinesScroll from "../AnimatedTextReveal/ScrollRevealByLinesText";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const Welcome = () => {
   const { t } = useTranslation();
+  const { deviceType } = useCommonDeviceProps();
   const isMobile = useMediaQuery(["(max-width: 768px)"]);
   const text = t("welcome-description", {
     mobileBR: isMobile ? "<br>" : "",
   });
+
+  useEffect(() => {
+    track("view_welcome", { deviceType });
+  }, [deviceType]);
 
   return (
     <Box

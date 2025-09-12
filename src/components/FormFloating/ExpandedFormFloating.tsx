@@ -7,6 +7,8 @@ import { SecondStage } from "./SecondStage";
 import { Final } from "./Final";
 import { expandedContentVariants } from "./animations";
 import { useTranslation } from "react-i18next";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 interface ExpandedFormFloatingProps {
   onClose: () => void;
@@ -56,7 +58,7 @@ export const ExpandedFormFloating = ({
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-
+  const { deviceType } = useCommonDeviceProps();
   const initialFormData = formFields.reduce((acc, field) => {
     acc[field.id] = "";
     return acc;
@@ -154,6 +156,12 @@ export const ExpandedFormFloating = ({
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      track("form_floating_submit", {
+        deviceType,
+        selectedItems: selectedItems.join(","),
+        formData: JSON.stringify(formData),
+      });
 
       return await response.json();
     } catch (error) {

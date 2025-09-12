@@ -3,7 +3,10 @@ import BehanceIcon from "../../assets/behance-icon.svg?react";
 import DribbleIcon from "../../assets/dribble-icon.svg?react";
 import LinkedinIcon from "../../assets/linkedin-icon.svg?react";
 import { useTranslation } from "react-i18next";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+import { track } from "@vercel/analytics";
 export const Footer = () => {
+  const { deviceType } = useCommonDeviceProps();
   const { t } = useTranslation();
   const year = new Date().getFullYear();
   return (
@@ -81,6 +84,10 @@ export const Footer = () => {
             fontSize='16px'
             fontWeight='regular'
             color='white'
+            data-exit-trigger='email'
+            onClick={() => {
+              track("email_click", { deviceType });
+            }}
           >
             {t("footer.email")}
           </Link>
@@ -88,6 +95,7 @@ export const Footer = () => {
             fontSize='clamp(0.75rem, 0.6646rem + 0.3106vw, 1rem)'
             fontWeight='regular'
             color='gray1'
+            data-exit-trigger='location'
           >
             {t("footer.location")}
           </Text>
@@ -99,6 +107,10 @@ export const Footer = () => {
               bg='black1'
               border='1px solid'
               borderColor='gray4'
+              onClick={() => {
+                track("behance_click", { deviceType });
+              }}
+              data-exit-trigger='behance'
             >
               <BehanceIcon />
             </Button>
@@ -109,6 +121,10 @@ export const Footer = () => {
               bg='black1'
               border='1px solid'
               borderColor='gray4'
+              onClick={() => {
+                track("dribble_click", { deviceType });
+              }}
+              data-exit-trigger='dribble'
             >
               <DribbleIcon />
             </Button>
@@ -119,6 +135,10 @@ export const Footer = () => {
               bg='black1'
               border='1px solid'
               borderColor='gray4'
+              onClick={() => {
+                track("linkedin_click", { deviceType });
+              }}
+              data-exit-trigger='linkedin'
             >
               <LinkedinIcon />
             </Button>

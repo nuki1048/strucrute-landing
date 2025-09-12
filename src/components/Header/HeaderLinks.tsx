@@ -1,12 +1,17 @@
 import { Link } from "@chakra-ui/react";
 import { LanguageSwitcher } from "../LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+
 export const HeaderLinks = () => {
   const { t } = useTranslation();
+  const { deviceType } = useCommonDeviceProps();
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      track("scroll_to", { id, deviceType });
     }
   };
 

@@ -18,9 +18,14 @@ import {
 import { FormFloating } from "./components/FormFloating/FormFloating";
 import { Cards } from "./components/Сards/Cards";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { useScrollTracking } from "./hooks/useScrollTracking";
+import { useExitTracking } from "./hooks/useExitTracking";
 
 function App() {
   useLenisSmoothScroll();
+  useScrollTracking();
+  useExitTracking();
+
   const isDev = process.env.NODE_ENV === "development";
   const [showLoading, setShowLoading] = useState(!isDev);
 
