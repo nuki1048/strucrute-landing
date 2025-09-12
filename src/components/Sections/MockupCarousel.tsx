@@ -46,7 +46,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
         <Image
           src={mockup}
@@ -57,7 +56,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
 
         {/* Second set for seamless loop */}
@@ -70,7 +68,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
         <Image
           src={mockup}
@@ -81,7 +78,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
 
         {/* Third set to ensure seamless loop */}
@@ -94,7 +90,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
         <Image
           src={mockup}
@@ -105,7 +100,6 @@ export const MockupCarousel = () => {
           }}
           borderRadius='35px'
           flexShrink={0}
-          loading='lazy'
         />
       </motion.div>
     </Box>

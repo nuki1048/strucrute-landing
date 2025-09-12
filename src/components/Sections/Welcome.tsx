@@ -95,10 +95,9 @@ export const Welcome = () => {
             hideUntilStart={true}
             fontWeight={300}
             strictHideMode='unmount'
-            snapMode='enter' // ← snaps to fully bright once visible
+            snapMode='enter'
             id='section-2-end'
             offset={["start 85%", "end 60%"]}
-            // offset={["start 50%", "end 50%"]}
           />
         </Box>
       </Container>

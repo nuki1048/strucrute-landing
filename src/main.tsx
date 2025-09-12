@@ -7,13 +7,7 @@ import i18n from "./i18n";
 import { ChakraProvider } from "@chakra-ui/react";
 import { I18nextProvider } from "react-i18next";
 import Hotjar from "@hotjar/browser";
-import mixpanel from "mixpanel-browser";
-
-mixpanel.init(import.meta.env.VITE_PUBLIC_MIXPANEL_TOKEN, {
-  debug: true,
-  track_pageview: true,
-  persistence: "localStorage",
-});
+import { Analytics } from "@vercel/analytics/react";
 
 const siteId = 6517746;
 const hotjarVersion = 6;
@@ -27,6 +21,7 @@ const initApp = () => {
         <StrictMode>
           <Fonts />
           <App />
+          <Analytics />
         </StrictMode>
       </ChakraProvider>
     </I18nextProvider>
