@@ -6,12 +6,12 @@ import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const HeaderLinks = () => {
   const { t } = useTranslation();
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      track("scroll_to", { id, deviceType });
+      track("scroll_to", { id, ...commonProps });
     }
   };
 

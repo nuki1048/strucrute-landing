@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import { track } from "@vercel/analytics";
 export const Footer = () => {
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const { t } = useTranslation();
   const year = new Date().getFullYear();
   return (
@@ -86,7 +86,7 @@ export const Footer = () => {
             color='white'
             data-exit-trigger='email'
             onClick={() => {
-              track("email_click", { deviceType });
+              track("email_click", { ...commonProps });
             }}
           >
             {t("footer.email")}
@@ -108,7 +108,7 @@ export const Footer = () => {
               border='1px solid'
               borderColor='gray4'
               onClick={() => {
-                track("behance_click", { deviceType });
+                track("behance_click", { ...commonProps });
               }}
               data-exit-trigger='behance'
             >
@@ -122,7 +122,7 @@ export const Footer = () => {
               border='1px solid'
               borderColor='gray4'
               onClick={() => {
-                track("dribble_click", { deviceType });
+                track("dribble_click", { ...commonProps });
               }}
               data-exit-trigger='dribble'
             >
@@ -136,7 +136,7 @@ export const Footer = () => {
               border='1px solid'
               borderColor='gray4'
               onClick={() => {
-                track("linkedin_click", { deviceType });
+                track("linkedin_click", { ...commonProps });
               }}
               data-exit-trigger='linkedin'
             >

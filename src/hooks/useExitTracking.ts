@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "./useCommonDeviceProps";
 
 export const useExitTracking = () => {
+  const { deviceType } = useCommonDeviceProps();
   useEffect(() => {
     const exitData = {
       page: window.location.pathname,
@@ -31,10 +33,10 @@ export const useExitTracking = () => {
       trackScrollDepth();
 
       track("exit_page", {
-        page: exitData.page,
         time_on_page: exitData.timeOnPage,
         scroll_depth: exitData.scrollDepth,
         exit_element: exitData.exitElement,
+        deviceType,
       });
 
       // Optional: Show confirmation dialog
@@ -57,9 +59,9 @@ export const useExitTracking = () => {
         ) {
           exitData.exitElement = `link:${href}`;
           track("exit_external_link", {
-            page: exitData.page,
             external_url: href,
             time_on_page: Math.round((Date.now() - startTime) / 1000),
+            deviceType,
           });
         }
       }
@@ -85,5 +87,5 @@ export const useExitTracking = () => {
       window.removeEventListener("click", handleExitClicks);
       window.removeEventListener("scroll", trackScrollDepth);
     };
-  }, []);
+  }, [deviceType]);
 };

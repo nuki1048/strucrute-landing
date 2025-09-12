@@ -58,7 +58,7 @@ export const ExpandedFormFloating = ({
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const initialFormData = formFields.reduce((acc, field) => {
     acc[field.id] = "";
     return acc;
@@ -158,7 +158,7 @@ export const ExpandedFormFloating = ({
       }
 
       track("form_floating_submit", {
-        deviceType,
+        ...commonProps,
         selectedItems: selectedItems.join(","),
         formData: JSON.stringify(formData),
       });

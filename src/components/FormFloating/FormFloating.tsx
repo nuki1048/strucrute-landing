@@ -15,10 +15,10 @@ export const FormFloating = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const handleButtonClick = () => {
     setIsExpanded(!isExpanded);
-    track("form_floating_button_click", { deviceType });
+    track("form_floating_button_click", { ...commonProps });
   };
 
   useEffect(() => {

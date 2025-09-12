@@ -2,11 +2,14 @@ import { Box, Container, useMediaQuery } from "@chakra-ui/react";
 import BrightTextRichLines from "../AnimatedTextReveal/AnimatedTextByLines";
 import BrightTextRich from "../AnimatedTextReveal/AnimatedText";
 import { useTranslation } from "react-i18next";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 const SphereScene = lazy(() => import("../Sphere/AnimatedScene"));
 
 export const Promo = () => {
   const { t } = useTranslation();
+  const { deviceType } = useCommonDeviceProps();
   const [isMobile, isTablet] = useMediaQuery([
     "(max-width: 768px)",
     "(max-width: 1024px)",
@@ -17,6 +20,11 @@ export const Promo = () => {
     if (isTablet) return -400;
     return -150;
   };
+
+  useEffect(() => {
+    track("promo_view", { deviceType });
+  }, [deviceType]);
+
   return (
     <Box
       id='hero'

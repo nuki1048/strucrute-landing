@@ -8,15 +8,15 @@ import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const Welcome = () => {
   const { t } = useTranslation();
-  const { deviceType } = useCommonDeviceProps();
+  const commonProps = useCommonDeviceProps();
   const isMobile = useMediaQuery(["(max-width: 768px)"]);
   const text = t("welcome-description", {
     mobileBR: isMobile ? "<br>" : "",
   });
 
   useEffect(() => {
-    track("view_welcome", { deviceType });
-  }, [deviceType]);
+    track("view_welcome", { ...commonProps });
+  }, [commonProps]);
 
   return (
     <Box
