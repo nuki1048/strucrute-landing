@@ -6,6 +6,6 @@ export const useCommonDeviceProps = () => {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   return {
     deviceType: isMobile ? "mobile" : "desktop",
-    language: i18n.language,
+    language: i18n.language || "en",
   };
 };

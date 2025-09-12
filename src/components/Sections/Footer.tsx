@@ -13,7 +13,7 @@ export const Footer = () => {
   const year = new Date().getFullYear();
 
   useEffect(() => {
-    track("view_footer", { ...commonProps });
+    track("footer_view", { ...commonProps });
   }, [commonProps]);
 
   return (
