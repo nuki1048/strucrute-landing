@@ -5,10 +5,17 @@ import LinkedinIcon from "../../assets/linkedin-icon.svg?react";
 import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import { track } from "@vercel/analytics";
+import { useEffect } from "react";
+
 export const Footer = () => {
   const commonProps = useCommonDeviceProps();
   const { t } = useTranslation();
   const year = new Date().getFullYear();
+
+  useEffect(() => {
+    track("view_footer", { ...commonProps });
+  }, [commonProps]);
+
   return (
     <Box
       width='100%'

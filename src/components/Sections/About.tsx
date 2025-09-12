@@ -8,6 +8,9 @@ import {
   textVariants,
 } from "../../animations/about";
 import { useTranslation } from "react-i18next";
+import { track } from "@vercel/analytics";
+import { useEffect } from "react";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 const keywords = [
   "Mobile Development",
@@ -76,6 +79,7 @@ const keywordsVariants = {
 
 export const About = () => {
   const { t } = useTranslation();
+  const commonProps = useCommonDeviceProps();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const listItems = [
     t("about.ui-ux-design"),
@@ -85,6 +89,10 @@ export const About = () => {
     t("about.interactive-solutions"),
     t("about.continuous-support-and-development"),
   ];
+
+  useEffect(() => {
+    track("view_about", { ...commonProps });
+  }, [commonProps]);
 
   return (
     <motion.div

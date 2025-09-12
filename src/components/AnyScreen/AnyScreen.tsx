@@ -2,12 +2,15 @@ import { chakra, Text } from "@chakra-ui/react";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { track } from "@vercel/analytics";
 const MotionBox = chakra(motion.div);
 import "./AnyScreen.css";
 import AnyScreenSVG from "../AnyScreenSVG";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const AnyScreen = () => {
   const { t } = useTranslation();
+  const commonProps = useCommonDeviceProps();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
   const [isActive, setIsActive] = useState(false);
@@ -40,6 +43,10 @@ export const AnyScreen = () => {
       setIsActive(false);
     }
   }, [isInView]);
+
+  useEffect(() => {
+    track("view_any_screen", { ...commonProps });
+  }, [commonProps]);
 
   return (
     <motion.div

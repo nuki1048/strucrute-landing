@@ -1,14 +1,22 @@
 import { Grid, useMediaQuery } from "@chakra-ui/react";
 import { BoxGrid } from "../BoxGrid";
 import { RevealText } from "../AnimatedTextReveal/ScrollText";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const Info = () => {
   const { t, i18n } = useTranslation();
+  const commonProps = useCommonDeviceProps();
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const isEnglish = useMemo(() => i18n.language === "en", [i18n.language]);
   const textMode = useMemo(() => (isMobile ? "word" : "letter"), [isMobile]);
+
+  useEffect(() => {
+    track("view_info", { ...commonProps });
+  }, [commonProps]);
+
   return (
     <Grid
       paddingX={{ base: "20px", md: "35px", "2xl": "65px" }}

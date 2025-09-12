@@ -1,8 +1,17 @@
 import { Box, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import mockup from "../../assets/macbook-mockup.png?format=webp&as=src";
+import { useEffect } from "react";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 
 export const MockupCarousel = () => {
+  const commonProps = useCommonDeviceProps();
+
+  useEffect(() => {
+    track("view_mockup_carousel", { ...commonProps });
+  }, [commonProps]);
+
   return (
     <Box
       position='relative'

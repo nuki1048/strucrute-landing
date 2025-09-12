@@ -3,7 +3,9 @@ import { Box } from "@chakra-ui/react";
 import { BlurredBackground } from "../BlurredBackground/BlurredBackground";
 import { CenterBurstGallery } from "./CenterBurstGallery";
 import type { WorkItem } from "../../types/types";
-
+import { useEffect } from "react";
+import { track } from "@vercel/analytics";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import mockup1 from "../../assets/audiophile-promo.png?format=webp&as=src";
 import mockup2 from "../../assets/audophile-products.png?format=webp&as=src";
 import mockup3 from "../../assets/flowers-form.png?format=webp&as=src";
@@ -14,6 +16,12 @@ import mockup7 from "../../assets/furniro-promo.png?format=webp&as=src";
 import mockup8 from "../../assets/furniro-second.png?format=webp&as=src";
 
 export default function Works() {
+  const commonProps = useCommonDeviceProps();
+
+  useEffect(() => {
+    track("view_works", { ...commonProps });
+  }, [commonProps]);
+
   const items: WorkItem[] = [
     { title: "Item 1", image: mockup1 },
     { title: "Item 2", image: mockup2 },

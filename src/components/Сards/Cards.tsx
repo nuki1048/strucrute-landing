@@ -4,12 +4,16 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Card } from "./Card";
 import { segment } from "../../utils/animationUtils";
 import { useTranslation } from "react-i18next";
+import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+import { useEffect } from "react";
+import { track } from "@vercel/analytics";
 
 const MotionBox = motion.create(Box);
 
 export const Cards: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
+  const commonProps = useCommonDeviceProps();
   const sectionH = useBreakpointValue({
     base: "520vh",
     md: "580vh",
@@ -50,6 +54,10 @@ export const Cards: React.FC = () => {
   const yCard0 = useSpring(useTransform(p1, [0, 1], [y0_start, y0_end]), SPR);
   const yCard1 = useSpring(useTransform(p2, [0, 1], [y1_start, y1_end]), SPR);
   const yCard2 = useSpring(useTransform(p3, [0, 1], [y2_start, y2_end]), SPR);
+
+  useEffect(() => {
+    track("view_cards", { ...commonProps });
+  }, [commonProps]);
 
   return (
     <Box
