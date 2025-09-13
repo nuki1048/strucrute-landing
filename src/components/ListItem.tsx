@@ -25,6 +25,7 @@ export const ListItem = ({
         lineHeight={1}
         fontWeight={400}
         fontFamily='ppMori'
+        height={{ base: "inital", md: "25px", lg: "35px" }}
       >
         {number}
       </Text>
