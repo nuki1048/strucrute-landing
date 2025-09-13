@@ -11,6 +11,7 @@ import { track } from "@vercel/analytics";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Textarea } from "../Textarea";
+import { useFormContext } from "../../hooks/useFormContext";
 
 interface ExpandedFormFloatingProps {
   onClose: () => void;
@@ -25,6 +26,15 @@ export const ExpandedFormFloating = ({
 }: ExpandedFormFloatingProps) => {
   const { t } = useTranslation();
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const {
+    selectedItems,
+    setSelectedItems,
+    currentStage,
+    setCurrentStage,
+    formData,
+    setFormData,
+  } = useFormContext();
 
   const formItems = [
     {
@@ -57,19 +67,10 @@ export const ExpandedFormFloating = ({
       required: false,
     },
   ];
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [currentStage, setCurrentStage] = useState(1);
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const commonProps = useCommonDeviceProps();
-
-  const initialFormData = formFields.reduce((acc, field) => {
-    acc[field.id] = "";
-    return acc;
-  }, {} as Record<string, string>);
-
-  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (currentStage === 3) {
@@ -127,18 +128,18 @@ export const ExpandedFormFloating = ({
   };
 
   const handlePreviousStage = () => {
-    setCurrentStage((prev) => prev - 1);
+    setCurrentStage(currentStage - 1);
     setErrors({});
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [field]: value,
-    }));
+    });
 
     if (errors[field]) {
-      setErrors((prev) => {
+      setErrors((prev: FormErrors) => {
         const newErrors = { ...prev };
         delete newErrors[field];
         return newErrors;
