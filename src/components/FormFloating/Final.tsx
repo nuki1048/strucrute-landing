@@ -42,7 +42,7 @@ export const Final = () => {
             color: "white",
           }}
         >
-          <CheckCircleIcon width={64} height={64} />
+          <CheckCircleIcon width={54} height={54} />
         </motion.div>
 
         <Text
