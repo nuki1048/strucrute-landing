@@ -1,7 +1,8 @@
-import { Box, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import RevealText from "../AnimatedTextReveal/ScrollText";
 
 interface LoadingScreenProps {
   isVisible: boolean;
@@ -20,14 +21,13 @@ export const LoadingScreen = ({
     if (!isVisible) return;
 
     const startTime = Date.now();
-    // LCP Optimization: Reduce loading time from 3s to 1.5s
     const duration = 1500;
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
       const rawProgress = Math.min(elapsed / duration, 1);
 
-      const easedProgress = 1 - Math.pow(1 - rawProgress, 3); // easeOutCubic
+      const easedProgress = 1 - Math.pow(1 - rawProgress, 3);
       const finalProgress = easedProgress * 100;
 
       setProgress(finalProgress);
@@ -35,7 +35,6 @@ export const LoadingScreen = ({
       if (finalProgress < 100) {
         requestAnimationFrame(updateProgress);
       } else {
-        // LCP Optimization: Reduce delay before showing content
         setTimeout(() => onComplete(), 100);
       }
     };
@@ -83,12 +82,27 @@ export const LoadingScreen = ({
               initial={{ scale: 0.5, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{
-                duration: 0.8, // LCP Optimization: Faster animation
+                duration: 0.8,
                 ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.1, // LCP Optimization: Reduced delay
+                delay: 0.1,
               }}
             >
-              <Text
+              <RevealText
+                text={t("structure")}
+                mode={"letter"}
+                direction='up'
+                fontSize='4xl'
+                fontWeight='bold'
+                color='white'
+                textTransform='uppercase'
+                lineHeight={1.1}
+                stagger={0.08}
+                duration={0.7}
+                delay={0.1}
+                amount={0.35}
+                colorText='primary'
+              />
+              {/* <Text
                 fontSize='4xl'
                 fontWeight='bold'
                 color='white'
@@ -97,7 +111,7 @@ export const LoadingScreen = ({
                 letterSpacing='0.05em'
               >
                 STRUCTURE
-              </Text>
+              </Text> */}
             </motion.div>
 
             <Box
@@ -160,7 +174,7 @@ export const LoadingScreen = ({
                   transition={{ delay: 0.4, duration: 0.3 }}
                   style={{
                     fontSize: isMobile ? "20px" : "24px",
-                    fontWeight: "bold",
+                    fontWeight: "300",
                     color: "white",
                     textAlign: "center",
                   }}
@@ -169,22 +183,6 @@ export const LoadingScreen = ({
                 </motion.div>
               </Box>
             </Box>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.4, ease: "easeOut" }}
-            >
-              <Text
-                fontSize='sm'
-                color='gray1'
-                textAlign='center'
-                fontFamily='body'
-                letterSpacing='0.02em'
-              >
-                {t("loading.preparing")}
-              </Text>
-            </motion.div>
           </Box>
         </motion.div>
       )}
