@@ -28,6 +28,14 @@ export const SecondStage = ({
 }) => {
   const { t } = useTranslation();
 
+  // Debug: Check what's available
+  console.log("All env vars:", import.meta.env);
+  console.log("reCAPTCHA key:", import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY);
+  console.log(
+    "Is undefined?",
+    import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY === undefined
+  );
+
   return (
     <>
       <form
@@ -56,7 +64,7 @@ export const SecondStage = ({
         <Box>
           <ReCAPTCHA
             ref={recaptchaRef}
-            sitekey={import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY}
+            sitekey={"6Ld0asgrAAAAAKbSVMdtHWE8y3zN5dLkuc7Cdk7X"}
             size='invisible'
           />
 
