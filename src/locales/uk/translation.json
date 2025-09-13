@@ -83,7 +83,8 @@
     "second-stage.recaptcha-text-1": "і",
     "second-stage.privacy-policy": "Політика конфіденційності",
     "second-stage.terms-of-service": "Умови використання",
-    "second-stage.recaptcha-text-2": "застосовуються."
+    "second-stage.recaptcha-text-2": "застосовуються.",
+    "validation.details-too-long": "Деталі повинні бути менше 500 символів"
   },
   "validation": {
     "required": "Це поле є обов'язковим",

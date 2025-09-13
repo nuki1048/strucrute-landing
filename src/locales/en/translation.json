@@ -85,7 +85,8 @@
     "second-stage.recaptcha-text-1": "and",
     "second-stage.privacy-policy": "Privacy Policy",
     "second-stage.terms-of-service": "Terms of Service",
-    "second-stage.recaptcha-text-2": "apply."
+    "second-stage.recaptcha-text-2": "apply.",
+    "validation.details-too-long": "Details must be less than 500 characters"
   },
   "validation": {
     "required": "This field is required",

@@ -111,6 +111,10 @@ export const ExpandedFormFloating = ({
       newErrors.name = t("form-floating.validation.name-too-short");
     }
 
+    if (formData.details && formData.details.trim().length > 500) {
+      newErrors.details = t("form-floating.validation.details-too-long");
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
