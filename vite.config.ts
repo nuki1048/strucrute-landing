@@ -84,8 +84,8 @@ export default defineConfig({
     "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
     "process.env.DEV": JSON.stringify(process.env.NODE_ENV === "development"),
     "process.env.PROD": JSON.stringify(process.env.NODE_ENV === "production"),
-    "process.env.VITE_RECAPTCHA_SITE_KEY": JSON.stringify(
-      process.env.VITE_RECAPTCHA_SITE_KEY
+    "process.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY": JSON.stringify(
+      process.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY
     ),
     global: "globalThis",
   },

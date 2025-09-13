@@ -56,7 +56,7 @@ export const SecondStage = ({
         <Box>
           <ReCAPTCHA
             ref={recaptchaRef}
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+            sitekey={import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY}
             size='invisible'
           />
 
