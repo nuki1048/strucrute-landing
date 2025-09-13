@@ -22,7 +22,7 @@
     "description": "We create {{mobileBR}} <i>{digital products}</i> {{desktopBR}} that help brands grow"
   },
   "welcome": "Welcome",
-  "welcome-description": "<i>Structure Agency</i> – a design and <br> digital product development studio. We strive to create user experiences and <i>structures</i> that shape the future of your business.",
+  "welcome-description": "<i>Structure Agency</i> – a design and <br> digital product development studio.<br> We strive to create user experiences and <br> <i>structures</i> that shape the  future of <br> your business.",
   "about": {
     "ui-ux-design": "UI/UX design and development",
     "web-applications": "Web applications",

@@ -94,6 +94,7 @@ export const Welcome = () => {
         >
           <BrightTextRichLinesScroll
             text={text}
+            textWrap={{ base: "nowrap", md: "wrap" }}
             fontSize='clamp(1.25rem, 0.7162rem + 1.941vw, 2.8125rem)'
             color='white'
             lineHeight='1'
