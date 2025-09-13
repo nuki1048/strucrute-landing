@@ -6,6 +6,7 @@ const config = defineConfig({
       colors: {
         primary: { value: "#4843AE" },
         secondary: { value: "#D9D9D9" },
+        purple2: { value: "#5751d9" },
         background: { value: "#09090A" },
         text: { value: "#FFFFFF" },
         black1: { value: "#121212" },

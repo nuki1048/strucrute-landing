@@ -23,13 +23,13 @@ export const Info = () => {
       gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'
       gridTemplateRows={{
         base: "repeat(5,min-content)",
-        md: "repeat(4,min-content)", // Changed from "auto" to "min-content"
-        lg: "repeat(5,min-content)", // Changed from "auto" to "min-content"
+        md: "repeat(4,min-content)",
+        lg: "repeat(5,min-content)",
       }}
-      gridAutoRows='min-content' // Changed from "auto" to "min-content"
+      gridAutoRows='min-content'
       w='100%'
       marginTop={{ base: "100px", md: "0" }}
-      gap={{ base: "10px", md: "20px" }}
+      gap={{ base: "10px", md: "15px" }}
     >
       <BoxGrid
         gridColumn='1 / 2'
@@ -46,13 +46,15 @@ export const Info = () => {
         width='max-content'
       >
         <RevealText
-          text={t("info.visual-identity")}
+          text={t("info.visual-identity", {
+            mobileBreak: isMobile ? "<br>" : "",
+          })}
           mode={textMode}
           direction='up'
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
-          lineHeight={1.1}
+          lineHeight={0.95}
           stagger={0.08}
           duration={0.7}
           delay={0.1}
@@ -94,8 +96,9 @@ export const Info = () => {
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textAlign='right'
+          italicFontFamily='notoSerif'
           textTransform='uppercase'
-          lineHeight={1.1}
+          lineHeight={0.95}
           stagger={0.08}
           duration={0.7}
           delay={0.1}
@@ -113,8 +116,8 @@ export const Info = () => {
         alignItems='flex-start'
         transform={{
           base: "translateY(0)",
-          sm: "translateY(20px)",
-          md: "translateY(50px)",
+          sm: "translateY(20px) translateX(25px)",
+          md: "translateY(33px)  translateX(25px)",
         }}
         hoverText={t("info.ui-ux-design-description")}
         hoverTextAlign='left'
@@ -133,7 +136,7 @@ export const Info = () => {
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
-          lineHeight={1.1}
+          lineHeight={0.95}
           stagger={0.08}
           duration={0.7}
           delay={0.1}
@@ -173,7 +176,7 @@ export const Info = () => {
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
-          lineHeight={1.1}
+          lineHeight={0.95}
           stagger={0.08}
           duration={0.7}
           delay={0.1}
@@ -199,7 +202,7 @@ export const Info = () => {
         width='max-content'
         transform={{
           sm: "translateY(0)",
-          xl: "translateY(110px)",
+          xl: "translateY(100px)",
         }}
         hoverTextRight={{
           base: "-15%",
@@ -212,7 +215,7 @@ export const Info = () => {
           sm: "-50%",
           md: "-45%",
           lg: "-40%",
-          xl: "-15%",
+          xl: "-25%",
         }}
         hoverTextTop='none'
       >
@@ -223,7 +226,7 @@ export const Info = () => {
           fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
           color='white'
           textTransform='uppercase'
-          lineHeight={1.1}
+          lineHeight={0.95}
           stagger={0.08}
           duration={0.7}
           delay={0.1}

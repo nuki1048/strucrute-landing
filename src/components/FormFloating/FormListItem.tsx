@@ -93,7 +93,7 @@ export const FormListItem = ({
           fontSize='clamp(0.875rem, 0.8323rem + 0.1553vw, 1rem)'
           userSelect='none'
           fontWeight='500'
-          color={isSelected ? "primary" : "white"}
+          color={isSelected ? "purple2" : "white"}
           opacity={1}
         >
           {title}

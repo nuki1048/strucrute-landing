@@ -58,7 +58,7 @@ const createItemVariants = (index: number, isMobile: boolean) => {
         transition: {
           duration: 0.5,
           ease: easeOut,
-          delay: lineIndex * 0.2,
+          delay: lineIndex * 0.4,
         },
       },
     };

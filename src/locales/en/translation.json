@@ -50,7 +50,7 @@
     "structure": "STRUCTURE"
   },
   "info": {
-    "visual-identity": "<c>Visual</c> identity",
+    "visual-identity": "<c>Visual</c>{{mobileBreak}} identity",
     "visual-identity-description": "helps a company stand out, be recognizable, and evoke the right emotions in its audience",
     "web-and-mobile-development": "<i>Web</i><br>development",
     "web-and-mobile-development-description": "creating websites and web apps: from simple landing pages to complex services",

@@ -29,11 +29,7 @@ export const Footer = () => {
       paddingBottom={{ base: "25px", md: "15px" }}
       id='footer'
     >
-      <Separator
-        borderColor='gray4'
-        marginBottom={{ base: "20px", md: "30px" }}
-        borderWidth='1px'
-      />
+      <Separator borderColor='gray4' marginBottom='20px' borderWidth='1px' />
       <Grid
         width='100%'
         height='100%'
