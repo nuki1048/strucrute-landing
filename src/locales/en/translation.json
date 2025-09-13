@@ -80,7 +80,12 @@
     "validation.submit-error": "Failed to submit form, please try again later",
     "validation.invalid-email": "Invalid email",
     "validation.required": "This field is required",
-    "validation.recaptcha-required": "Please complete the reCAPTCHA verification"
+    "validation.recaptcha-required": "Please complete the reCAPTCHA verification",
+    "second-stage.recaptcha-text": "This site is protected by reCAPTCHA and the Google ",
+    "second-stage.recaptcha-text-1": "and",
+    "second-stage.privacy-policy": "Privacy Policy",
+    "second-stage.terms-of-service": "Terms of Service",
+    "second-stage.recaptcha-text-2": "apply."
   },
   "validation": {
     "required": "This field is required",

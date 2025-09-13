@@ -62,7 +62,6 @@ export const ExpandedFormFloating = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const commonProps = useCommonDeviceProps();
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const initialFormData = formFields.reduce((acc, field) => {
     acc[field.id] = "";
@@ -87,27 +86,27 @@ export const ExpandedFormFloating = ({
     return emailRegex.test(email);
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = async (): Promise<boolean> => {
     const newErrors: FormErrors = {};
 
-    if (!recaptchaToken) {
+    const token = await recaptchaRef.current?.executeAsync();
+
+    if (!token) {
       newErrors.submit = t("form-floating.validation.recaptcha-required");
       setErrors(newErrors);
       return false;
     }
-    // Validate required fields
+
     formFields.forEach((field) => {
       if (field.required && !formData[field.id].trim()) {
         newErrors[field.id] = t("form-floating.validation.required");
       }
     });
 
-    // Validate email format
     if (formData.email && !validateEmail(formData.email)) {
       newErrors.email = t("form-floating.validation.invalid-email");
     }
 
-    // Validate name length
     if (formData.name && formData.name.trim().length < 2) {
       newErrors.name = t("form-floating.validation.name-too-short");
     }
@@ -124,7 +123,7 @@ export const ExpandedFormFloating = ({
 
   const handlePreviousStage = () => {
     setCurrentStage((prev) => prev - 1);
-    setErrors({}); // Clear errors when going back
+    setErrors({});
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -133,7 +132,6 @@ export const ExpandedFormFloating = ({
       [field]: value,
     }));
 
-    // Clear error for this field when user starts typing
     if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -181,7 +179,7 @@ export const ExpandedFormFloating = ({
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
+    if (!(await validateForm())) {
       return;
     }
 
@@ -246,7 +244,6 @@ export const ExpandedFormFloating = ({
           isSubmitting={isSubmitting}
           errors={errors}
           recaptchaRef={recaptchaRef}
-          onRecaptchaChange={setRecaptchaToken}
         />
       ) : (
         <Final />

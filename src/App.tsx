@@ -89,6 +89,8 @@ function App() {
       visibility: hidden !important; 
       opacity: 0 !important; 
     }
+      .grecaptcha-badge { visibility: hidden; }
+
   `}
           />
           <Header />

@@ -78,7 +78,12 @@
     "first-stage.description-2": "Можете обрати декілька варіантів...",
     "first-stage.next": "Далі",
     "validation.submit-error": "Не вдалося відправити форму, спробуйте пізніше",
-    "validation.recaptcha-required": "Будь ласка, завершіть перевірку reCAPTCHA"
+    "validation.recaptcha-required": "Будь ласка, завершіть перевірку reCAPTCHA",
+    "second-stage.recaptcha-text": "Цей сайт захищений reCAPTCHA і Google ",
+    "second-stage.recaptcha-text-1": "і",
+    "second-stage.privacy-policy": "Політика конфіденційності",
+    "second-stage.terms-of-service": "Умови використання",
+    "second-stage.recaptcha-text-2": "застосовуються."
   },
   "validation": {
     "required": "Це поле є обов'язковим",

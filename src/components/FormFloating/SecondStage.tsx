@@ -1,4 +1,4 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Link } from "@chakra-ui/react";
 import { Button as ButtonComponent } from "../Button";
 import { FormButton } from "./FormButton";
 import ArrowLeftIcon from "../../assets/arrow-back.svg?react";
@@ -17,7 +17,6 @@ export const SecondStage = ({
   isSubmitting = false,
   errors = {},
   recaptchaRef,
-  onRecaptchaChange,
 }: {
   handlePreviousStage: () => void;
   handleSubmit: () => void;
@@ -26,7 +25,6 @@ export const SecondStage = ({
   isSubmitting?: boolean;
   errors?: FormErrors;
   recaptchaRef: React.RefObject<ReCAPTCHA | null>;
-  onRecaptchaChange: (token: string | null) => void;
 }) => {
   const { t } = useTranslation();
 
@@ -55,12 +53,34 @@ export const SecondStage = ({
           {renderFormFields()}
         </Box>
 
-        <Box height='80px'>
+        <Box>
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            onChange={onRecaptchaChange}
+            size='invisible'
           />
+
+          <Text fontSize='xs' color='gray.500' textAlign='center' mt={2}>
+            {t("form-floating.second-stage.recaptcha-text")}
+            <Link
+              href='https://policies.google.com/privacy'
+              target='_blank'
+              color='blue.400'
+              textDecoration='underline'
+            >
+              {t("form-floating.second-stage.privacy-policy")}
+            </Link>{" "}
+            {t("form-floating.second-stage.recaptcha-text-1")}{" "}
+            <Link
+              href='https://policies.google.com/terms'
+              target='_blank'
+              color='blue.400'
+              textDecoration='underline'
+            >
+              {t("form-floating.second-stage.terms-of-service")}
+            </Link>{" "}
+            {t("form-floating.second-stage.recaptcha-text-2")}
+          </Text>
         </Box>
 
         {errors.submit && (
