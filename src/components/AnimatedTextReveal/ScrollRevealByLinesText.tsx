@@ -238,7 +238,7 @@ export default function BrightTextRichLinesScroll({
           key={key}
           fontStyle={node.type === "i" ? "italic" : undefined}
           fontFamily={
-            node.type === "i" && italicFontFamily ? italicFontFamily : "PP Mori"
+            node.type === "i" && italicFontFamily ? italicFontFamily : "unset"
           }
           fontWeight={node.type === "b" ? "bold" : undefined}
         >
@@ -261,7 +261,6 @@ export default function BrightTextRichLinesScroll({
           whiteSpace: "pre-wrap",
           textRendering: "optimizeLegibility",
           fontKerning: "normal",
-          fontFamily: "PP Mori",
           // @ts-ignore
           ...textProps.sx,
         }}
@@ -345,7 +344,6 @@ function AnimatedLine({
           display: "inline",
           willChange: "color, text-shadow",
         }}
-        fontFamily='raleway'
       >
         {children}
       </MotionSpan>
