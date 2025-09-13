@@ -99,7 +99,7 @@ export const About = () => {
       initial='hidden'
       whileInView='visible'
       exit='exit'
-      viewport={{ amount: 0.1 }}
+      viewport={{ amount: 0.6 }}
       variants={containerVariants}
     >
       <Box
