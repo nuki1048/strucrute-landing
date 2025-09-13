@@ -1,6 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { thankYouVariants } from "./animations";
+import CheckIcon from "../../assets/check.svg?react";
 
 export const Final = () => {
   return (
@@ -41,7 +42,7 @@ export const Final = () => {
             color: "white",
           }}
         >
-          ✓
+          <CheckIcon fill='white' width={64} height={64} />
         </motion.div>
 
         <Text
