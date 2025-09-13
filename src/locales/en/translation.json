@@ -79,7 +79,8 @@
     "first-stage.next": "Next",
     "validation.submit-error": "Failed to submit form, please try again later",
     "validation.invalid-email": "Invalid email",
-    "validation.required": "This field is required"
+    "validation.required": "This field is required",
+    "validation.recaptcha-required": "Please complete the reCAPTCHA verification"
   },
   "validation": {
     "required": "This field is required",

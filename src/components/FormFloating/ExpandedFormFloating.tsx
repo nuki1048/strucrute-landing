@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../Input";
 import { FirstStage } from "./FirstStage";
 import { SecondStage } from "./SecondStage";
@@ -9,6 +9,7 @@ import { expandedContentVariants } from "./animations";
 import { useTranslation } from "react-i18next";
 import { track } from "@vercel/analytics";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface ExpandedFormFloatingProps {
   onClose: () => void;
@@ -22,6 +23,8 @@ export const ExpandedFormFloating = ({
   onClose,
 }: ExpandedFormFloatingProps) => {
   const { t } = useTranslation();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
   const formItems = [
     {
       title: t("form-floating.form-items.1"),
@@ -59,6 +62,8 @@ export const ExpandedFormFloating = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const commonProps = useCommonDeviceProps();
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
   const initialFormData = formFields.reduce((acc, field) => {
     acc[field.id] = "";
     return acc;
@@ -85,6 +90,11 @@ export const ExpandedFormFloating = ({
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
+    if (!recaptchaToken) {
+      newErrors.submit = t("form-floating.validation.recaptcha-required");
+      setErrors(newErrors);
+      return false;
+    }
     // Validate required fields
     formFields.forEach((field) => {
       if (field.required && !formData[field.id].trim()) {
@@ -235,6 +245,8 @@ export const ExpandedFormFloating = ({
           renderFormFields={renderFormFields}
           isSubmitting={isSubmitting}
           errors={errors}
+          recaptchaRef={recaptchaRef}
+          onRecaptchaChange={setRecaptchaToken}
         />
       ) : (
         <Final />

@@ -4,7 +4,7 @@ import { FormButton } from "./FormButton";
 import ArrowLeftIcon from "../../assets/arrow-back.svg?react";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useRef } from "react";
+
 interface FormErrors {
   [key: string]: string;
 }
@@ -16,6 +16,8 @@ export const SecondStage = ({
   renderFormFields,
   isSubmitting = false,
   errors = {},
+  recaptchaRef,
+  onRecaptchaChange,
 }: {
   handlePreviousStage: () => void;
   handleSubmit: () => void;
@@ -23,13 +25,10 @@ export const SecondStage = ({
   renderFormFields: () => React.ReactNode;
   isSubmitting?: boolean;
   errors?: FormErrors;
+  recaptchaRef: React.RefObject<ReCAPTCHA | null>;
+  onRecaptchaChange: (token: string | null) => void;
 }) => {
   const { t } = useTranslation();
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-
-  const onRecaptchaChange = (token: string | null) => {
-    console.log("recaptcha changed", token);
-  };
 
   return (
     <>
@@ -59,7 +58,7 @@ export const SecondStage = ({
         <Box height='80px'>
           <ReCAPTCHA
             ref={recaptchaRef}
-            sitekey={"6Ld0asgrAAAAAKbSVMdtHWE8y3zN5dLkuc7Cdk7X"}
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
             onChange={onRecaptchaChange}
           />
         </Box>

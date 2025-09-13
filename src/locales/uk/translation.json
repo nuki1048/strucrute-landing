@@ -77,12 +77,14 @@
     "first-stage.description": "Мені потрібно:",
     "first-stage.description-2": "Можете обрати декілька варіантів...",
     "first-stage.next": "Далі",
-    "validation.submit-error": "Не вдалося відправити форму, спробуйте пізніше"
+    "validation.submit-error": "Не вдалося відправити форму, спробуйте пізніше",
+    "validation.recaptcha-required": "Будь ласка, завершіть перевірку reCAPTCHA"
   },
   "validation": {
     "required": "Це поле є обов'язковим",
     "invalid-email": "Неправильний формат e-mail",
     "name-too-short": "Ім'я повинно містити не менше 2 символів",
-    "submit-error": "Не вдалося відправити форму, спробуйте пізніше"
+    "submit-error": "Не вдалося відправити форму, спробуйте пізніше",
+    "recaptcha-required": "Будь ласка, завершіть перевірку reCAPTCHA"
   }
 }
