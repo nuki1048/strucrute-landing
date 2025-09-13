@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { track } from "@vercel/analytics";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Textarea } from "../Textarea";
 
 interface ExpandedFormFloatingProps {
   onClose: () => void;
@@ -203,12 +204,20 @@ export const ExpandedFormFloating = ({
   const renderFormFields = () => {
     return formFields.map((field) => (
       <div key={field.id}>
-        <Input
-          placeholder={field.placeholder}
-          value={formData[field.id] || ""}
-          onChange={(e) => handleInputChange(field.id, e.target.value)}
-          type={field.type}
-        />
+        {field.type === "textarea" ? (
+          <Textarea
+            placeholder={field.placeholder}
+            value={formData[field.id] || ""}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+          />
+        ) : (
+          <Input
+            placeholder={field.placeholder}
+            value={formData[field.id] || ""}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            type={field.type}
+          />
+        )}
         {errors[field.id] && (
           <div style={{ color: "#ff6b6b", fontSize: "12px", marginTop: "4px" }}>
             {errors[field.id]}
