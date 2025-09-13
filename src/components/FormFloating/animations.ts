@@ -53,7 +53,7 @@ export const containerVariants = (isMobile: boolean) => {
       scale: 1,
       x: "-50%",
       width: isMobile ? "90vw" : "600px",
-      height: "400px",
+      height: "fit-content",
       transition: {
         duration: 0.6,
         ease: "easeInOut" as const,

@@ -77,7 +77,9 @@
     "first-stage.description": "I need:",
     "first-stage.description-2": "You can choose several options...",
     "first-stage.next": "Next",
-    "validation.submit-error": "Failed to submit form, please try again later"
+    "validation.submit-error": "Failed to submit form, please try again later",
+    "validation.invalid-email": "Invalid email",
+    "validation.required": "This field is required"
   },
   "validation": {
     "required": "This field is required",

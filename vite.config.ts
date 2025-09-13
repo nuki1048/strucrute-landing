@@ -80,6 +80,15 @@ export default defineConfig({
       brotliSize: true,
     }),
   ].filter(Boolean),
+  define: {
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    "process.env.DEV": JSON.stringify(process.env.NODE_ENV === "development"),
+    "process.env.PROD": JSON.stringify(process.env.NODE_ENV === "production"),
+    "process.env.VITE_PUBLIC_GOOGLE_RECAPTCHA": JSON.stringify(
+      process.env.VITE_PUBLIC_GOOGLE_RECAPTCHA
+    ),
+    global: "globalThis",
+  },
   build: {
     target: "es2020",
     cssCodeSplit: true,

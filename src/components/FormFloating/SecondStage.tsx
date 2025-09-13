@@ -3,7 +3,8 @@ import { Button as ButtonComponent } from "../Button";
 import { FormButton } from "./FormButton";
 import ArrowLeftIcon from "../../assets/arrow-back.svg?react";
 import { useTranslation } from "react-i18next";
-
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from "react";
 interface FormErrors {
   [key: string]: string;
 }
@@ -24,15 +25,22 @@ export const SecondStage = ({
   errors?: FormErrors;
 }) => {
   const { t } = useTranslation();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const onRecaptchaChange = (token: string | null) => {
+    console.log("recaptcha changed", token);
+  };
+
   return (
     <>
-      <div
+      <form
         style={{
           flex: 1,
           display: "flex",
           flexDirection: "column",
           gap: "20px",
         }}
+        onSubmit={handleSubmit}
       >
         <Text
           fontSize='clamp(1rem, 0.9573rem + 0.1553vw, 1.125rem)'
@@ -48,12 +56,20 @@ export const SecondStage = ({
           {renderFormFields()}
         </Box>
 
+        <Box height='80px'>
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={"6Ld0asgrAAAAAKbSVMdtHWE8y3zN5dLkuc7Cdk7X"}
+            onChange={onRecaptchaChange}
+          />
+        </Box>
+
         {errors.submit && (
           <Text color='#ff6b6b' fontSize='sm'>
             {errors.submit}
           </Text>
         )}
-      </div>
+      </form>
 
       <div
         style={{
