@@ -65,9 +65,9 @@
   "any-screen.title": "One product – any screen.",
   "form-floating": {
     "description": "Tell us about your needs",
-    "form-items.1": "UI/UX design for website/landing/app",
-    "form-items.2": "Mobile app development",
-    "form-items.3": "Web app/landing development",
+    "form-items.1": "UI/UX design for website/landing/app etc.",
+    "form-items.2": "Mobile development",
+    "form-items.3": "Web development",
     "form-fields.name": "Your name",
     "form-fields.email": "Your email",
     "form-fields.details": "Tell us more",
