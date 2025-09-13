@@ -89,12 +89,12 @@ export const ExpandedFormFloating = ({
   const validateForm = async (): Promise<boolean> => {
     const newErrors: FormErrors = {};
 
-    const token = await recaptchaRef.current?.executeAsync();
-
-    if (!token) {
+    try {
+      await recaptchaRef.current?.executeAsync();
+    } catch (error) {
+      console.error("Error executing reCAPTCHA:", error);
       newErrors.submit = t("form-floating.validation.recaptcha-required");
       setErrors(newErrors);
-      return false;
     }
 
     formFields.forEach((field) => {
