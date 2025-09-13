@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Box, Flex, chakra, useMediaQuery } from "@chakra-ui/react";
 import { useScroll, useTransform } from "framer-motion";
@@ -17,6 +18,127 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 const MotionText = chakra(motion.h2);
+
+// Hook to get image dimensions
+const useImageDimensions = (src: string) => {
+  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+  const [loaded, setLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!src) return;
+
+    const img = new Image();
+    img.onload = () => {
+      setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      setLoaded(true);
+    };
+    img.src = src;
+  }, [src]);
+
+  return { ...dimensions, loaded };
+};
+
+// Create a separate component for each card
+const DynamicCard = ({
+  item,
+  index,
+  isHero,
+  vp,
+  step,
+  windowLen,
+  usableSpan,
+  heroStart,
+  heroEnd,
+  cardsProgress,
+  introGate,
+}: {
+  item: WorkItem;
+  index: number;
+  isHero: boolean;
+  vp: { w: number; h: number };
+  step: number;
+  windowLen: number;
+  usableSpan: number;
+  heroStart: number;
+  heroEnd: number;
+  cardsProgress: any;
+  introGate: any;
+}) => {
+  const imageDimensions = useImageDimensions(item.image || "");
+  const { width: imgWidth, height: imgHeight, loaded } = imageDimensions;
+
+  // Move these before they're used
+  const corners = [
+    { x: -1, y: -1 },
+    { x: 1, y: -1 },
+    { x: -1, y: 1 },
+    { x: 1, y: 1 },
+  ];
+
+  const cx = (vp.w || 1) / 2;
+  const cy = (vp.h || 1) / 2;
+  const r = seeded(index);
+
+  // Calculate dynamic dimensions
+  let w, h;
+  if (loaded && imgWidth && imgHeight) {
+    const aspectRatio = imgWidth / imgHeight;
+    const baseWidth = Math.round(lerp(380, 620, seeded(index + 5)));
+    const baseHeight = Math.round(lerp(240, 380, seeded(index + 9)));
+
+    if (aspectRatio > 1.5) {
+      w = Math.round(baseWidth * 1.2);
+      h = Math.round(baseWidth / aspectRatio);
+    } else if (aspectRatio < 0.8) {
+      h = Math.round(baseHeight * 1.2);
+      w = Math.round(baseHeight * aspectRatio);
+    } else {
+      w = baseWidth;
+      h = baseHeight;
+    }
+  } else {
+    w = Math.round(lerp(380, 620, seeded(index + 5)));
+    h = Math.round(lerp(240, 380, seeded(index + 9)));
+  }
+
+  let baseLeft = cx - w / 2;
+  let baseTop = cy - h / 2;
+
+  if (isHero) {
+    w = vp.w || window.innerWidth || 1200;
+    h = vp.h || window.innerHeight || 800;
+    baseLeft = 0;
+    baseTop = 0;
+  }
+
+  const c = corners[index % corners.length];
+  const jx = lerp(-0.25, 0.25, r);
+  const jy = lerp(-0.25, 0.25, seeded(index + 11));
+
+  const offX = (vp.w || 1200) * (1.25 + 0.35 * seeded(index + 2)) * (c.x + jx);
+  const offY = (vp.h || 800) * (1.25 + 0.35 * seeded(index + 3)) * (c.y + jy);
+
+  const start = isHero ? heroStart : index * step;
+  const end = isHero ? heroEnd : Math.min(usableSpan, start + windowLen);
+
+  return (
+    <BurstCard
+      key={index}
+      item={item}
+      w={w}
+      h={h}
+      baseLeft={baseLeft}
+      baseTop={baseTop}
+      offX={offX}
+      offY={offY}
+      start={start}
+      end={end}
+      isHero={isHero}
+      scrollYProgress={cardsProgress}
+      introGate={introGate}
+    />
+  );
+};
 
 export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const { t } = useTranslation();
@@ -82,57 +204,6 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const heroStart = usableSpan + (HOLD_FRAC * (1 - HERO_PORTION)) / 2;
   const heroEnd = heroStart + HOLD_FRAC * HERO_PORTION;
 
-  const cards = React.useMemo(() => {
-    const cx = (vp.w || 1) / 2;
-    const cy = (vp.h || 1) / 2;
-
-    const corners = [
-      { x: -1, y: -1 },
-      { x: 1, y: -1 },
-      { x: -1, y: 1 },
-      { x: 1, y: 1 },
-    ];
-
-    return safe.map((it, i) => {
-      const isHero = i === heroIndex;
-      const r = seeded(i);
-
-      let w = Math.round(lerp(380, 620, seeded(i + 5)));
-      let h = Math.round(lerp(240, 380, seeded(i + 9)));
-      let baseLeft = cx - w / 2;
-      let baseTop = cy - h / 2;
-
-      if (isHero) {
-        w = vp.w || window.innerWidth || 1200;
-        h = vp.h || window.innerHeight || 800;
-        baseLeft = 0;
-        baseTop = 0;
-      }
-
-      const c = corners[i % corners.length];
-      const jx = lerp(-0.25, 0.25, r);
-      const jy = lerp(-0.25, 0.25, seeded(i + 11));
-
-      const offX = (vp.w || 1200) * (1.25 + 0.35 * seeded(i + 2)) * (c.x + jx);
-      const offY = (vp.h || 800) * (1.25 + 0.35 * seeded(i + 3)) * (c.y + jy);
-
-      const start = isHero ? heroStart : i * step;
-      const end = isHero ? heroEnd : Math.min(usableSpan, start + windowLen);
-
-      return { it, i, w, h, baseLeft, baseTop, offX, offY, start, end, isHero };
-    });
-  }, [
-    safe,
-    heroIndex,
-    vp.w,
-    vp.h,
-    step,
-    windowLen,
-    usableSpan,
-    heroStart,
-    heroEnd,
-  ]);
-
   return (
     <Box as='section'>
       <Box ref={pinRef} position='relative' h={`${sectionHeight}px`}>
@@ -162,20 +233,19 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
             {t("works.title")}
           </MotionText>
 
-          {cards.map((c) => (
-            <BurstCard
-              key={c.i}
-              item={c.it}
-              w={c.w}
-              h={c.h}
-              baseLeft={c.baseLeft}
-              baseTop={c.baseTop}
-              offX={c.offX}
-              offY={c.offY}
-              start={c.start}
-              end={c.end}
-              isHero={c.isHero}
-              scrollYProgress={cardsProgress}
+          {safe.map((it, i) => (
+            <DynamicCard
+              key={i}
+              item={it}
+              index={i}
+              isHero={i === heroIndex}
+              vp={vp}
+              step={step}
+              windowLen={windowLen}
+              usableSpan={usableSpan}
+              heroStart={heroStart}
+              heroEnd={heroEnd}
+              cardsProgress={cardsProgress}
               introGate={introGate}
             />
           ))}
