@@ -155,9 +155,9 @@ export const Cards: React.FC = () => {
             <Card
               title={t("cards.every-big-product")}
               description={t("cards.every-big-product-description")}
-              bg='white1'
+              bg='pink1'
               badgeText='Every big product'
-              color='gray3'
+              color='secondary'
             />
           </MotionBox>
 
@@ -171,9 +171,9 @@ export const Cards: React.FC = () => {
             <Card
               title={t("cards.future-leaders")}
               description={t("cards.future-leaders-description")}
-              bg='pink1'
+              bg='white1'
               badgeText='Future leaders'
-              color='secondary'
+              color='gray3'
             />
           </MotionBox>
         </Box>
