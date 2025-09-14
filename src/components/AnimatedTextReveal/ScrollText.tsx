@@ -348,7 +348,6 @@ export const RevealText: React.FC<RevealTextProps> = ({
                 progress={scrollYProgress}
                 staggerProg={stagger ?? 0.06}
                 durProg={duration ?? 0.25}
-                userSelect='none'
               >
                 {inner}
               </ScrollItem>
