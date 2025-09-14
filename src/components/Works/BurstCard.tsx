@@ -41,20 +41,11 @@ export function BurstCard({
     return clamp01((v - start) / span);
   });
 
-  const translateX = useTransform(p, (t) => {
-    // Faster easing - starts slow, then accelerates quickly
-    const easedT = t * t; // Quadratic easing
-    return isHero ? 0 : lerp(0, offX, easedT);
-  });
-
-  const translateY = useTransform(p, (t) => {
-    // Faster easing - starts slow, then accelerates quickly
-    const easedT = t * t; // Quadratic easing
-    return isHero ? 0 : lerp(0, offY, easedT);
-  });
+  const translateX = useTransform(p, (t) => (isHero ? 0 : lerp(0, offX, t)));
+  const translateY = useTransform(p, (t) => (isHero ? 0 : lerp(0, offY, t)));
 
   const scale = useTransform(p, (t) =>
-    isHero ? lerp(0.2, 1.0, t) : lerp(0.2, isMobile ? 1.5 : 2.5, t)
+    isHero ? lerp(0.2, 1.0, t) : lerp(0.2, isMobile ? 1.5 : 4, t)
   );
 
   const opacityLocal = useTransform(p, (t) => (t < 0.05 ? t / 0.05 : 1));

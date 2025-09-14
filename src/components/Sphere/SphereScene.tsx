@@ -399,22 +399,32 @@ export function SphereScene({
     const p = easeOutCubic(pSmooth);
     const scaleP = pSmooth;
 
-    // fades
+    // fades - improved logic with better fallbacks
     let fadeStart = fadeOutFromProgress;
     if (typeof fadeStart === "number" && fadeStart > 1) {
       fadeStart = fadeStart > 100 ? 1 : fadeStart / 100;
     }
     let fadeMul = 1;
+
+    // Only apply fade logic if fadeOutFromProgress is explicitly set
     if (typeof fadeStart === "number") {
       const fadeRange = Math.max(1e-4, 1 - clamp01(fadeStart));
       const preEndMul = easeOutCubic(clamp01((1 - p) / fadeRange));
       fadeMul *= preEndMul;
     }
-    if (overPx > 0) {
+
+    // Apply overPx fade only if we have a reasonable fadeTailPx
+    if (overPx > 0 && fadeTailPx > 0) {
       const postMul =
         1 - easeOutCubic(clamp01(overPx / Math.max(1, fadeTailPx)));
       fadeMul *= postMul;
     }
+
+    // Ensure minimum visibility - prevent sphere from disappearing completely
+    // Only hide if explicitly configured to do so and fadeMul is very low
+    const shouldBeVisible =
+      fadeMul > hideBelowAlpha ||
+      (typeof fadeOutFromProgress === "undefined" && overPx <= 0);
 
     // Instanced: update cheap uniforms
     if (useInstancing && shaderMatRef.current) {
@@ -440,7 +450,8 @@ export function SphereScene({
       }
     }
 
-    root.visible = fadeMul > hideBelowAlpha;
+    // Improved visibility logic with fallback
+    root.visible = shouldBeVisible;
 
     // spin
     root.rotation.z = time * spinSpeed;
@@ -474,7 +485,6 @@ export function SphereScene({
     root.scale.setScalar(smoothScaleRef.current);
   });
 
-  /** ---------- Render ---------- */
   return (
     <group ref={rootRef}>
       {useInstancing ? (

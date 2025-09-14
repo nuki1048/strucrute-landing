@@ -26,6 +26,7 @@ export const Card = ({
       paddingX='50px'
       paddingY={{ base: "30px", md: "50px" }}
       gap='20px'
+      boxShadow='0px 0px 10px 0px rgba(0, 0, 0, 0.1)'
       {...props}
     >
       <Badge

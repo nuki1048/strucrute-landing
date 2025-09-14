@@ -208,6 +208,7 @@ const ScrollItem: React.FC<{
       style={{ opacity, [axis]: translate } as any}
       display='inline-block'
       aria-hidden='true'
+      userSelect='none'
     >
       {children}
     </MotionSpan>
@@ -302,6 +303,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
           <Text
             as='span'
             fontFamily='raleway'
+            userSelect='none'
             style={{
               ...(shouldColor(seg) ? { color: colorResolved } : null),
               ...(seg.italic ? { fontStyle: "italic" } : null),
@@ -319,11 +321,13 @@ export const RevealText: React.FC<RevealTextProps> = ({
             key={idx}
             display={mode === "line" ? "block" : "inline-block"}
             overflow='hidden'
+            userSelect='none'
           >
             {trigger === "inView" ? (
               <MotionSpan
                 display='inline-block'
                 aria-hidden='true'
+                userSelect='none'
                 variants={{
                   hidden: { opacity: 0, [axis]: from },
                   // @ts-ignore
@@ -344,6 +348,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
                 progress={scrollYProgress}
                 staggerProg={stagger ?? 0.06}
                 durProg={duration ?? 0.25}
+                userSelect='none'
               >
                 {inner}
               </ScrollItem>

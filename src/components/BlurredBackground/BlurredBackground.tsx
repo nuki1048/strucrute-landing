@@ -13,6 +13,7 @@ export const BlurredBackground = () => {
       w='100%'
       h='100vh'
       overflow='hidden'
+      zIndex={1000}
     >
       <Box
         position='absolute'

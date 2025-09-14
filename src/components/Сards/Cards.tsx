@@ -5,7 +5,7 @@ import { Card } from "./Card";
 import { segment } from "../../utils/animationUtils";
 import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { track } from "@vercel/analytics";
 
 const MotionBox = motion.create(Box);
@@ -14,10 +14,39 @@ export const Cards: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
   const commonProps = useCommonDeviceProps();
+  const [viewportHeight, setViewportHeight] = useState(0);
+
+  // Get viewport height for responsive calculations
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setViewportHeight(window.innerHeight);
+    };
+
+    updateViewportHeight();
+    window.addEventListener("resize", updateViewportHeight);
+    return () => window.removeEventListener("resize", updateViewportHeight);
+  }, []);
+
+  // Calculate responsive section height based on viewport
+  const getResponsiveSectionHeight = () => {
+    if (viewportHeight === 0) return "520vh"; // fallback
+
+    // Base calculation: ensure enough space for all cards to be visible
+    // Each card needs approximately 1.2x viewport height to be fully visible
+    const cardsCount = 3;
+    const cardHeightMultiplier = 1.2;
+    const baseHeight = cardsCount * cardHeightMultiplier * 100; // Convert to vh
+
+    // Add extra space for smooth transitions
+    const extraSpace = 200; // 200vh extra for smooth scrolling
+
+    return `${baseHeight + extraSpace}vh`;
+  };
+
   const sectionH = useBreakpointValue({
-    base: "520vh",
-    md: "580vh",
-    lg: "640vh",
+    base: getResponsiveSectionHeight(),
+    md: getResponsiveSectionHeight(),
+    lg: getResponsiveSectionHeight(),
   });
 
   const { scrollYProgress } = useScroll({
@@ -32,9 +61,29 @@ export const Cards: React.FC = () => {
     [0, 1, 1]
   );
 
-  const listGap = useBreakpointValue({ base: 680, md: 760, lg: 840 }) ?? 760;
-  const revealGap = useBreakpointValue({ base: 80, md: 96, lg: 110 }) ?? 96;
-  const stackBase = useBreakpointValue({ base: 120, md: 135, lg: 150 }) ?? 135;
+  // Calculate responsive gaps based on viewport height
+  const getResponsiveGaps = () => {
+    if (viewportHeight === 0) {
+      return {
+        listGap: 760,
+        revealGap: 96,
+        stackBase: 135,
+      };
+    }
+
+    // Base gaps that scale with viewport height
+    const baseListGap = Math.max(600, viewportHeight * 0.8); // Minimum 600px, scales with height
+    const baseRevealGap = Math.max(60, viewportHeight * 0.1); // Minimum 60px, scales with height
+    const baseStackBase = Math.max(100, viewportHeight * 0.15); // Minimum 100px, scales with height
+
+    return {
+      listGap: baseListGap,
+      revealGap: baseRevealGap,
+      stackBase: baseStackBase,
+    };
+  };
+
+  const { listGap, revealGap, stackBase } = getResponsiveGaps();
 
   const overlap = 0.06;
   const p1 = segment(animProgress, 0.0, 0.33 + overlap);

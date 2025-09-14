@@ -204,8 +204,7 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
-  // Start hero when cards are 70% through their animation
-  const heroStart = usableSpan * 0.95; // Start when cards are 70% done
+  const heroStart = usableSpan * 0.92;
   const heroEnd = heroStart + HOLD_FRAC * HERO_PORTION;
 
   return (

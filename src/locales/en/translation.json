@@ -59,7 +59,8 @@
     "e-commerce-solutions": "<i><c>E-</c></i>commerce<br>solutions",
     "e-commerce-solutions-description": "convenient, secure, and scalable solutions for businesses of any size",
     "interactive-design": "Interactive<br><c>design</c>",
-    "interactive-design-description": "makes the product more modern, engaging, and user-friendly"
+    "interactive-design-description": "makes the product more modern, engaging, and user-friendly",
+    "mobile-hover-text": "Tap the card to see the description"
   },
   "works.title": "Our projects",
   "any-screen.title": "One product – any screen.",
