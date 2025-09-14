@@ -158,6 +158,7 @@ export const Cards: React.FC = () => {
               bg='pink1'
               badgeText='Every big product'
               color='secondary'
+              minHeight='560px'
             />
           </MotionBox>
 

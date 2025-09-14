@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { track } from "@vercel/analytics";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import audiophilePromo from "../../assets/audiophile-promo.png?format=webp&as=src";
-import audiophileProducts from "../../assets/audophile-products.png?format=webp&as=src";
 import flowersForm from "../../assets/flowers-form.png?format=webp&as=src";
 import flowersPromo from "../../assets/flowers-promo.png?format=webp&as=src";
 import guitarshopPromo from "../../assets/guitarshop-promo.png?format=webp&as=src";
@@ -41,7 +40,7 @@ export default function Works() {
 
   const items: WorkItem[] = [
     { title: "audiophilePromo", image: audiophilePromo },
-    { title: "audiophileProducts", image: audiophileProducts },
+    { title: "eCommerceMobileRegister", image: eCommerceMobileRegister },
     { title: "flowersForm", image: flowersForm },
     { title: "flowersPromo", image: flowersPromo },
     { title: "guitarshopPromo", image: guitarshopPromo },

@@ -204,7 +204,7 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
-  const heroStart = usableSpan * 0.92;
+  const heroStart = usableSpan * 0.96;
   const heroEnd = heroStart + HOLD_FRAC * HERO_PORTION;
 
   return (

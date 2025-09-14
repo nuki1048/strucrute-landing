@@ -32,7 +32,8 @@ export const ListItem = ({
       <Text
         fontSize='clamp(1.125rem, 0.8688rem + 0.9317vw, 1.875rem)'
         color='white'
-        lineHeight={1}
+        lineHeight={1.2}
+        fontFamily='raleway'
         fontWeight={300}
       >
         {title}

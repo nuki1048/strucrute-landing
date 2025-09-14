@@ -39,7 +39,7 @@ export const Info = () => {
         }}
         gridAutoRows='min-content'
         w='100%'
-        gap={{ base: "10px", md: "15px" }}
+        gap={{ base: "15px", md: "15px" }}
       >
         <BoxGrid
           gridColumn='1 / 2'
@@ -50,7 +50,7 @@ export const Info = () => {
           hoverText={t("info.visual-identity-description")}
           hoverTextAlign={isMobile ? "right" : "left"}
           hoverTextTop={{ base: "50%", md: "20%", lg: "30%" }}
-          hoverTextRight={{ base: "-10%", sm: "-30%", md: "-40%", xl: "-30%" }}
+          hoverTextRight={{ base: "-5%", sm: "-30%", md: "-40%", xl: "-30%" }}
           maxWHoverText={{ base: "200px", md: "250px", lg: "380px" }}
           hoverTextPadding={{ base: "0", md: "3" }}
           width='max-content'
@@ -88,7 +88,7 @@ export const Info = () => {
           hoverTextAlign='right'
           hoverTextTop={{ base: "30px", sm: "40px", md: "25%" }}
           hoverTextLeft={{
-            base: "-45%",
+            base: "-40%",
             sm: "-20%",
             md: "10%",
             lg: "20%",
@@ -132,7 +132,7 @@ export const Info = () => {
           hoverText={t("info.ui-ux-design-description")}
           hoverTextAlign='left'
           height='fit-content'
-          hoverTextRight={{ base: "-30%", sm: "-80%", md: "-60%", xl: "-55%" }}
+          hoverTextRight={{ base: "-25%", sm: "-80%", md: "-60%", xl: "-55%" }}
           hoverTextPadding={{ base: "0", md: "3" }}
           maxWHoverText={{ base: "180px", md: "300px", xl: "380px" }}
           hoverTextTop={{ base: "initial", md: "20%", xl: "50%" }}
@@ -167,7 +167,7 @@ export const Info = () => {
           justifyContent={{ base: "center", md: "flex-end" }}
           hoverText={t("info.e-commerce-solutions-description")}
           hoverTextAlign='right'
-          hoverTextLeft={{ base: "-25%", sm: "-20%", md: "-25%", xl: "-60%" }}
+          hoverTextLeft={{ base: "-15%", sm: "-20%", md: "-25%", xl: "-60%" }}
           hoverTextBottom={{
             base: "-45%",
             sm: "-60%",
@@ -215,13 +215,12 @@ export const Info = () => {
             xl: "translateY(100px)",
           }}
           hoverTextRight={{
-            base: "-8%",
-            sm: "0%",
+            base: "0%",
             md: "5%",
             lg: "17%",
           }}
           hoverTextBottom={{
-            base: "-70%",
+            base: "-60%",
             sm: "-50%",
             md: "-45%",
             lg: "-40%",

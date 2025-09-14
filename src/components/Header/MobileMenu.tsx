@@ -97,7 +97,7 @@ export const MobileMenu = ({
             >
               <Link
                 onClick={() => scrollTo("welcome")}
-                fontSize='40px'
+                fontSize='35px'
                 textTransform='uppercase'
                 color='text'
                 transition='all 0.3s ease'
@@ -121,7 +121,7 @@ export const MobileMenu = ({
             >
               <Link
                 onClick={() => scrollTo("projects")}
-                fontSize='40px'
+                fontSize='35px'
                 textTransform='uppercase'
                 color='text'
                 transition='all 0.3s ease'
@@ -145,7 +145,7 @@ export const MobileMenu = ({
             >
               <Link
                 onClick={() => scrollTo("footer")}
-                fontSize='40px'
+                fontSize='35px'
                 textTransform='uppercase'
                 color='text'
                 transition='all 0.3s ease'

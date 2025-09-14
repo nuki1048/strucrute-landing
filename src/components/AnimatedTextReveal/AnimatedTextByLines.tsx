@@ -213,6 +213,7 @@ export function BrightTextRichLines({
             node.type === "i" && italicFontFamily ? italicFontFamily : undefined
           }
           fontWeight={node.type === "b" ? "bold" : undefined}
+          textWrap='nowrap'
         >
           {node.children.map((c, i) => renderInline(c, `${key}-${i}`))}
         </Span>

@@ -70,6 +70,7 @@ export function BurstCard({
       rounded='xl'
       overflow='hidden'
       zIndex={isHero ? 5 : 2}
+      bg='transparent'
     >
       {item.node ? (
         <Box w='100%' h='100%'>
@@ -81,7 +82,7 @@ export function BurstCard({
           alt={item.title}
           w='100%'
           h='100%'
-          objectFit='cover'
+          objectFit='contain' // Changed from 'cover' to 'contain' to prevent cropping
           draggable={false}
           loading='lazy'
         />

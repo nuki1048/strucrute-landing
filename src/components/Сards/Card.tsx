@@ -24,8 +24,8 @@ export const Card = ({
       flexDirection='column'
       alignItems='center'
       paddingX='50px'
-      paddingY={{ base: "30px", md: "50px" }}
-      gap='20px'
+      paddingY='30px'
+      gap='10px'
       boxShadow='0px 0px 10px 0px rgba(0, 0, 0, 0.1)'
       {...props}
     >
@@ -34,7 +34,7 @@ export const Card = ({
         variant='outline'
         color={color}
         borderRadius='20px'
-        fontSize='clamp(0.875rem, 0.7469rem + 0.4658vw, 1.25rem)'
+        fontSize='12px'
         border={`1px solid ${token}`}
         paddingY='5px'
         paddingX='10px'
@@ -44,19 +44,21 @@ export const Card = ({
       </Badge>
       <Text
         fontSize='clamp(2.5rem, 1.646rem + 3.1056vw, 5rem)'
-        fontWeight='400'
+        fontWeight={"300"}
         color={color}
         lineHeight={1.2}
+        fontFamily='raleway'
       >
         {title}
       </Text>
       <ArrowDown fill={color} />
       <Text
         fontSize='clamp(2.5rem, 1.646rem + 3.1056vw, 5rem)'
-        fontWeight='400'
+        fontWeight={"300"}
         color={color}
         textAlign='right'
         lineHeight={1.2}
+        fontFamily='raleway'
       >
         {description}
       </Text>

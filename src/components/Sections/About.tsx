@@ -139,8 +139,7 @@ export const About = () => {
               width={{ base: "300px", sm: "fit-content" }}
               textWrap={{ base: "wrap", md: "nowrap" }}
             >
-              {t("about.we-move-fast")}
-              {!isMobile && <br />}
+              {t("about.we-move-fast")} {!isMobile && <br />}{" "}
               {t("about.you-can-trust-us-with")}
             </Text>
           </motion.div>
