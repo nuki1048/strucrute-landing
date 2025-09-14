@@ -87,12 +87,15 @@ const DynamicCard = ({
     const baseHeight = Math.round(lerp(240, 380, seeded(index + 9)));
 
     if (aspectRatio > 1.5) {
+      // Wide image - increase width, maintain height
       w = Math.round(baseWidth * 1.2);
-      h = Math.round(baseWidth / aspectRatio);
+      h = Math.round(w / aspectRatio); // Use calculated width for height
     } else if (aspectRatio < 0.8) {
+      // Tall image - increase height, maintain width
       h = Math.round(baseHeight * 1.2);
-      w = Math.round(baseHeight * aspectRatio);
+      w = Math.round(h * aspectRatio); // Use calculated height for width
     } else {
+      // Normal aspect ratio - use base dimensions
       w = baseWidth;
       h = baseHeight;
     }
