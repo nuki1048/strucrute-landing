@@ -51,9 +51,10 @@ export const Cards: React.FC = () => {
   const y1_end = stackBase - revealGap;
   const y2_end = stackBase;
 
-  const yCard0 = useSpring(useTransform(p1, [0, 1], [y0_start, y0_end]), SPR);
-  const yCard1 = useSpring(useTransform(p2, [0, 1], [y1_start, y1_end]), SPR);
-  const yCard2 = useSpring(useTransform(p3, [0, 1], [y2_start, y2_end]), SPR);
+  // Reorder the cards - design-is-a-beginning first
+  const yCard0 = useSpring(useTransform(p1, [0, 1], [y0_start, y0_end]), SPR); // design-is-a-beginning
+  const yCard1 = useSpring(useTransform(p2, [0, 1], [y1_start, y1_end]), SPR); // every-big-product
+  const yCard2 = useSpring(useTransform(p3, [0, 1], [y2_start, y2_end]), SPR); // future-leaders
 
   useEffect(() => {
     track("view_cards", { ...commonProps });
@@ -77,11 +78,29 @@ export const Cards: React.FC = () => {
         justifyContent='center'
       >
         <Box position='relative' w='full' h='100%' maxW='min(1200px, 94vw)'>
+          {/* First card - design-is-a-beginning */}
           <MotionBox
             position='absolute'
             inset='0'
             style={{ y: yCard0 }}
             zIndex={1}
+            pointerEvents='none'
+          >
+            <Card
+              title={t("cards.design-is-a-beginning")}
+              description={t("cards.design-is-a-beginning-description")}
+              bg='white1'
+              badgeText='Design is a beginning'
+              color='black1'
+            />
+          </MotionBox>
+
+          {/* Second card - every-big-product */}
+          <MotionBox
+            position='absolute'
+            inset='0'
+            style={{ y: yCard1 }}
+            zIndex={2}
             pointerEvents='none'
           >
             <Card
@@ -93,22 +112,7 @@ export const Cards: React.FC = () => {
             />
           </MotionBox>
 
-          <MotionBox
-            position='absolute'
-            inset='0'
-            style={{ y: yCard1 }}
-            zIndex={2}
-            pointerEvents='none'
-          >
-            <Card
-              title={t("cards.future-leaders")}
-              description={t("cards.future-leaders-description")}
-              bg='pink1'
-              badgeText='Future leaders'
-              color='secondary'
-            />
-          </MotionBox>
-
+          {/* Third card - future-leaders */}
           <MotionBox
             position='absolute'
             inset='0'
@@ -116,11 +120,11 @@ export const Cards: React.FC = () => {
             zIndex={3}
           >
             <Card
-              title={t("cards.design-is-a-beginning")}
-              description={t("cards.design-is-a-beginning-description")}
-              bg='white1'
-              badgeText='Design is a beginning'
-              color='black1'
+              title={t("cards.future-leaders")}
+              description={t("cards.future-leaders-description")}
+              bg='pink1'
+              badgeText='Future leaders'
+              color='secondary'
             />
           </MotionBox>
         </Box>

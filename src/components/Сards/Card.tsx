@@ -42,7 +42,7 @@ export const Card = ({
         {badgeText}
       </Badge>
       <Text
-        fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
+        fontSize='clamp(2.5rem, 1.646rem + 3.1056vw, 5rem)'
         fontWeight='400'
         color={color}
         lineHeight={1.2}
@@ -51,7 +51,7 @@ export const Card = ({
       </Text>
       <ArrowDown fill={color} />
       <Text
-        fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
+        fontSize='clamp(2.5rem, 1.646rem + 3.1056vw, 5rem)'
         fontWeight='400'
         color={color}
         textAlign='right'

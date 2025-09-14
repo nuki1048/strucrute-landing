@@ -52,8 +52,8 @@ export default function Works() {
     { title: "novaClinicPromo", image: novaClinicPromo },
     { title: "novaClinicImage", image: novaClinicImage },
     { title: "novaClinicNumbers", image: novaClinicNumbers },
+    { title: "novaClinиicOurServices", image: novaClinicOurServices },
     { title: "novaClinicOurAdvantages", image: novaClinicOurAdvantages },
-    { title: "novaClinicOurServices", image: novaClinicOurServices },
     { title: "novaClinicOurSpecialists", image: novaClinicOurSpecialists },
     { title: "eCommerceChairsCart", image: eCommerceChairsCart },
     { title: "eCommerceChairs", image: eCommerceChairs },
@@ -62,9 +62,9 @@ export default function Works() {
     { title: "eCommerceProfile", image: eCommerceProfile },
     { title: "studyhubCalendar", image: studyhubCalendar },
     { title: "studyhubChat", image: studyhubChat },
+    { title: "studyhubSchedule", image: studyhubSchedule },
     { title: "studyhubProfile", image: studyhubProfile },
     { title: "studyhubRegister", image: studyhubRegister },
-    { title: "studyhubSchedule", image: studyhubSchedule },
     { title: "Hero Custom", node: <BlurredBackground /> },
   ];
 

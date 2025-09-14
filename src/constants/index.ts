@@ -1,5 +1,5 @@
 export const PX_PER_CARD = 520;
-export const VISIBLE_COUNT = window.innerWidth > 1024 ? 10 : 5;
+export const VISIBLE_COUNT = window.innerWidth > 1024 ? 4 : 5;
 export const HOLD_FRAC = 0.2;
 export const HOLD_PX = 1400;
 export const HERO_PORTION = 0.6;

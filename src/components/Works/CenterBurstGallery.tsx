@@ -118,8 +118,8 @@ const DynamicCard = ({
   const jx = lerp(-0.25, 0.25, r);
   const jy = lerp(-0.25, 0.25, seeded(index + 11));
 
-  const offX = (vp.w || 1200) * (1.25 + 0.35 * seeded(index + 2)) * (c.x + jx);
-  const offY = (vp.h || 800) * (1.25 + 0.35 * seeded(index + 3)) * (c.y + jy);
+  const offX = (vp.w || 1200) * (1.3 + 0.6 * seeded(index + 2)) * (c.x + jx); // Increased from 1.25 + 0.35
+  const offY = (vp.h || 800) * (1.3 + 0.6 * seeded(index + 3)) * (c.y + jy); // Increased from 1.25 + 0.35
 
   const start = isHero ? heroStart : index * step;
   const end = isHero ? heroEnd : Math.min(usableSpan, start + windowLen);
@@ -204,7 +204,8 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
-  const heroStart = usableSpan + (HOLD_FRAC * (1 - HERO_PORTION)) / 2;
+  // Start hero when cards are 70% through their animation
+  const heroStart = usableSpan * 0.95; // Start when cards are 70% done
   const heroEnd = heroStart + HOLD_FRAC * HERO_PORTION;
 
   return (
