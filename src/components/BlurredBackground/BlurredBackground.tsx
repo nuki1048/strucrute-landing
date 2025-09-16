@@ -1,10 +1,67 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Text, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import image from "../../assets/cloud-image.png?format=webp&as=src";
+
+const MotionRow = motion.div;
+
+const TextStrip = ({
+  text,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  style,
+}: {
+  text: string;
+  fontSize: any;
+  fontWeight: any;
+  letterSpacing: any;
+  style: any;
+}) => {
+  return (
+    <Text
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+      textTransform='uppercase'
+      letterSpacing={letterSpacing}
+      lineHeight={1}
+      style={style}
+      whiteSpace='nowrap'
+      display='inline-block'
+    >
+      {text}
+    </Text>
+  );
+};
 
 export const BlurredBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const firstRef = useRef<HTMLDivElement | null>(null);
+  const [w, setW] = useState(0);
+
+  // Measure width of one strip (one copy of the text)
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (firstRef.current) setW(firstRef.current.scrollWidth);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // Duration based on pixels to travel (for constant speed)
+  const duration = w > 0 ? w / 80 : 20; // 80px per second speed
+
+  const textStyle = {
+    background:
+      "linear-gradient(90deg, #D9D9D9 0%, #70CBC3 29%, #C9C9C9 66%, #3741CA 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  };
+
+  const text = "UI/UX DESIGN + WEB DEVELOPMENT + MOBILE APPS";
 
   return (
     <Box
@@ -37,37 +94,49 @@ export const BlurredBackground = () => {
         transform='translateY(-50%)'
         zIndex={2}
       >
-        <motion.div
-          animate={{
-            x: [0, -1000],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+        <MotionRow
           style={{
+            display: "flex",
+            alignItems: "center",
             whiteSpace: "nowrap",
-            display: "inline-block",
+            gap: "60px",
+          }}
+          animate={{ x: [-w, 0] }}
+          transition={{
+            duration,
+            ease: "linear",
+            repeat: Infinity,
           }}
         >
-          <Text
+          {/* copy #1 (measured) */}
+          <Box ref={firstRef as React.RefObject<HTMLDivElement>}>
+            <TextStrip
+              text={text}
+              fontSize={{ base: "3xl", md: "6xl", lg: "250px" }}
+              fontWeight='300'
+              letterSpacing='wider'
+              style={textStyle}
+            />
+          </Box>
+
+          {/* copy #2 */}
+          <TextStrip
+            text={text}
             fontSize={{ base: "3xl", md: "6xl", lg: "250px" }}
             fontWeight='300'
-            textTransform='uppercase'
             letterSpacing='wider'
-            lineHeight={1}
-            style={{
-              background:
-                "linear-gradient(90deg, #D9D9D9 0%, #70CBC3 29%, #C9C9C9 66%, #3741CA 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            UI/UX DESIGN + WEB DEVELOPMENT + MOBILE APPS
-          </Text>
-        </motion.div>
+            style={textStyle}
+          />
+
+          {/* copy #3 */}
+          <TextStrip
+            text={text}
+            fontSize={{ base: "3xl", md: "6xl", lg: "250px" }}
+            fontWeight='300'
+            letterSpacing='wider'
+            style={textStyle}
+          />
+        </MotionRow>
       </Box>
 
       <motion.div

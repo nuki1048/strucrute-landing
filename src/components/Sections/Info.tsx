@@ -212,7 +212,7 @@ export const Info = () => {
           width='max-content'
           transform={{
             sm: "translateY(0)",
-            xl: "translateY(100px)",
+            xl: "translateY(105px)",
           }}
           hoverTextRight={{
             base: "0%",

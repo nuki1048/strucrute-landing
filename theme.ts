@@ -24,10 +24,12 @@ const config = defineConfig({
       },
       fonts: {
         body: {
-          value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif",
+          value:
+            "Raleway,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         },
         heading: {
-          value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif",
+          value:
+            "Raleway,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         },
         mono: {
           value:
@@ -37,7 +39,10 @@ const config = defineConfig({
         ppMori: { value: "'PP Mori', Raleway, sans-serif" },
         elegant: { value: "'PP Mori', sans-serif" },
         notoSerif: { value: "'Noto Serif', serif" },
-        raleway: { value: "Raleway, 'Helvetica Neue', Helvetica, sans-serif" },
+        raleway: {
+          value:
+            "Raleway,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        },
       },
       sizes: {
         "9xl": { value: "1448px" },
