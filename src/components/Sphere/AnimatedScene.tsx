@@ -9,7 +9,7 @@ export default memo(function SphereScene({
   ...props
 }: SphereSceneProps) {
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
-  const [layers, setLayers] = useState(isMobile ? 80 : 120);
+  const [layers, setLayers] = useState(isMobile ? 80 : 0);
   const [error, setError] = useState<string | null>(null);
 
   // Simple layer loading
