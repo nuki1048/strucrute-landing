@@ -25,7 +25,8 @@ export const Card = ({
       alignItems='center'
       paddingX='50px'
       paddingY='30px'
-      gap='10px'
+      justifyContent='space-between'
+      height={{ lg: "600px", base: "auto" }}
       boxShadow='0px 0px 10px 0px rgba(0, 0, 0, 0.1)'
       {...props}
     >

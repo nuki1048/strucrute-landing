@@ -24,12 +24,12 @@ export const Footer = () => {
         base: "24px",
         md: "92px",
       }}
-      marginTop={{ base: "0px", md: "120px" }}
+      marginTop={{ base: "0px", lg: "60px" }}
       paddingTop='25px'
       paddingBottom={{ base: "25px", md: "15px" }}
       id='footer'
     >
-      <Separator borderColor='gray4' marginBottom='20px' borderWidth='1px' />
+      <Separator borderColor='gray4' marginBottom='10px' borderWidth='1px' />
       <Grid
         width='100%'
         height='100%'

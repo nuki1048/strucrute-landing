@@ -56,6 +56,7 @@ export const Info = () => {
           width='max-content'
         >
           <RevealText
+            fontWeight='300'
             text={t("info.visual-identity", {
               mobileBreak: isMobile ? "<br>" : "",
             })}
@@ -100,6 +101,7 @@ export const Info = () => {
           width='max-content'
         >
           <RevealText
+            fontWeight='300'
             text={t("info.web-and-mobile-development")}
             mode={textMode}
             direction='up'
@@ -140,6 +142,7 @@ export const Info = () => {
           width='max-content'
         >
           <RevealText
+            fontWeight='300'
             text={t("info.ui-ux-design")}
             mode={textMode}
             direction='up'
@@ -180,6 +183,7 @@ export const Info = () => {
           width='max-content'
         >
           <RevealText
+            fontWeight='300'
             text={t("info.e-commerce-solutions")}
             mode={textMode}
             direction='up'
@@ -229,6 +233,7 @@ export const Info = () => {
           hoverTextTop='none'
         >
           <RevealText
+            fontWeight='300'
             text={t("info.interactive-design")}
             mode={textMode}
             direction='up'

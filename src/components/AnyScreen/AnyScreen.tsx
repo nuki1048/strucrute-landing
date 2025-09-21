@@ -61,7 +61,6 @@ export const AnyScreen = () => {
         flexDirection='column'
         paddingX={{ base: "10px", md: "92px" }}
         gap='12px'
-        height={{ base: "300px", md: "1000px" }}
       >
         <motion.div variants={titleVariants}>
           <Text
