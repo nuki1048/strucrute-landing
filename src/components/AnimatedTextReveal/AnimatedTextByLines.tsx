@@ -130,6 +130,9 @@ export function BrightTextRichLines({
   ...textProps
 }: BrightTextRichLinesProps) {
   const [dimTok, brightTok] = useToken("colors", [dimColor, brightColor]);
+  const [italicTok] = useToken("fonts", [italicFontFamily ?? ""]);
+  const italicResolved = italicTok || italicFontFamily;
+
   const dim = dimTok ?? dimColor;
   const bright = brightTok ?? brightColor;
 
@@ -210,7 +213,7 @@ export function BrightTextRichLines({
           key={key}
           fontStyle={node.type === "i" ? "italic" : undefined}
           fontFamily={
-            node.type === "i" && italicFontFamily ? italicFontFamily : undefined
+            node.type === "i" && italicResolved ? italicResolved : undefined
           }
           fontWeight={node.type === "b" ? "bold" : undefined}
           textWrap='nowrap'

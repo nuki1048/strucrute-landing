@@ -39,18 +39,18 @@ export function useLenisSmoothScroll(
     isDestroyedRef.current = false;
 
     const lenis = new Lenis({
-      duration: isMobile ? 0.8 : 1,
+      duration: isMobile ? 0.7 : 1, // Slightly reduced from 0.8 to 0.7s
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: isMobile ? 1.2 : 1.0,
-      touchMultiplier: isMobile ? 1.5 : 1,
+      wheelMultiplier: isMobile ? 1.3 : 1.0, // Moderate increase from 1.2 to 1.3x
+      touchMultiplier: isMobile ? 1.7 : 1, // Moderate increase from 1.5 to 1.7x
       infinite: false,
       gestureOrientation: "vertical",
       ...(isMobile && {
         smoothTouch: true,
-        touchInertiaMultiplier: 20,
+        touchInertiaMultiplier: 22, // Slight increase from 20 to 22
         normalizeWheel: true,
-        lerp: 1.2,
+        lerp: 1.3, // Moderate increase from 1.2 to 1.3
         syncTouch: true,
       }),
       ...opts,

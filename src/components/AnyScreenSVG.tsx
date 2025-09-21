@@ -11,7 +11,7 @@ export default function HeroVisual({
       <img
         src={AnyScreenSVG}
         className={`${isActive ? "active" : ""}`}
-        loading='lazy'
+        loading='eager' // Changed from 'lazy' to 'eager'
       />
     </Suspense>
   );
