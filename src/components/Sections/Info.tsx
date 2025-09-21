@@ -50,7 +50,12 @@ export const Info = () => {
           hoverText={t("info.visual-identity-description")}
           hoverTextAlign={isMobile ? "right" : "left"}
           hoverTextTop={{ base: "50%", md: "20%", lg: "30%" }}
-          hoverTextRight={{ base: "-5%", sm: "-30%", md: "-40%", xl: "-30%" }}
+          hoverTextRight={{
+            base: isEnglish ? "-60%" : "-5%",
+            sm: "-30%",
+            md: "-40%",
+            xl: "-30%",
+          }}
           maxWHoverText={{ base: "200px", md: "250px", lg: "380px" }}
           hoverTextPadding={{ base: "0", md: "3" }}
           width='max-content'
@@ -89,7 +94,7 @@ export const Info = () => {
           hoverTextAlign='right'
           hoverTextTop={{ base: "30px", sm: "40px", md: "25%" }}
           hoverTextLeft={{
-            base: "-40%",
+            base: isEnglish ? "0%" : "-40%",
             sm: "-20%",
             md: "10%",
             lg: "20%",
@@ -219,12 +224,12 @@ export const Info = () => {
             xl: "translateY(105px)",
           }}
           hoverTextRight={{
-            base: "0%",
+            base: isEnglish ? "-25%" : "0%",
             md: "5%",
             lg: "17%",
           }}
           hoverTextBottom={{
-            base: "-60%",
+            base: isEnglish ? "-25%" : "-60%",
             sm: "-50%",
             md: "-45%",
             lg: "-40%",

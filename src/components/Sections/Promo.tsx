@@ -53,7 +53,7 @@ export const Promo = () => {
         bottom='0'
         w='100%'
         h={{
-          base: "1400px",
+          base: "1300px",
           md: "1600px",
           lg: "2000px",
           xl: "2000px",
