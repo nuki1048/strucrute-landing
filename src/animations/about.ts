@@ -10,14 +10,6 @@ export const containerVariants = {
       staggerChildren: 0.2,
     },
   },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.4,
-      staggerChildren: 0.1,
-      staggerDirection: -1,
-    },
-  },
 };
 
 export const textVariants = {
@@ -35,15 +27,6 @@ export const textVariants = {
       ease: easeOut,
     },
   },
-  exit: {
-    opacity: 0,
-    y: -30,
-    filter: "blur(10px)",
-    transition: {
-      duration: 0.4,
-      ease: easeOut,
-    },
-  },
 };
 
 export const gridVariants = {
@@ -55,15 +38,6 @@ export const gridVariants = {
       staggerChildren: 0, // Disable stagger - let individual items control their timing
       delayChildren: 0.4, // Keep this for desktop
       width: "100%",
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.4,
-      staggerChildren: 0.1,
-      staggerDirection: -1,
-      delay: 0.4,
     },
   },
 };

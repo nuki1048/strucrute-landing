@@ -19,16 +19,6 @@ export const Info = () => {
 
   return (
     <Box position='relative' marginTop={{ base: "100px", md: "0" }}>
-      {isMobile && (
-        <Box
-          fontSize='0.875rem'
-          color='white'
-          borderRadius='8px'
-          textAlign='center'
-        >
-          {t("info.mobile-hover-text")}
-        </Box>
-      )}
       <Grid
         paddingX={{ base: "20px", md: "35px", "2xl": "65px" }}
         gridTemplateColumns='repeat(auto-fit, minmax(300px, 1fr))'

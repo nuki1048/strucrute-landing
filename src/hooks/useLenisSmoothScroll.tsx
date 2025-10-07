@@ -1,5 +1,6 @@
-// useLenisSmoothScroll.tsx
-import { useEffect, useRef, useCallback } from "react";
+// useLenisSmoothScroll.tsx (drop-in improvements)
+
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import Lenis from "lenis";
 import { useMediaQuery } from "@chakra-ui/react";
 
@@ -8,108 +9,77 @@ export function useLenisSmoothScroll(
 ) {
   const lenisRef = useRef<Lenis | null>(null);
   const rafIdRef = useRef<number | null>(null);
-  const isDestroyedRef = useRef(false);
+  const stoppedRef = useRef(false);
   const [isMobile] = useMediaQuery(["(max-width: 768px)"]);
 
-  // Memoized cleanup function to prevent recreation
   const cleanup = useCallback(() => {
     if (rafIdRef.current !== null) {
       cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = null;
     }
-
-    if (lenisRef.current && !isDestroyedRef.current) {
+    if (lenisRef.current) {
       lenisRef.current.destroy();
       lenisRef.current = null;
-      isDestroyedRef.current = true;
     }
   }, []);
 
-  useEffect(() => {
-    // Respect users who prefer reduced motion
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
+  // Make options stable so useEffect doesn't churn
+  const stableOpts = useMemo(() => {
+    const base = {
+      duration: isMobile ? 10 : 1.1, // ⬅️ slower on mobile & desktop
+      easing: (t: number) => 1 - Math.pow(1 - t, 4),
+      smoothWheel: !isMobile,
+      wheelMultiplier: 1,
+      smooth: isMobile ? true : false,
+      touchMultiplier: isMobile ? 1.2 : 1,
+      touchInertiaMultiplier: isMobile ? 14 : 20,
+      infinite: false,
+      gestureOrientation: "vertical" as const,
+      normalizeWheel: false,
+      lerp: isMobile ? 0.1 : 0,
+      syncTouch: false,
+    };
+    return { ...base, ...(opts || {}) };
+  }, [isMobile, opts]);
 
-    // Cleanup any existing instance
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     cleanup();
 
-    // Reset destroyed flag
-    isDestroyedRef.current = false;
-
-    const lenis = new Lenis({
-      duration: isMobile ? 0.7 : 1, // Slightly reduced from 0.8 to 0.7s
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      smoothWheel: true,
-      wheelMultiplier: isMobile ? 1.3 : 1.0, // Moderate increase from 1.2 to 1.3x
-      touchMultiplier: isMobile ? 1.7 : 1, // Moderate increase from 1.5 to 1.7x
-      infinite: false,
-      gestureOrientation: "vertical",
-      ...(isMobile && {
-        smoothTouch: true,
-        touchInertiaMultiplier: 22, // Slight increase from 20 to 22
-        normalizeWheel: true,
-        lerp: 1.3, // Moderate increase from 1.2 to 1.3
-        syncTouch: true,
-      }),
-      ...opts,
-    });
-
+    const lenis = new Lenis(stableOpts);
     lenisRef.current = lenis;
 
-    // Optimized RAF loop with proper cleanup
     const raf = (time: number) => {
-      if (isDestroyedRef.current || !lenisRef.current) return;
-
-      lenis.raf(time);
+      if (!lenisRef.current || stoppedRef.current) return;
+      lenisRef.current.raf(time);
       rafIdRef.current = requestAnimationFrame(raf);
     };
     rafIdRef.current = requestAnimationFrame(raf);
 
-    // Mobile touch handlers with proper cleanup
-    let touchStartHandler: ((e: TouchEvent) => void) | null = null;
-    let touchEndHandler: ((e: TouchEvent) => void) | null = null;
+    const onVis = () => {
+      if (!lenisRef.current) return;
+      stoppedRef.current = document.visibilityState !== "visible";
+      if (!stoppedRef.current && rafIdRef.current === null) {
+        rafIdRef.current = requestAnimationFrame(raf);
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
 
-    if (isMobile) {
-      touchStartHandler = (e: TouchEvent) => {
-        if (e.touches.length > 1 && lenisRef.current) {
-          lenis.stop();
-        }
-      };
-
-      touchEndHandler = (e: TouchEvent) => {
-        if (e.touches.length === 0 && lenisRef.current) {
-          lenis.start();
-        }
-      };
-
-      document.addEventListener("touchstart", touchStartHandler, {
-        passive: true,
-      });
-      document.addEventListener("touchend", touchEndHandler, { passive: true });
-    }
+    // Keep physics sane on rotate/resize
+    const onResize = () => lenisRef.current?.resize();
+    window.addEventListener("orientationchange", onResize);
+    window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
-      // Cleanup touch handlers
-      if (touchStartHandler) {
-        document.removeEventListener("touchstart", touchStartHandler);
-      }
-      if (touchEndHandler) {
-        document.removeEventListener("touchend", touchEndHandler);
-      }
-
-      // Cleanup RAF and Lenis
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("orientationchange", onResize);
+      window.removeEventListener("resize", onResize);
       cleanup();
     };
-  }, [opts, isMobile, cleanup]);
+  }, [stableOpts, cleanup]);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      cleanup();
-    };
-  }, [cleanup]);
+  useEffect(() => () => cleanup(), [cleanup]);
 
   return lenisRef;
 }

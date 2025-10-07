@@ -45,7 +45,7 @@ export function BurstCard({
   const translateY = useTransform(p, (t) => (isHero ? 0 : lerp(0, offY, t)));
 
   const scale = useTransform(p, (t) =>
-    isHero ? lerp(0.2, 1.0, t) : lerp(0.2, isMobile ? 1.5 : 4, t)
+    isHero ? lerp(0.2, 1.0, t) : lerp(0.2, isMobile ? 2 : 4, t)
   );
 
   const opacityLocal = useTransform(p, (t) => (t < 0.05 ? t / 0.05 : 1));

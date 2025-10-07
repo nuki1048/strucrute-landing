@@ -19,7 +19,6 @@ import { useTranslation } from "react-i18next";
 
 const MotionText = chakra(motion.h2);
 
-// Hook to get image dimensions
 const useImageDimensions = (src: string) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
   const [loaded, setLoaded] = React.useState(false);
@@ -38,7 +37,6 @@ const useImageDimensions = (src: string) => {
   return { ...dimensions, loaded };
 };
 
-// Create a separate component for each card
 const DynamicCard = ({
   item,
   index,
@@ -67,7 +65,6 @@ const DynamicCard = ({
   const imageDimensions = useImageDimensions(item.image || "");
   const { width: imgWidth, height: imgHeight, loaded } = imageDimensions;
 
-  // Move these before they're used
   const corners = [
     { x: -1, y: -1 },
     { x: 1, y: -1 },
@@ -79,7 +76,6 @@ const DynamicCard = ({
   const cy = (vp.h || 1) / 2;
   const r = seeded(index);
 
-  // Calculate dynamic dimensions
   let w, h;
   if (loaded && imgWidth && imgHeight) {
     const aspectRatio = imgWidth / imgHeight;
@@ -87,15 +83,12 @@ const DynamicCard = ({
     const baseHeight = Math.round(lerp(240, 380, seeded(index + 9)));
 
     if (aspectRatio > 1.5) {
-      // Wide image - increase width, maintain height
       w = Math.round(baseWidth * 1.2);
-      h = Math.round(w / aspectRatio); // Use calculated width for height
+      h = Math.round(w / aspectRatio);
     } else if (aspectRatio < 0.8) {
-      // Tall image - increase height, maintain width
       h = Math.round(baseHeight * 1.2);
-      w = Math.round(h * aspectRatio); // Use calculated height for width
+      w = Math.round(h * aspectRatio);
     } else {
-      // Normal aspect ratio - use base dimensions
       w = baseWidth;
       h = baseHeight;
     }
@@ -118,8 +111,8 @@ const DynamicCard = ({
   const jx = lerp(-0.25, 0.25, r);
   const jy = lerp(-0.25, 0.25, seeded(index + 11));
 
-  const offX = (vp.w || 1200) * (1.3 + 0.6 * seeded(index + 2)) * (c.x + jx); // Increased from 1.25 + 0.35
-  const offY = (vp.h || 800) * (1.3 + 0.6 * seeded(index + 3)) * (c.y + jy); // Increased from 1.25 + 0.35
+  const offX = (vp.w || 1200) * (1.3 + 0.6 * seeded(index + 2)) * (c.x + jx);
+  const offY = (vp.h || 800) * (1.3 + 0.6 * seeded(index + 3)) * (c.y + jy);
 
   const start = isHero ? heroStart : index * step;
   const end = isHero ? heroEnd : Math.min(usableSpan, start + windowLen);
@@ -204,8 +197,8 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
-  const heroStart = usableSpan * 0.96;
-  const heroEnd = heroStart + HOLD_FRAC * HERO_PORTION;
+  const heroStart = usableSpan * 0.92;
+  const heroEnd = heroStart + HERO_PORTION;
 
   return (
     <Box as='section'>

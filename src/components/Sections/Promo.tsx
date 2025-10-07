@@ -77,9 +77,9 @@ export const Promo = () => {
         <SphereScene
           scrollStartSelector='#hero'
           scrollEndSelector='#section-2-end'
-          minScale={isMobile ? 0.45 : 0.8}
+          minScale={isMobile ? 0.5 : 0.8}
           maxScale={isMobile ? 1.2 : 5}
-          startTopPadding={isMobile ? 100 : 100}
+          startTopPadding={isMobile ? 150 : 100}
           clampToViewport={false}
           endYOffset={getBottomOffset()}
           layers={isMobile ? 80 : 120}
@@ -113,7 +113,7 @@ export const Promo = () => {
           alignSelf='flex-start'
           justifySelf='center'
           marginTop={{
-            base: "0",
+            base: "50px",
             md: "45px",
             lg: "150px",
             xl: "120px",
@@ -182,7 +182,7 @@ export const Promo = () => {
             dimColor='rgba(255,255,255,0)'
           />
         </Box>
-        <Box marginTop={{ base: "150px", md: "60px" }} alignSelf='flex-start'>
+        <Box marginTop={{ base: "90px", md: "60px" }} alignSelf='flex-start'>
           <BrightTextRichLines
             text={t("promo.description", {
               mobileBR: isMobile ? "<br>" : "",

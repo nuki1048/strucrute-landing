@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Card } from "./Card";
-import { segment } from "../../utils/animationUtils";
 import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import { useEffect, useState } from "react";
@@ -10,100 +10,68 @@ import { track } from "@vercel/analytics";
 
 const MotionBox = motion.create(Box);
 
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+const mix = (a: number, b: number, t: number) => a + (b - a) * t;
+
 export const Cards: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
   const commonProps = useCommonDeviceProps();
-  const [viewportHeight, setViewportHeight] = useState(0);
+  const [vh, setVh] = useState(0);
 
-  // Get viewport height for responsive calculations
   useEffect(() => {
-    const updateViewportHeight = () => {
-      setViewportHeight(window.innerHeight);
-    };
-
-    updateViewportHeight();
-    window.addEventListener("resize", updateViewportHeight);
-    return () => window.removeEventListener("resize", updateViewportHeight);
+    const onResize = () => setVh(window.innerHeight || 0);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Calculate responsive section height based on viewport
-  const getResponsiveSectionHeight = () => {
-    if (viewportHeight === 0) return "520vh"; // fallback
-
-    // Base calculation: ensure enough space for all cards to be visible
-    // Each card needs approximately 1.2x viewport height to be fully visible
-    const cardsCount = 3;
-    const cardHeightMultiplier = 1.2;
-    const baseHeight = cardsCount * cardHeightMultiplier * 100; // Convert to vh
-
-    // Add extra space for smooth transitions
-    const extraSpace = 200; // 200vh extra for smooth scrolling
-
-    return `${baseHeight + extraSpace}vh`;
-  };
-
+  const CARDS = 3;
+  const SECTION_VH = 160 * CARDS;
   const sectionH = useBreakpointValue({
-    base: getResponsiveSectionHeight(),
-    md: getResponsiveSectionHeight(),
-    lg: getResponsiveSectionHeight(),
+    base: `${SECTION_VH}vh`,
+    md: `${SECTION_VH}vh`,
+    lg: `${SECTION_VH}vh`,
   });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 85%", "end 70%"],
+    offset: ["start start", "end end"],
   });
 
-  const HOLD_TAIL = 0.3;
-  const animProgress = useTransform(
-    scrollYProgress,
-    [0, 1 - HOLD_TAIL, 1],
-    [0, 1, 1]
+  const animProgress = useSpring(
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    { stiffness: 180, damping: 22, mass: 0.4 }
   );
 
-  // Calculate responsive gaps based on viewport height
-  const getResponsiveGaps = () => {
-    if (viewportHeight === 0) {
-      return {
-        listGap: 760,
-        revealGap: 96,
-        stackBase: 135,
-      };
-    }
+  const listGap = Math.max(0.85 * vh, 560);
+  const revealGap = Math.max(0.12 * vh, 72);
+  const stackBase = Math.max(0.18 * vh, 120);
 
-    // Base gaps that scale with viewport height
-    const baseListGap = Math.max(600, viewportHeight * 0.8); // Minimum 600px, scales with height
-    const baseRevealGap = Math.max(60, viewportHeight * 0.1); // Minimum 60px, scales with height
-    const baseStackBase = Math.max(100, viewportHeight * 0.15); // Minimum 100px, scales with height
+  const startY = [0, listGap, listGap * 2];
+  const endY = [stackBase - revealGap * 2, stackBase - revealGap, stackBase];
 
-    return {
-      listGap: baseListGap,
-      revealGap: baseRevealGap,
-      stackBase: baseStackBase,
-    };
+  const overlap = 0.08;
+  const seg = (p: number, i: number, n: number) => {
+    const a = Math.max(0, i / n - overlap);
+    const b = Math.min(1, (i + 1) / n + overlap);
+    return clamp01((p - a) / (b - a));
   };
 
-  const { listGap, revealGap, stackBase } = getResponsiveGaps();
+  const [p1, p2] = [0, 1, 2].map((i) =>
+    useTransform(animProgress, (p) => seg(p, i, CARDS))
+  );
 
-  const overlap = 0.06;
-  const p1 = segment(animProgress, 0.0, 0.33 + overlap);
-  const p2 = segment(animProgress, 0.33 - overlap, 0.66 + overlap);
-  const p3 = segment(animProgress, 0.66 - overlap, 1.0);
+  const SPR = { stiffness: 175, damping: 18, mass: 0.5 };
 
-  const SPR = { stiffness: 175, damping: 18 };
-
-  const y0_start = 0;
-  const y1_start = listGap;
-  const y2_start = listGap * 2;
-
-  const y0_end = stackBase - revealGap * 2;
-  const y1_end = stackBase - revealGap;
-  const y2_end = stackBase;
-
-  // Reorder the cards - design-is-a-beginning first
-  const yCard0 = useSpring(useTransform(p1, [0, 1], [y0_start, y0_end]), SPR); // design-is-a-beginning
-  const yCard1 = useSpring(useTransform(p2, [0, 1], [y1_start, y1_end]), SPR); // every-big-product
-  const yCard2 = useSpring(useTransform(p3, [0, 1], [y2_start, y2_end]), SPR); // future-leaders
+  const y1 = useSpring(
+    useTransform(p1, (v) => mix(startY[1], endY[1], v)),
+    SPR
+  );
+  const y2 = useSpring(
+    useTransform(p2, (v) => mix(startY[2], endY[2], v)),
+    SPR
+  );
 
   useEffect(() => {
     track("view_cards", { ...commonProps });
@@ -120,18 +88,16 @@ export const Cards: React.FC = () => {
       <Box
         position='sticky'
         top={{ base: "8vh", md: "8vh" }}
-        h='155vh'
+        h='120vh'
         overflow='visible'
         display='flex'
         alignItems='center'
         justifyContent='center'
       >
         <Box position='relative' w='full' h='100%' maxW='min(1200px, 94vw)'>
-          {/* First card - design-is-a-beginning */}
           <MotionBox
             position='absolute'
             inset='0'
-            style={{ y: yCard0 }}
             zIndex={1}
             pointerEvents='none'
           >
@@ -144,11 +110,10 @@ export const Cards: React.FC = () => {
             />
           </MotionBox>
 
-          {/* Second card - every-big-product */}
           <MotionBox
             position='absolute'
             inset='0'
-            style={{ y: yCard1 }}
+            style={{ y: y1 }}
             zIndex={2}
             pointerEvents='none'
           >
@@ -162,13 +127,7 @@ export const Cards: React.FC = () => {
             />
           </MotionBox>
 
-          {/* Third card - future-leaders */}
-          <MotionBox
-            position='absolute'
-            inset='0'
-            style={{ y: yCard2 }}
-            zIndex={3}
-          >
+          <MotionBox position='absolute' inset='0' style={{ y: y2 }} zIndex={3}>
             <Card
               title={t("cards.future-leaders")}
               description={t("cards.future-leaders-description")}
@@ -180,7 +139,8 @@ export const Cards: React.FC = () => {
         </Box>
       </Box>
 
-      <Box h={{ base: "72vh", md: "84vh" }} />
+      {/* keep a small buffer but kill the big tail */}
+      <Box h={{ base: "24vh", md: "28vh" }} />
     </Box>
   );
 };
