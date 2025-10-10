@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Card } from "./Card";
 import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { track } from "@vercel/analytics";
 
 const MotionBox = motion.create(Box);
@@ -18,6 +18,47 @@ export const Cards: React.FC = () => {
   const { t } = useTranslation();
   const commonProps = useCommonDeviceProps();
   const [vh, setVh] = useState(0);
+  const [scrollVelocity, setScrollVelocity] = useState(0);
+  const velocityTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // Track scroll velocity
+  useEffect(() => {
+    let lastTime = 0;
+    let lastScrollY = 0;
+
+    const updateVelocity = () => {
+      const currentTime = performance.now();
+      const currentScrollY = window.scrollY;
+
+      if (lastTime !== 0) {
+        const deltaTime = currentTime - lastTime;
+        const deltaScroll = currentScrollY - lastScrollY;
+        const velocity = Math.abs(deltaScroll / deltaTime) * 1000; // pixels per second
+
+        setScrollVelocity(velocity);
+
+        // Clear velocity after user stops scrolling
+        if (velocityTimeout.current) {
+          clearTimeout(velocityTimeout.current);
+        }
+        velocityTimeout.current = setTimeout(() => {
+          setScrollVelocity(0);
+        }, 150);
+      }
+
+      lastTime = currentTime;
+      lastScrollY = currentScrollY;
+      requestAnimationFrame(updateVelocity);
+    };
+
+    updateVelocity();
+
+    return () => {
+      if (velocityTimeout.current) {
+        clearTimeout(velocityTimeout.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const onResize = () => setVh(window.innerHeight || 0);
@@ -39,9 +80,35 @@ export const Cards: React.FC = () => {
     offset: ["start start", "end end"],
   });
 
+  // Dynamic spring configuration based on scroll velocity
+  const getSpringConfig = (velocity: number) => {
+    // Normalize velocity (0-1000 pixels per second)
+    const normalizedVelocity = Math.min(velocity / 1000, 1);
+
+    // Base configuration
+    const baseStiffness = 180;
+    const baseDamping = 22;
+    const baseMass = 0.4;
+
+    // Adjust based on velocity
+    // Fast scroll = higher stiffness, lower damping (more responsive)
+    // Slow scroll = lower stiffness, higher damping (smoother)
+    const stiffness = baseStiffness + normalizedVelocity * 200; // 180-380
+    const damping = baseDamping - normalizedVelocity * 8; // 22-14
+    const mass = baseMass - normalizedVelocity * 0.1; // 0.4-0.3
+
+    return {
+      stiffness: Math.max(50, Math.min(500, stiffness)),
+      damping: Math.max(5, Math.min(50, damping)),
+      mass: Math.max(0.1, Math.min(1, mass)),
+    };
+  };
+
+  const springConfig = getSpringConfig(scrollVelocity);
+
   const animProgress = useSpring(
     useTransform(scrollYProgress, [0, 1], [0, 1]),
-    { stiffness: 180, damping: 22, mass: 0.4 }
+    springConfig
   );
 
   const listGap = Math.max(0.85 * vh, 560);
@@ -62,20 +129,47 @@ export const Cards: React.FC = () => {
     useTransform(animProgress, (p) => seg(p, i, CARDS))
   );
 
-  const SPR = { stiffness: 175, damping: 18, mass: 0.5 };
+  // Dynamic spring config for individual cards
+  const getCardSpringConfig = (velocity: number) => {
+    const normalizedVelocity = Math.min(velocity / 1000, 1);
+
+    const baseStiffness = 175;
+    const baseDamping = 18;
+    const baseMass = 0.5;
+
+    const stiffness = baseStiffness + normalizedVelocity * 150; // 175-325
+    const damping = baseDamping - normalizedVelocity * 6; // 18-12
+    const mass = baseMass - normalizedVelocity * 0.15; // 0.5-0.35
+
+    return {
+      stiffness: Math.max(50, Math.min(400, stiffness)),
+      damping: Math.max(5, Math.min(30, damping)),
+      mass: Math.max(0.1, Math.min(1, mass)),
+    };
+  };
+
+  const cardSpringConfig = getCardSpringConfig(scrollVelocity);
 
   const y1 = useSpring(
     useTransform(p1, (v) => mix(startY[1], endY[1], v)),
-    SPR
+    cardSpringConfig
   );
   const y2 = useSpring(
     useTransform(p2, (v) => mix(startY[2], endY[2], v)),
-    SPR
+    cardSpringConfig
   );
 
   useEffect(() => {
     track("view_cards", { ...commonProps });
   }, [commonProps]);
+
+  // Debug: Log velocity changes (remove in production)
+  useEffect(() => {
+    if (scrollVelocity > 50) {
+      // Only log significant velocity changes
+      console.log(`Scroll velocity: ${scrollVelocity.toFixed(2)} px/s`);
+    }
+  }, [scrollVelocity]);
 
   return (
     <Box

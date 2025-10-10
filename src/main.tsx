@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import Hotjar from "@hotjar/browser";
 import { Providers } from "./components/Providers.tsx";
+import "./swiper.css";
 
 const siteId = 6517746;
 const hotjarVersion = 6;

@@ -154,7 +154,7 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
     offset: ["start start", "end end"],
   });
 
-  const TITLE_PORTION = 0.15;
+  const TITLE_PORTION = 0.1;
   const titleStart = 0.0;
   const titleMid = TITLE_PORTION * 0.6;
   const titleEnd = TITLE_PORTION;

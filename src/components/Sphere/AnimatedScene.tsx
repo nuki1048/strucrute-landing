@@ -33,6 +33,17 @@ export default memo(function SphereScene({
   // Error boundary for debugging
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
+      // Ignore semver errors from stats-gl as they don't affect functionality
+      if (
+        event.error?.message?.includes("semver") ||
+        event.error?.message?.includes("Invalid argument not valid semver")
+      ) {
+        console.warn(
+          "Ignoring semver error from stats-gl:",
+          event.error?.message
+        );
+        return;
+      }
       console.error("Sphere error:", event.error);
       setError(event.error?.message || "Unknown error");
     };

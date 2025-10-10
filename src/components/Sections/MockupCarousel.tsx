@@ -1,116 +1,193 @@
 import { Box, Image } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import mockup from "../../assets/macbook-mockup.png?format=webp&as=src";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { track } from "@vercel/analytics";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode, Mousewheel } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 
 export const MockupCarousel = () => {
   const commonProps = useCommonDeviceProps();
+  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     track("view_mockup_carousel", { ...commonProps });
   }, [commonProps]);
 
+  const handleMouseEnter = () => {
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.stop();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.start();
+    }
+  };
+
+  const handleTouchStart = () => {
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.stop();
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => {
+      if (swiperRef.current) {
+        swiperRef.current.autoplay.start();
+      }
+    }, 2000);
+  };
+
   return (
     <Box
       position='relative'
-      display='flex'
-      alignItems='center'
-      paddingY='20px'
       w='100%'
       h={{ base: "240px", md: "700px" }}
-      gap='20px'
-      overflow='hidden'
-      paddingLeft='92px'
+      display='flex'
+      flexDirection='column'
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      <motion.div
+      <Swiper
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        modules={[Autoplay, FreeMode, Mousewheel]}
+        spaceBetween={20}
+        slidesPerView='auto'
+        freeMode={{
+          enabled: true,
+          momentum: true,
+          momentumRatio: 0.1,
+          momentumBounce: false,
+        }}
+        mousewheel={{
+          enabled: true,
+          forceToAxis: true,
+          sensitivity: 1,
+          releaseOnEdges: true,
+        }}
+        autoplay={{
+          delay: 0,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+          reverseDirection: true,
+        }}
+        speed={6000}
+        loop={true}
+        allowTouchMove={true}
+        grabCursor={true}
         style={{
-          display: "flex",
-          gap: "20px",
-          whiteSpace: "nowrap",
-          position: "absolute",
-          top: "0",
-          left: 0,
-          transform: "translateY(-50%)",
+          width: "100%",
           height: "100%",
-          alignItems: "center",
+          flex: 1,
         }}
-        animate={{
-          x: [-1840, 0], // Move from right to left (2 images * 920px width + 20px gap)
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        className='mockup-carousel-swiper'
       >
         {/* First set of mockups */}
-        <Image
-          src={mockup}
-          alt='mockup'
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
-        <Image
-          src={mockup}
-          alt='mockup'
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
+
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
 
         {/* Second set for seamless loop */}
-        <Image
-          src={mockup}
-          alt='mockup'
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
-        <Image
-          src={mockup}
-          alt='mockup'
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
+
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
 
         {/* Third set to ensure seamless loop */}
-        <Image
-          src={mockup}
-          alt='mockup'
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
-        <Image
-          src={mockup}
-          alt='mockup'
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
+
+        <SwiperSlide
           style={{
-            width: "920px !important",
-            height: "600px !important",
+            width: "clamp(240px, 80vw, 920px)",
+            flexShrink: 0,
           }}
-          borderRadius='35px'
-          flexShrink={0}
-        />
-      </motion.div>
+        >
+          <Image
+            src={mockup}
+            alt='mockup'
+            w='100%'
+            h={{ base: "180px", sm: "240px", md: "400px", lg: "600px" }}
+            borderRadius={{ base: "20px", md: "35px" }}
+            objectFit='cover'
+          />
+        </SwiperSlide>
+      </Swiper>
     </Box>
   );
 };

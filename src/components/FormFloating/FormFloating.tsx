@@ -48,13 +48,13 @@ export const FormFloating = () => {
       exit='exit'
       style={{
         position: "fixed",
-        bottom: isMobile ? "0px" : "20px",
+        bottom: "20px",
         left: "50%",
         zIndex: 9,
         width: isMobile ? "305px" : "385px",
         height: "60px",
         padding: "5px",
-        backdropFilter: "blur(10px)",
+        backdropFilter: "blur(20px)",
         borderRadius: "20px",
         alignItems: "center",
         justifyContent: "space-between",

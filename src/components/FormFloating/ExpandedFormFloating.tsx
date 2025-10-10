@@ -100,7 +100,7 @@ export const ExpandedFormFloating = ({
     }
 
     formFields.forEach((field) => {
-      if (field.required && !formData[field.id].trim()) {
+      if (field.required && !formData[field.id]?.trim()) {
         newErrors[field.id] = t("form-floating.validation.required");
       }
     });

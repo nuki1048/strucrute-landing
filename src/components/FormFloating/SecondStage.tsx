@@ -63,7 +63,7 @@ export const SecondStage = ({
             }}
           />
 
-          <Text fontSize='xs' color='gray.500' textAlign='center' mt={2}>
+          <Text fontSize='xs' color='gray5' textAlign='center' mt={2}>
             {t("form-floating.second-stage.recaptcha-text")}
             <Link
               href='https://policies.google.com/privacy'

@@ -60,7 +60,7 @@ export const Info = () => {
             fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
             color='white'
             textTransform='uppercase'
-            lineHeight={0.95}
+            lineHeight={isMobile ? 1.2 : 0.95}
             stagger={0.08}
             duration={0.7}
             delay={0.1}
@@ -105,7 +105,7 @@ export const Info = () => {
             textAlign='right'
             italicFontFamily='notoSerif'
             textTransform='uppercase'
-            lineHeight={0.95}
+            lineHeight={isMobile ? 1.2 : 0.95}
             stagger={0.08}
             duration={0.7}
             delay={0.1}
@@ -143,8 +143,9 @@ export const Info = () => {
             direction='up'
             fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
             color='white'
+            marginTop={isMobile ? "0" : "30px"}
             textTransform='uppercase'
-            lineHeight={0.95}
+            lineHeight={isMobile ? 1.2 : 0.95}
             stagger={0.08}
             duration={0.7}
             delay={0.1}
@@ -185,7 +186,7 @@ export const Info = () => {
             fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
             color='white'
             textTransform='uppercase'
-            lineHeight={0.95}
+            lineHeight={isMobile ? 1.2 : 0.95}
             stagger={0.08}
             duration={0.7}
             delay={0.1}
@@ -235,7 +236,7 @@ export const Info = () => {
             fontSize='clamp(2.8125rem, 1.2112rem + 5.823vw, 7.5rem)'
             color='white'
             textTransform='uppercase'
-            lineHeight={0.95}
+            lineHeight={isMobile ? 1.2 : 0.95}
             stagger={0.08}
             duration={0.7}
             delay={0.1}

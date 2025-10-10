@@ -39,7 +39,7 @@ export const FirstStage = ({
         </Text>
         <Text
           fontSize='12px'
-          color='gray1'
+          color='gray5'
           fontWeight='400'
           opacity={1}
           textAlign={{ base: "end", md: "inital" }}
