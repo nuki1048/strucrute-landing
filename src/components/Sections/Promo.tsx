@@ -38,7 +38,7 @@ export const Promo = () => {
       }}
       paddingY='20px'
       w='100%'
-      h='700px'
+      h={{ base: "650px", md: "700px" }}
       paddingX={{
         base: "30px",
         lg: "92px",

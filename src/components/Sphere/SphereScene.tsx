@@ -43,6 +43,9 @@ export type SphereSceneProps = {
 
   /** NEW: circle resolution (keeps 150 default for identical smoothness) */
   segments?: number;
+
+  /** NEW: visibility control for performance optimization */
+  isVisible?: boolean;
 };
 
 export function SphereScene({
@@ -76,6 +79,7 @@ export function SphereScene({
 
   useInstancing = true,
   segments = 128,
+  isVisible = true,
 }: SphereSceneProps) {
   const { gl, size, camera } = useThree();
   const rootRef = React.useRef<THREE.Group>(null!);
@@ -390,7 +394,7 @@ export function SphereScene({
 
   /** ---------- per-frame updates (cheap) ---------- */
   useFrame(() => {
-    // if (!isVisible) return; // ⬅ Disabled: always render
+    if (!isVisible) return; // Skip updates when not visible
 
     const time = (performance.now() - startRef.current) / 1000;
     const root = rootRef.current;
@@ -451,7 +455,7 @@ export function SphereScene({
     }
 
     // Improved visibility logic with fallback
-    root.visible = shouldBeVisible;
+    root.visible = shouldBeVisible && isVisible;
 
     // spin
     root.rotation.z = time * spinSpeed;

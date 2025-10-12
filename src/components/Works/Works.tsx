@@ -1,6 +1,5 @@
 // CenterBurstGallery.tsx
 import { Box } from "@chakra-ui/react";
-import { BlurredBackground } from "../BlurredBackground/BlurredBackground";
 import { CenterBurstGallery } from "./CenterBurstGallery";
 import type { WorkItem } from "../../types/types";
 import { useEffect } from "react";
@@ -58,13 +57,12 @@ export default function Works() {
     { title: "eCommerceChairs", image: eCommerceChairs },
     { title: "eCommerceMobileRegister", image: eCommerceMobileRegister },
     { title: "eCommerceMobileThree", image: eCommerceMobileThree },
-    { title: "eCommerceProfile", image: eCommerceProfile },
     { title: "studyhubCalendar", image: studyhubCalendar },
     { title: "studyhubChat", image: studyhubChat },
     { title: "studyhubSchedule", image: studyhubSchedule },
     { title: "studyhubProfile", image: studyhubProfile },
+    { title: "eCommerceProfile", image: eCommerceProfile },
     { title: "studyhubRegister", image: studyhubRegister },
-    { title: "Hero Custom", node: <BlurredBackground /> },
   ];
 
   return (

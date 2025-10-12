@@ -5,7 +5,6 @@ import { useScroll, useTransform } from "framer-motion";
 import { useSizeRef } from "../../hooks/useSizeRef";
 import type { WorkItem } from "../../types/types";
 import {
-  HERO_PORTION,
   HOLD_FRAC,
   HOLD_PX,
   PX_PER_CARD,
@@ -40,25 +39,19 @@ const useImageDimensions = (src: string) => {
 const DynamicCard = ({
   item,
   index,
-  isHero,
   vp,
   step,
   windowLen,
   usableSpan,
-  heroStart,
-  heroEnd,
   cardsProgress,
   introGate,
 }: {
   item: WorkItem;
   index: number;
-  isHero: boolean;
   vp: { w: number; h: number };
   step: number;
   windowLen: number;
   usableSpan: number;
-  heroStart: number;
-  heroEnd: number;
   cardsProgress: any;
   introGate: any;
 }) => {
@@ -97,15 +90,8 @@ const DynamicCard = ({
     h = Math.round(lerp(240, 380, seeded(index + 9)));
   }
 
-  let baseLeft = cx - w / 2;
-  let baseTop = cy - h / 2;
-
-  if (isHero) {
-    w = vp.w || window.innerWidth || 1200;
-    h = vp.h || window.innerHeight || 800;
-    baseLeft = 0;
-    baseTop = 0;
-  }
+  const baseLeft = cx - w / 2;
+  const baseTop = cy - h / 2;
 
   const c = corners[index % corners.length];
   const jx = lerp(-0.25, 0.25, r);
@@ -114,8 +100,8 @@ const DynamicCard = ({
   const offX = (vp.w || 1200) * (1.3 + 0.6 * seeded(index + 2)) * (c.x + jx);
   const offY = (vp.h || 800) * (1.3 + 0.6 * seeded(index + 3)) * (c.y + jy);
 
-  const start = isHero ? heroStart : index * step;
-  const end = isHero ? heroEnd : Math.min(usableSpan, start + windowLen);
+  const start = index * step;
+  const end = Math.min(usableSpan, start + windowLen);
 
   return (
     <BurstCard
@@ -129,7 +115,6 @@ const DynamicCard = ({
       offY={offY}
       start={start}
       end={end}
-      isHero={isHero}
       scrollYProgress={cardsProgress}
       introGate={introGate}
     />
@@ -144,7 +129,6 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
     [items]
   );
   const N = safe.length;
-  const heroIndex = Math.max(0, N - 1);
 
   const pinRef = React.useRef<HTMLDivElement | null>(null);
   const { ref: vpRef, size: vp } = useSizeRef<HTMLDivElement>();
@@ -197,9 +181,6 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
   const step = N > 1 ? usableSpan / (N - 1) : usableSpan;
   const windowLen = step * (VISIBLE_COUNT * WINDOW_FACTOR);
 
-  const heroStart = usableSpan * 0.92;
-  const heroEnd = heroStart + HERO_PORTION;
-
   return (
     <Box as='section'>
       <Box ref={pinRef} position='relative' h={`${sectionHeight}px`}>
@@ -234,13 +215,10 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
               key={i}
               item={it}
               index={i}
-              isHero={i === heroIndex}
               vp={vp}
               step={step}
               windowLen={windowLen}
               usableSpan={usableSpan}
-              heroStart={heroStart}
-              heroEnd={heroEnd}
               cardsProgress={cardsProgress}
               introGate={introGate}
             />

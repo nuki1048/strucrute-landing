@@ -54,6 +54,10 @@ export const AnyScreen = () => {
       variants={containerVariants}
       initial='hidden'
       animate={isInView ? "visible" : "hidden"}
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
     >
       <MotionBox
         marginTop={{ base: "50px", md: "200px" }}

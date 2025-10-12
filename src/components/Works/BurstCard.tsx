@@ -13,7 +13,6 @@ type BurstCardProps = {
   offY: number;
   start: number;
   end: number;
-  isHero: boolean;
   scrollYProgress: MotionValue<number>;
   introGate: MotionValue<number>;
 };
@@ -31,7 +30,6 @@ export function BurstCard({
   offY,
   start,
   end,
-  isHero,
   scrollYProgress,
   introGate,
 }: BurstCardProps) {
@@ -41,12 +39,10 @@ export function BurstCard({
     return clamp01((v - start) / span);
   });
 
-  const translateX = useTransform(p, (t) => (isHero ? 0 : lerp(0, offX, t)));
-  const translateY = useTransform(p, (t) => (isHero ? 0 : lerp(0, offY, t)));
+  const translateX = useTransform(p, (t) => lerp(0, offX, t));
+  const translateY = useTransform(p, (t) => lerp(0, offY, t));
 
-  const scale = useTransform(p, (t) =>
-    isHero ? lerp(0.2, 1.0, t) : lerp(0.2, isMobile ? 2 : 4, t)
-  );
+  const scale = useTransform(p, (t) => lerp(0.2, isMobile ? 2 : 4, t));
 
   const opacityLocal = useTransform(p, (t) => (t < 0.05 ? t / 0.05 : 1));
   const opacity = useTransform(
@@ -69,7 +65,7 @@ export function BurstCard({
       h={`${h}px`}
       rounded='xl'
       overflow='hidden'
-      zIndex={isHero ? 5 : 2}
+      zIndex={2}
       bg='transparent'
     >
       {item.node ? (

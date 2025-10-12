@@ -63,7 +63,7 @@ export const Welcome = () => {
         <Box
           w='100%'
           borderRadius='10px'
-          paddingTop={{ base: "18%", md: "22%" }}
+          paddingTop={{ base: "0", md: "22%" }}
           paddingLeft={{ base: "0", md: "4%" }}
         >
           <ScrollRevealText

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Header } from "./components/Header/Header";
 import { LoadingScreen } from "./components/LoadingScreen/LoadingScreen";
 
@@ -20,7 +20,6 @@ import { Cards } from "./components/Сards/Cards";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useScrollTracking } from "./hooks/useScrollTracking";
 import { useExitTracking } from "./hooks/useExitTracking";
-import AnyScreenSVG from "./assets/any-screen.svg";
 
 function App() {
   useLenisSmoothScroll();
@@ -29,16 +28,6 @@ function App() {
 
   const isDev = process.env.NODE_ENV === "development";
   const [showLoading, setShowLoading] = useState(!isDev);
-
-  // Preload AnyScreen image
-  useEffect(() => {
-    const preloadImage = () => {
-      const img = new Image();
-      img.src = AnyScreenSVG;
-    };
-
-    preloadImage();
-  }, []);
 
   const handleLoadingComplete = () => {
     setShowLoading(false);

@@ -163,14 +163,6 @@ export const Cards: React.FC = () => {
     track("view_cards", { ...commonProps });
   }, [commonProps]);
 
-  // Debug: Log velocity changes (remove in production)
-  useEffect(() => {
-    if (scrollVelocity > 50) {
-      // Only log significant velocity changes
-      console.log(`Scroll velocity: ${scrollVelocity.toFixed(2)} px/s`);
-    }
-  }, [scrollVelocity]);
-
   return (
     <Box
       ref={sectionRef}
