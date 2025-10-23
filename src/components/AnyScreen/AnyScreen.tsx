@@ -68,7 +68,7 @@ export const AnyScreen = () => {
       >
         <motion.div variants={titleVariants}>
           <Text
-            as='h2'
+            as='h3'
             fontSize='clamp(1.25rem, -0.1378rem + 5.0466vw, 5.3125rem)'
             fontWeight='400'
             textAlign='center'

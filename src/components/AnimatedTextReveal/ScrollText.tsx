@@ -231,6 +231,7 @@ export const RevealText: React.FC<RevealTextProps> = ({
   id,
   italicFontFamily,
   className,
+  as,
   ...chakraProps
 }) => {
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -263,100 +264,121 @@ export const RevealText: React.FC<RevealTextProps> = ({
   };
 
   return (
-    // @ts-ignore
-    <MotionDiv
-      ref={rootRef}
-      className={className}
-      position='relative'
-      display='inline-block'
-      whiteSpace='pre-wrap'
-      suppressHydrationWarning
-      {...chakraProps}
-      initial='hidden'
-      animate={trigger === "inView" ? (inView ? "show" : "hidden") : undefined}
-      variants={
-        trigger === "inView"
-          ? {
-              hidden: { transition: { staggerChildren: 0 } },
-              show: {
-                transition: { staggerChildren: stagger, delayChildren: delay },
-              },
-            }
-          : undefined
-      }
-    >
-      {tokens.map((seg, idx) => {
-        if (seg.type === "br")
-          return (
-            <Separator
-              key={idx}
+    <>
+      {as && typeof as === "string" && (
+        <Text
+          as={as}
+          style={{
+            position: "absolute",
+            visibility: "hidden",
+            height: 0,
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+          aria-hidden='true'
+        >
+          {text.replace(/<br\s*\/?>/gi, "\n")}
+        </Text>
+      )}
+      {/* @ts-ignore */}
+      <MotionDiv
+        ref={rootRef}
+        className={className}
+        position='relative'
+        display='inline-block'
+        whiteSpace='pre-wrap'
+        suppressHydrationWarning
+        {...chakraProps}
+        initial='hidden'
+        animate={
+          trigger === "inView" ? (inView ? "show" : "hidden") : undefined
+        }
+        variants={
+          trigger === "inView"
+            ? {
+                hidden: { transition: { staggerChildren: 0 } },
+                show: {
+                  transition: {
+                    staggerChildren: stagger,
+                    delayChildren: delay,
+                  },
+                },
+              }
+            : undefined
+        }
+      >
+        {tokens.map((seg, idx) => {
+          if (seg.type === "br")
+            return (
+              <Separator
+                key={idx}
+                style={{
+                  height: "1px",
+                  margin: isTablet ? "-5px" : "-15px",
+                  padding: 0,
+                  border: "none",
+                }}
+              />
+            );
+
+          const inner = (
+            <Text
+              fontFamily='raleway'
+              userSelect='none'
               style={{
-                height: "1px",
-                margin: isTablet ? "-5px" : "-15px",
-                padding: 0,
-                border: "none",
+                ...(shouldColor(seg) ? { color: colorResolved } : null),
+                ...(seg.italic ? { fontStyle: "italic" } : null),
+                ...(seg.italic && italicResolved
+                  ? { fontFamily: italicResolved }
+                  : null),
+                ...(seg.bold ? { fontWeight: 700 } : null),
               }}
+              dangerouslySetInnerHTML={{ __html: seg.html }}
             />
           );
 
-        const inner = (
-          <Text
-            as='span'
-            fontFamily='raleway'
-            userSelect='none'
-            style={{
-              ...(shouldColor(seg) ? { color: colorResolved } : null),
-              ...(seg.italic ? { fontStyle: "italic" } : null),
-              ...(seg.italic && italicResolved
-                ? { fontFamily: italicResolved }
-                : null),
-              ...(seg.bold ? { fontWeight: 700 } : null),
-            }}
-            dangerouslySetInnerHTML={{ __html: seg.html }}
-          />
-        );
-
-        return (
-          <chakra.span
-            key={idx}
-            display={mode === "line" ? "block" : "inline-block"}
-            overflow='hidden'
-            userSelect='none'
-          >
-            {trigger === "inView" ? (
-              <MotionSpan
-                display='inline-block'
-                aria-hidden='true'
-                userSelect='none'
-                variants={{
-                  hidden: { opacity: 0, [axis]: from },
-                  // @ts-ignore
-                  show: {
-                    opacity: 1,
-                    [axis]: 0,
-                    transition: { duration, ease },
-                  },
-                }}
-              >
-                {inner}
-              </MotionSpan>
-            ) : (
-              <ScrollItem
-                index={idx}
-                axis={axis as "x" | "y"}
-                from={from}
-                progress={scrollYProgress}
-                staggerProg={stagger ?? 0.06}
-                durProg={duration ?? 0.25}
-              >
-                {inner}
-              </ScrollItem>
-            )}
-            {mode === "word" && idx < tokens.length - 1 ? "\u00A0" : null}
-          </chakra.span>
-        );
-      })}
-    </MotionDiv>
+          return (
+            <chakra.span
+              key={idx}
+              display={mode === "line" ? "block" : "inline-block"}
+              overflow='hidden'
+              userSelect='none'
+            >
+              {trigger === "inView" ? (
+                <MotionSpan
+                  display='inline-block'
+                  aria-hidden='true'
+                  userSelect='none'
+                  variants={{
+                    hidden: { opacity: 0, [axis]: from },
+                    // @ts-ignore
+                    show: {
+                      opacity: 1,
+                      [axis]: 0,
+                      transition: { duration, ease },
+                    },
+                  }}
+                >
+                  {inner}
+                </MotionSpan>
+              ) : (
+                <ScrollItem
+                  index={idx}
+                  axis={axis as "x" | "y"}
+                  from={from}
+                  progress={scrollYProgress}
+                  staggerProg={stagger ?? 0.06}
+                  durProg={duration ?? 0.25}
+                >
+                  {inner}
+                </ScrollItem>
+              )}
+              {mode === "word" && idx < tokens.length - 1 ? "\u00A0" : null}
+            </chakra.span>
+          );
+        })}
+      </MotionDiv>
+    </>
   );
 };
 

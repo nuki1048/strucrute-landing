@@ -64,6 +64,7 @@ export const Footer = () => {
           </Text>
         </Box>
         <Text
+          as='h3'
           fontSize='clamp(0.75rem, 0.7073rem + 0.1553vw, 0.875rem)'
           fontWeight='regular'
           color='gray1'

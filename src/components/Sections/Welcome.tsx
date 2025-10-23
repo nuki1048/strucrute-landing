@@ -76,6 +76,7 @@ export const Welcome = () => {
             dimColor='rgba(255,255,255,0)'
             text={t("welcome")}
             offset={["start 85%", "end 40%"]}
+            as='h2'
           />
         </Box>
         <Box
@@ -107,6 +108,7 @@ export const Welcome = () => {
             snapMode='enter'
             id='section-2-end'
             offset={["start 85%", "end 60%"]}
+            as='h3'
           />
         </Box>
       </Container>

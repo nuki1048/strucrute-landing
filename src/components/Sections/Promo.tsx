@@ -134,7 +134,8 @@ export const Promo = () => {
               lg: "130px",
               xl: "130px",
             }}
-            as='h1'
+            as='h2'
+            aria-label='Design & Development Agency for Digital Products'
             dimColor='rgba(255,255,255,0)'
           />
         </Box>
@@ -195,6 +196,7 @@ export const Promo = () => {
             glow='0 0 22px rgba(255,255,255,.22)'
             italicFontFamily='notoSerif'
             strictHideMode='unmount'
+            as='h2'
           />
         </Box>
       </Container>

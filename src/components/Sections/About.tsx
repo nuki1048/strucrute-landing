@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Container, Grid, Heading, useMediaQuery } from "@chakra-ui/react";
 import { ListItem } from "../ListItem";
 import { motion, easeOut } from "framer-motion";
 import { Marquee } from "./Marquee";
@@ -131,7 +131,8 @@ export const About = () => {
           alignItems='flex-end'
         >
           <motion.div variants={textVariants} style={{ width: "100%" }}>
-            <Text
+            <Heading
+              as='h3'
               fontSize='clamp(1.5625rem, 0.7298rem + 3.028vw, 4rem)'
               color='white'
               lineHeight={1}
@@ -141,7 +142,7 @@ export const About = () => {
             >
               {t("about.we-move-fast")} {!isMobile && <br />}{" "}
               {t("about.you-can-trust-us-with")}
-            </Text>
+            </Heading>
           </motion.div>
 
           <motion.div

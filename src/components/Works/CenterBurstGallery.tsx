@@ -16,7 +16,7 @@ import { BurstCard } from "./BurstCard";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-const MotionText = chakra(motion.h2);
+const MotionText = chakra(motion.h3);
 
 const useImageDimensions = (src: string) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
@@ -206,6 +206,7 @@ export function CenterBurstGallery({ items }: { items: WorkItem[] }) {
             style={{ scale: titleScale, opacity: titleOpacity, y: titleY }}
             fontSize={{ base: "3xl", md: "7xl" }}
             id='projects'
+            as='h3'
           >
             {t("works.title")}
           </MotionText>
