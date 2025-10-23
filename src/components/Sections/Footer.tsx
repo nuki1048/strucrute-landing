@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Link, Separator, Text } from "@chakra-ui/react";
 import BehanceIcon from "../../assets/behance-icon.svg?react";
-import DribbleIcon from "../../assets/dribble-icon.svg?react";
-import LinkedinIcon from "../../assets/linkedin-icon.svg?react";
+import InstagramIcon from "../../assets/instagram-icon.svg?react";
 import { useTranslation } from "react-i18next";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
 import { track } from "@vercel/analytics";
@@ -111,39 +110,30 @@ export const Footer = () => {
               border='1px solid'
               borderColor='gray4'
               onClick={() => {
+                track("instagram_click", { ...commonProps });
+                window.open(
+                  "https://www.instagram.com/strctr.agency/",
+                  "_blank"
+                );
+              }}
+              data-exit-trigger='instagram'
+            >
+              <InstagramIcon />
+            </Button>
+            <Button
+              width='38px'
+              height='38px'
+              borderRadius='10px'
+              bg='black1'
+              border='1px solid'
+              borderColor='gray4'
+              onClick={() => {
                 track("behance_click", { ...commonProps });
+                window.open("https://www.behance.net/9b0e5eb2", "_blank");
               }}
               data-exit-trigger='behance'
             >
               <BehanceIcon />
-            </Button>
-            <Button
-              width='38px'
-              height='38px'
-              borderRadius='10px'
-              bg='black1'
-              border='1px solid'
-              borderColor='gray4'
-              onClick={() => {
-                track("dribble_click", { ...commonProps });
-              }}
-              data-exit-trigger='dribble'
-            >
-              <DribbleIcon />
-            </Button>
-            <Button
-              width='38px'
-              height='38px'
-              borderRadius='10px'
-              bg='black1'
-              border='1px solid'
-              borderColor='gray4'
-              onClick={() => {
-                track("linkedin_click", { ...commonProps });
-              }}
-              data-exit-trigger='linkedin'
-            >
-              <LinkedinIcon />
             </Button>
           </Box>
         </Box>

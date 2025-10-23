@@ -52,7 +52,7 @@ export const Card = ({
       >
         {title}
       </Text>
-      <ArrowDown fill={color} />
+      <ArrowDown fill={color} strokeWidth={2} />
       <Text
         fontSize='clamp(2.1875rem, 1.0132rem + 4.2702vw, 5.625rem)'
         fontWeight={"300"}
