@@ -94,5 +94,14 @@
     "invalid-email": "Invalid email",
     "name-too-short": "Name must be at least 2 characters long",
     "submit-error": "Failed to submit form, please try again later"
-  }
+  },
+  "mobile-development": "Mobile Development",
+  "ux-design": "UX Design",
+  "ui-design": "UI Design",
+  "interactive": "Interactive",
+  "prototyping": "Prototyping",
+  "visual": "Visual",
+  "visual-front-end-development": "Visual Front-end Development",
+  "back-end-development": "Back-end Development",
+  "support": "Support"
 }

@@ -93,5 +93,14 @@
     "name-too-short": "Ім'я повинно містити не менше 2 символів",
     "submit-error": "Не вдалося відправити форму, спробуйте пізніше",
     "recaptcha-required": "Будь ласка, завершіть перевірку reCAPTCHA"
-  }
+  },
+  "mobile-development": "Мобільна розробка",
+  "ux-design": "UX дизайн",
+  "ui-design": "UI дизайн",
+  "interactive": "Інтерактивний дизайн",
+  "prototyping": "Прототипування",
+  "visual": "Візуальний дизайн",
+  "visual-front-end-development": "Візуальна фронтенд розробка",
+  "back-end-development": "Бекенд розробка",
+  "support": "Підтримка"
 }

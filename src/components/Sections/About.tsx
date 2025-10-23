@@ -11,19 +11,6 @@ import { useTranslation } from "react-i18next";
 import { track } from "@vercel/analytics";
 import { useEffect } from "react";
 import { useCommonDeviceProps } from "../../hooks/useCommonDeviceProps";
-
-const keywords = [
-  "Mobile Development",
-  "UX Design",
-  "UI Design",
-  "Interactive",
-  "Prototyping",
-  "Visual",
-  "Visual Front-end Development",
-  "Back-end Development",
-  "Support",
-];
-
 const createItemVariants = (index: number, isMobile: boolean) => {
   if (isMobile) {
     return {
@@ -88,6 +75,18 @@ export const About = () => {
     t("about.security-and-reliability"),
     t("about.interactive-solutions"),
     t("about.continuous-support-and-development"),
+  ];
+
+  const keywords = [
+    t("mobile-development"),
+    t("ux-design"),
+    t("ui-design"),
+    t("interactive"),
+    t("prototyping"),
+    t("visual"),
+    t("visual-front-end-development"),
+    t("back-end-development"),
+    t("support"),
   ];
 
   useEffect(() => {
